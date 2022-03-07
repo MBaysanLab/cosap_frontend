@@ -31,16 +31,17 @@ const theme = createTheme({
 });
 
 
-const styles = {
-    marginTop: "30px",
-    minHeight: "130px",
-    background: "-webkit-linear-gradient(left,#092224, #181818, #092224)",
-    zIndex: theme.zIndex.drawer + 1
-}
-
-function Footer() {
+function Footer(props) {
+    const styles = {
+        minHeight: "130px",
+        background: "-webkit-linear-gradient(left,#092224, #181818, #092224)",
+        marginLeft: props.ml
+    }
+    
     return (
-        <footer style={styles}>
+        <footer 
+        style={styles}
+        >
             <ThemeProvider theme={theme}>
                 <Box sx={{pt:4}}>
                     <Container maxWidth="xl">

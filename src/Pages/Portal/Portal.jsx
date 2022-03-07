@@ -2,7 +2,7 @@ import * as React from "react"
 import NavBar from '../../Components/Navbar'
 import Footer from '../../Components/Footer'
 import Box from '@mui/material/Box'
-import PortalMenu from './PortalMenu'
+import PortalMain from './PortalMain'
 
 function Portal() {
 
@@ -16,10 +16,10 @@ function Portal() {
                 flexDirection: isSmallScreen ? "column" : "row",
                 flex: 1
             }}>
-                <PortalMenu 
+                <PortalMain 
                 orientation={isSmallScreen ? "horizontal" : "vertical"}/>
             </Box>
-            <Footer />
+            <Footer ml="240px"/>
         </>
     )
 }

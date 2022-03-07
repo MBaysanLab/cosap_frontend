@@ -1,29 +1,31 @@
 import * as React from 'react'
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab';
-import CssBaseline from '@mui/material/CssBaseline';
-import LineStyleIcon from '@mui/icons-material/LineStyle';
-import FolderIcon from '@mui/icons-material/Folder';
-import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
+
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import Dashboard from "./Dashboard"
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Dashboard from './Dashboard'
+import FolderIcon from '@mui/icons-material/Folder';
+import LineStyleIcon from '@mui/icons-material/LineStyle';
+import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs'
+
 
 const menuItems = {
-    "Dashboard": <LineStyleIcon />,
-    "Projects": <FolderIcon />,
-    "Analyses": <ScatterPlotIcon />,
-    "Reports": <AssessmentIcon />,
+    "Dashboard": <LineStyleIcon sx={{ color: "black" }} />,
+    "Projects": <FolderIcon sx={{ color: "black" }} />,
+    "Analyses": <ScatterPlotIcon sx={{ color: "black" }} />,
+    "Reports": <AssessmentIcon sx={{ color: "black" }} />,
 }
 
 const menuPages = {
     "Dashboard": <Dashboard />,
     "Projects": <FolderIcon />,
     "Analyses": <ScatterPlotIcon />,
-    "Reports": <AssessmentIcon />,
+    "Reports": <AssessmentIcon />
 }
 
-function PortalMenu(props) {
+function PortalMain(props) {
     const [activeMenu, setMenu] = React.useState(0)
     const [activePage, setPage] = React.useState(<Dashboard />)
 
@@ -35,7 +37,11 @@ function PortalMenu(props) {
     return (
         <>
             <Box sx={{
-                maxWidth: {xs:"100%", md:"240px"},
+                height: "calc(100vh-70px)",
+                width: "240px",
+                bgcolor: "#DE1E3D",
+                mb: "-130px",
+                zIndex: "1",
             }}>
                 <CssBaseline />
                 <Tabs
@@ -43,6 +49,12 @@ function PortalMenu(props) {
                     sx={{ borderRight: 1, borderColor: 'divider' }}
                     value={activeMenu}
                     onChange={handleChange}
+                    TabIndicatorProps={{
+                        style: {
+                            background: 'black',
+                            width: "3px"
+                        }
+                    }}
                 >
                     {Object.keys(menuItems).map((text, index) => (
                         <Tab
@@ -50,6 +62,13 @@ function PortalMenu(props) {
                             icon={menuItems[text]}
                             label={text}
                             iconPosition="start"
+                            sx={{
+                                color: "white",
+                                "&.Mui-selected":{
+                                    background:"white",
+                                    color:"black"
+                                },                       
+                        }}
                         />
                     ))}
                 </Tabs>
@@ -58,13 +77,13 @@ function PortalMenu(props) {
                 sx={{
                     flexGrow: 1,
                     bgcolor: 'background.default',
-                    p: {xs:"4px", sm:1, md:3},
+                    p: { xs: "4px", sm: 1, md: 3 },
                 }}
             >
-               {activePage}
+                {activePage}
             </Box>
 
         </>
     )
 }
-export default PortalMenu
+export default PortalMain

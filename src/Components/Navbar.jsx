@@ -33,17 +33,6 @@ const NavbarStyles = createTheme({
   },
   typography: {
     fontFamily: 'Poppins',
-  },
-  MuiButton: {
-    ':hover':
-    {
-      textDecoration: "underline",
-      textDecorationColor: "#05869B",
-      textDecorationThickness: "2px"
-    },
-    ":active": {
-      background:'black',
-    }
   }
 });
 
