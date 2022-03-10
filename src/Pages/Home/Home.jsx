@@ -9,7 +9,7 @@ function Home() {
     <>
       <NavBar />
       <Banner />
-      <Box sx={{ flex: "1" }}>
+      <Box sx={{ flex: "1", mb: { xs: "2vh", md: "7vh" } }}>
         <Features />
       </Box>
       <Footer />

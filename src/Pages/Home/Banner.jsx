@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { ReactComponent as BannerSVG } from "../../images/banner.svg";
+import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
 
 const BannerStyles = createTheme({
   palette: {
@@ -32,7 +32,7 @@ function Banner() {
         sx={{
           display: "flex",
           justifyContent: "space-evenly",
-          mt: { xs: "2vh", md: "10vh" },
+          mt: { xs: "2vh", md: "7vh" },
         }}
       >
         <Box sx={{ width: "50vh", minWidth: "500px" }}>

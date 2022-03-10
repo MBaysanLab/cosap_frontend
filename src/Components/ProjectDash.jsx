@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ProjectList from "./ProjectList";
 import CreateProject from "./CreateProject";
 
@@ -17,9 +18,13 @@ function ProjectDash() {
   const [activePage, setActive] = React.useState(pages["projectList"]);
   const [isCreateActice, setCreateActive] = React.useState(true);
 
-  const handleCreateClick = () => {
-    setActive(pages["craeteProject"]);
-    setCreateActive(false);
+  const handleButtonClick = () => {
+    setActive(
+        activePage === pages["craeteProject"]
+        ? pages["projectList"]
+        : pages["craeteProject"]
+        );
+    setCreateActive(isCreateActice ? false : true);
   };
 
   return (
@@ -28,14 +33,23 @@ function ProjectDash() {
         <Box sx={{ width: 100 }}>
           <Typography variant="h5">Projects</Typography>
         </Box>
-        {isCreateActice && (
+        {isCreateActice ? (
           <Button
             variant="text"
             size="small"
             startIcon={<AddIcon />}
-            onClick={handleCreateClick}
+            onClick={handleButtonClick}
+            color="button"
           >
             Create New Project
+          </Button>
+        ) : (
+          <Button
+            size="large"
+            startIcon={<ArrowBackIosIcon />}
+            onClick={handleButtonClick}
+            color="button"
+          >
           </Button>
         )}
       </Box>

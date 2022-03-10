@@ -17,19 +17,21 @@ import { NavLink } from "react-router-dom";
 const pages = ["Home", "Product", "Pricing"];
 const settings = ["Account", "Logout"];
 
-const NavbarStyles = createTheme({
+const theme = createTheme({
   palette: {
-    type: "light",
     primary: {
       main: "#ffffff",
       dark: "#7896a6",
     },
     secondary: {
-      main: "#00e2f5",
+      main: "#DE1E3D",
     },
     action: {
       active: "#001E3C",
     },
+    button: {
+      main: "#428A9C"
+    }
   },
   typography: {
     fontFamily: "Poppins",
@@ -56,7 +58,7 @@ function NavBar() {
   };
 
   return (
-    <ThemeProvider theme={NavbarStyles}>
+    <ThemeProvider theme={theme}>
       <AppBar
         position="static"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -121,9 +123,8 @@ function NavBar() {
                     color: "black",
                     display: "block",
                     ":hover": {
-                      textDecoration: "underline",
-                      textDecorationColor: "#05869B",
-                      textDecorationThickness: "2px",
+                      bgcolor: "secondary.main",
+                      color: "white",
                     },
                   }}
                 >

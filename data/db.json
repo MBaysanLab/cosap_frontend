@@ -1,0 +1,39 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "CRC WGS Study",
+      "creation_date": "2021-02-12T19:25:43.511Z",
+      "status": "Success",
+      "collaborators": "-"
+    },
+    {
+        "id": 2,
+        "name": "Family Trio Study",
+        "creation_date": "2021-08-01T09:22:42.511Z",
+        "status": "%75",
+        "collaborators": "-"
+      },
+      {
+        "id": 3,
+        "name": "Copy Number Analysis",
+        "creation_date": "2022-01-23T12:43:09.511Z",
+        "status": "%95",
+        "collaborators": "-"
+      },
+      {
+        "id": 4,
+        "name": "RNA Seq, expression analysis",
+        "creation_date": "2021-12-23T8:15:43.511Z",
+        "status": "Success",
+        "collaborators": "-"
+      },
+      {
+        "id": 5,
+        "name": "Gene fusion analysis",
+        "creation_date": "2021-10-98T18:25:32.511Z",
+        "status": "Uploading files",
+        "collaborators": "-"
+      }
+  ]
+}
