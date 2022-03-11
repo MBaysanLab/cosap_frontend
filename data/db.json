@@ -3,36 +3,36 @@
     {
       "id": 1,
       "name": "CRC WGS Study",
-      "creation_date": "2021-02-12T19:25:43.511Z",
-      "status": "Success",
-      "collaborators": "-"
+      "creation_date": "2021-02-12 19:25",
+      "status": "completed-100",
+      "collaborators": "Halit Uğur"
     },
     {
         "id": 2,
         "name": "Family Trio Study",
-        "creation_date": "2021-08-01T09:22:42.511Z",
-        "status": "%75",
+        "creation_date": "2021-08-01 09:22",
+        "status": "ongoing-75",
         "collaborators": "-"
       },
       {
         "id": 3,
         "name": "Copy Number Analysis",
-        "creation_date": "2022-01-23T12:43:09.511Z",
-        "status": "%95",
-        "collaborators": "-"
+        "creation_date": "2022-01-23 12:43",
+        "status": "ongoing-25",
+        "collaborators": "Adem Vural"
       },
       {
         "id": 4,
         "name": "RNA Seq, expression analysis",
-        "creation_date": "2021-12-23T8:15:43.511Z",
-        "status": "Success",
+        "creation_date": "2021-12-23 8:15",
+        "status": "completed-100",
         "collaborators": "-"
       },
       {
         "id": 5,
         "name": "Gene fusion analysis",
-        "creation_date": "2021-10-98T18:25:32.511Z",
-        "status": "Uploading files",
+        "creation_date": "2021-10-08 18:25",
+        "status": "file_upload-62",
         "collaborators": "-"
       }
   ]

@@ -1,56 +1,30 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import DoneIcon from "@mui/icons-material/Done";
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { Complete, Ongoing, FileUpload} from './StatusIcons'
 
 const columns = [
-  { field: "id", headerName: "ID" },
-  { field: "name", headerName: "Project Name" },
-  { field: "creation_date", headerName: "Creation Date" },
+  { field: "id", headerName: "ID", flex:0.1},
+  { field: "name", headerName: "Project Name", flex: 1 },
+  { field: "creation_date", headerName: "Creation Date", flex: 0.3 },
   {
     field: "status",
     headerName: "Status",
+    flex: 0.3,
+    align: "center",
     renderCell: (params) => {
-      switch (params.value) {
-        case "Success":
-          return (
-            <Box
-              sx={{
-                p:"3px",
-                backgroundColor: "#5be5a5",
-                borderRadius: "155px",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <DoneIcon color="#ffffff" />
-              <Typography sx={{ display: "inline" }}>{params.value}</Typography>
-            </Box>
-          );
-          case "Uploading files":
-            return (
-              <Box
-              sx={{
-                p:"3px",
-                backgroundColor: "#f5f779",
-                borderRadius: "155px",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <FileUploadIcon color="#ffffff" />
-              <Typography sx={{ display: "inline" }}>{params.value}</Typography>
-            </Box>
-            )
+      switch (params.value.split("-")[0]) {
+        case "completed":
+          return (<Complete value={params.value.split("-")[1]}/>);
+        case "file_upload":
+          return (<FileUpload value={params.value.split("-")[1]}/>)
+        case "ongoing":
+          return (<Ongoing value={params.value.split("-")[1]}/>)
       }
     },
   },
-  { field: "collaborators", headerName: "Collaborators" },
+  { field: "collaborators", headerName: "Collaborators", flex: 0.5 },
 ];
-
-console.log(columns);
 
 function ProjectList(props) {
   const [projects, setProjects] = React.useState([]);
@@ -69,10 +43,8 @@ function ProjectList(props) {
             columns={columns}
             rows={projects}
             hideFooter
-            density="compact"
             sx={{
               border: 0,
-              fontFamily: "Poppins",
               "& .MuiDataGrid-columnHeaderTitle": {
                 color: "#de1e3d",
               },

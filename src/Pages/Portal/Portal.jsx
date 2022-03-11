@@ -19,6 +19,12 @@ const theme = createTheme({
     },
     button: {
       main: "#428A9C"
+    },
+    success: {
+      main: "#5be5a5"
+    },
+    progress: {
+      main : "#85cde5"
     }
   },
   typography: {
