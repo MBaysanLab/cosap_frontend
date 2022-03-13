@@ -4,14 +4,16 @@ import reportWebVitals from './reportWebVitals';
 import "./index.css"
 import "@fontsource/poppins/400.css"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Home } from "./Pages"
+import {  Home } from "./Pages"
 import { Portal } from "./Pages"
+import { ContactUs } from "./Pages"
 
 ReactDOM.render(
   <Router>
     <Routes>
       <Route path="/" element={<Home />}/>
       <Route path="/portal" element={<Portal />}/>
+      <Route path="/contactUs" element={<ContactUs />}/>
     </Routes>
   </Router>
   ,
