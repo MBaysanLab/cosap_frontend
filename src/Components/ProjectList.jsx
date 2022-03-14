@@ -6,20 +6,20 @@ import { Complete, Ongoing, FileUpload} from './StatusIcons'
 const columns = [
   { field: "id", headerName: "ID", flex:0.1},
   { field: "name", headerName: "Project Name", flex: 1 },
-  { field: "creation_date", headerName: "Creation Date", flex: 0.3 },
+  { field: "time", headerName: "Time", flex: 0.3 },
   {
     field: "status",
     headerName: "Status",
     flex: 0.3,
     align: "center",
     renderCell: (params) => {
-      switch (params.value.split("-")[0]) {
+      switch (params.value[0]) {
         case "completed":
-          return (<Complete value={params.value.split("-")[1]}/>);
+          return (<Complete value={Number(params.value[1])}/>);
         case "file_upload":
-          return (<FileUpload value={params.value.split("-")[1]}/>)
+          return (<FileUpload value={Number(params.value[1])}/>)
         case "ongoing":
-          return (<Ongoing value={params.value.split("-")[1]}/>)
+          return (<Ongoing value={Number(params.value[1])}/>)
       }
     },
   },
@@ -36,7 +36,7 @@ function ProjectList(props) {
   }, []);
 
   return (
-    <Box sx={{ height: { xs: "200px", md: "300px" }, width: "100%" }}>
+    <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid

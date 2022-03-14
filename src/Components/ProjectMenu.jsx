@@ -14,7 +14,7 @@ const pages = {
   craeteProject: <CreateProject />,
 };
 
-function ProjectDash() {
+function ProjectMenu() {
   const [activePage, setActive] = React.useState(pages["projectList"]);
   const [isCreateActice, setCreateActive] = React.useState(true);
 
@@ -58,4 +58,4 @@ function ProjectDash() {
     </Card>
   );
 }
-export default ProjectDash;
+export default ProjectMenu;

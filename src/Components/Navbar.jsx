@@ -11,32 +11,10 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 
 const pages = ["Home", "Product", "Pricing"];
 const settings = ["Account", "Logout"];
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#ffffff",
-      dark: "#7896a6",
-    },
-    secondary: {
-      main: "#DE1E3D",
-    },
-    action: {
-      active: "#001E3C",
-    },
-    button: {
-      main: "#428A9C"
-    }
-  },
-  typography: {
-    fontFamily: "Poppins",
-  },
-});
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -58,7 +36,6 @@ function NavBar() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <AppBar
         position="static"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -124,7 +101,7 @@ function NavBar() {
                     display: "block",
                     ":hover": {
                       bgcolor: "secondary.main",
-                      color: "white",
+                      color: "primary",
                     },
                   }}
                 >
@@ -165,7 +142,6 @@ function NavBar() {
           </Toolbar>
         </Container>
       </AppBar>
-    </ThemeProvider>
   );
 }
 export default NavBar;

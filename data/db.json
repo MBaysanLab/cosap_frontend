@@ -3,37 +3,64 @@
     {
       "id": 1,
       "name": "CRC WGS Study",
-      "creation_date": "2021-02-12 19:25",
-      "status": "completed-100",
+      "time": "2021-02-12 19:25",
+      "status": ["completed","100"],
       "collaborators": "Halit Uğur"
     },
     {
         "id": 2,
         "name": "Family Trio Study",
-        "creation_date": "2021-08-01 09:22",
-        "status": "ongoing-75",
+        "time": "2021-08-01 09:22",
+        "status": ["ongoing","75"],
         "collaborators": "-"
       },
       {
         "id": 3,
         "name": "Copy Number Analysis",
-        "creation_date": "2022-01-23 12:43",
-        "status": "ongoing-25",
+        "time": "2022-01-23 12:43",
+        "status": ["ongoing","25"],
         "collaborators": "Adem Vural"
       },
       {
         "id": 4,
         "name": "RNA Seq, expression analysis",
-        "creation_date": "2021-12-23 8:15",
-        "status": "completed-100",
+        "time": "2021-12-23 8:15",
+        "status": ["completed","100"],
         "collaborators": "-"
       },
       {
         "id": 5,
         "name": "Gene fusion analysis",
-        "creation_date": "2021-10-08 18:25",
-        "status": "file_upload-62",
+        "time": "2021-10-08 18:25",
+        "status": ["file_upload","62"],
         "collaborators": "-"
       }
+  ],
+  "actions": [
+    {
+      "id": 1,
+      "action": ["project_creation","WES Somatic Analysis"],
+      "time": "2021-10-08 18:25"
+    },
+    {
+      "id": 2,
+      "action": ["file_upload","tumor_wes_sample.fastq.gz"],
+      "time": "2021-08-01 09:22"
+    },
+    {
+      "id": 3,
+      "action": ["file_upload","normal_wes_sample.fastq.gz"],
+      "time": "2021-12-23 8:15"
+    },
+    {
+      "id": 4,
+      "action": ["report_creation","WES Somatic Analysis"],
+      "time": "2022-01-23 12:43"
+    },
+    {
+      "id": 5,
+      "action": ["sample_inspection","tumor_wes_sample"],
+      "time": "2021-02-12 19:25"
+    }
   ]
 }

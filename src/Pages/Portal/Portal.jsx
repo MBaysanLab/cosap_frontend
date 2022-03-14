@@ -24,7 +24,7 @@ const theme = createTheme({
       main: "#5be5a5"
     },
     progress: {
-      main : "#85cde5"
+      main : "#68d4e8"
     }
   },
   typography: {

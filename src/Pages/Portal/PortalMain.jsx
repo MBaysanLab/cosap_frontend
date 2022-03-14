@@ -3,7 +3,6 @@ import * as React from "react";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import ProjectsDash from "../../Components/ProjectDash";
 import FolderIcon from "@mui/icons-material/Folder";
 import LineStyleIcon from "@mui/icons-material/LineStyle";
 import ScatterPlotIcon from "@mui/icons-material/ScatterPlot";
@@ -11,23 +10,24 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Hidden from "@mui/material/Hidden";
 
+import ProjectsMenu from "../../Components/ProjectMenu";
+import Dashboard from "../../Components/Dashboard"
+
 const menuItems = {
   Dashboard: <LineStyleIcon />,
-  Projects: <FolderIcon />,
-  Analyses: <ScatterPlotIcon />,
+  Projects: <ScatterPlotIcon />,
   Reports: <AssessmentIcon />,
 };
 
 const menuPages = {
-  Dashboard: <ScatterPlotIcon />,
-  Projects: <ProjectsDash />,
-  Analyses: <ScatterPlotIcon />,
+  Dashboard: <Dashboard />,
+  Projects: <ProjectsMenu />,
   Reports: <AssessmentIcon />,
 };
 
 function PortalMain(props) {
   const [activeMenu, setMenu] = React.useState(0);
-  const [activePage, setPage] = React.useState(<ScatterPlotIcon />);
+  const [activePage, setPage] = React.useState(menuPages["Dashboard"]);
 
   const handleChange = (event, newValue) => {
     setMenu(newValue);
