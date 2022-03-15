@@ -18,14 +18,14 @@ const theme = createTheme({
       active: "#001E3C",
     },
     button: {
-      main: "#428A9C"
+      main: "#428A9C",
     },
     success: {
-      main: "#5be5a5"
+      main: "#5be5a5",
     },
     progress: {
-      main : "#68d4e8"
-    }
+      main: "#68d4e8",
+    },
   },
   typography: {
     fontFamily: "Poppins",
@@ -45,7 +45,9 @@ function Portal() {
           flex: 1,
         }}
       >
-        <PortalMain orientation={isSmallScreen ? "horizontal" : "vertical"} />
+        <PortalMain
+          orientation={isSmallScreen ? "horizontal" : "vertical"}
+        />
       </Box>
       <Footer ml={isSmallScreen ? "0" : "240px"} />
     </ThemeProvider>

@@ -2,8 +2,6 @@ import * as React from "react";
 
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import FolderIcon from "@mui/icons-material/Folder";
 import LineStyleIcon from "@mui/icons-material/LineStyle";
 import ScatterPlotIcon from "@mui/icons-material/ScatterPlot";
 import Tab from "@mui/material/Tab";
@@ -11,7 +9,8 @@ import Tabs from "@mui/material/Tabs";
 import Hidden from "@mui/material/Hidden";
 
 import ProjectsMenu from "../../Components/ProjectMenu";
-import Dashboard from "../../Components/Dashboard"
+import Dashboard from "../../Components/Dashboard";
+import { Routes, Route, Link, Outlet } from "react-router-dom";
 
 const menuItems = {
   Dashboard: <LineStyleIcon />,
@@ -25,13 +24,23 @@ const menuPages = {
   Reports: <AssessmentIcon />,
 };
 
-function PortalMain(props) {
-  const [activeMenu, setMenu] = React.useState(0);
-  const [activePage, setPage] = React.useState(menuPages["Dashboard"]);
+function PortalMain() {
+  return (
+    <Routes>
+      <Route path="/" element={<PortalTabs />}>
+        <Route index element={menuPages["Dashboard"]} />
+        <Route path="projects" element={menuPages["Projects"]} />
+        <Route path="reports" element={menuPages["Reports"]} />
+      </Route>
+    </Routes>
+  );
+}
 
-  const handleChange = (event, newValue) => {
-    setMenu(newValue);
-    setPage(menuPages[Object.keys(menuItems)[newValue]]);
+function PortalTabs(props) {
+  const [activeMenu, setMenu] = React.useState(0);
+
+  const handleChange = (event, newMenu) => {
+    setMenu(newMenu);
   };
 
   return (
@@ -45,9 +54,8 @@ function PortalMain(props) {
           zIndex: "1",
         }}
       >
-        <CssBaseline />
         <Tabs
-          orientation={props.orientation}
+          orientation="vertical"
           value={activeMenu}
           onChange={handleChange}
           TabIndicatorProps={{
@@ -58,6 +66,8 @@ function PortalMain(props) {
         >
           {Object.keys(menuItems).map((text, index) => (
             <Tab
+              component={Link}
+              to={text=="Dashboard" ? "/portal": text}
               key={text}
               icon={menuItems[text]}
               label={<Hidden smDown>{text}</Hidden>}
@@ -79,7 +89,7 @@ function PortalMain(props) {
           p: { xs: "4px", sm: 1, md: 3 },
         }}
       >
-        {activePage}
+        <Outlet />
       </Box>
     </>
   );

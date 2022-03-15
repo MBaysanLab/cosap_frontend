@@ -10,8 +10,8 @@ import { Portal } from "./Pages";
 ReactDOM.render(
   <Router>
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/portal" element={<Portal />} />
+      <Route index element={<Home />} />
+      <Route path="/portal/*" element={<Portal />}></Route>
     </Routes>
   </Router>,
   document.getElementById("root")
