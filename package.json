@@ -13,9 +13,12 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "chart.js": "^3.7.1",
+    "eslint-plugin-import": "^2.25.4",
     "filepond": "^4.30.3",
     "json-server": "^0.17.0",
     "react": "^17.0.2",
+    "react-chartjs-2": "^4.0.1",
     "react-dom": "^17.0.2",
     "react-filepond": "^7.1.1",
     "react-router-dom": "^6.2.1",
@@ -26,13 +29,65 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --fix --ext .js,.jsx ."
   },
   "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:import/recommended",
+      "google"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react",
+      "import"
+    ],
+    "rules": {
+      "react/prop-types": "off",
+      "require-jsdoc": 0,
+      "sort-imports": [
+        "error",
+        {
+          "ignoreCase": true,
+          "ignoreDeclarationSort": true
+        }
+      ],
+      "import/order": [
+        1,
+        {
+          "groups": [
+            "external",
+            "builtin",
+            "internal",
+            "sibling",
+            "parent",
+            "index"
+          ]
+        }
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      }
+    }
   },
   "browserslist": {
     "production": [
@@ -47,6 +102,9 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.29.4",
     "prettier": "2.5.1"
   }
 }

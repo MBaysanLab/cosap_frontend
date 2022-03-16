@@ -1,34 +1,34 @@
-import * as React from "react";
-import NavBar from "../../Components/Navbar";
-import Footer from "../../Components/Footer";
-import Box from "@mui/material/Box";
-import PortalMain from "./PortalMain";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import PortalMain from './PortalMain';
+import NavBar from '../../Components/Navbar';
+import Footer from '../../Components/Footer';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#ffffff",
-      dark: "#7896a6",
+      main: '#ffffff',
+      dark: '#7896a6',
     },
     secondary: {
-      main: "#DE1E3D",
+      main: '#DE1E3D',
     },
     action: {
-      active: "#001E3C",
+      active: '#001E3C',
     },
     button: {
-      main: "#428A9C",
+      main: '#428A9C',
     },
     success: {
-      main: "#5be5a5",
+      main: '#5be5a5',
     },
     progress: {
-      main: "#68d4e8",
+      main: '#68d4e8',
     },
   },
   typography: {
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
   },
 });
 
@@ -40,16 +40,16 @@ function Portal() {
       <NavBar />
       <Box
         sx={{
-          display: "flex",
-          flexDirection: isSmallScreen ? "column" : "row",
+          display: 'flex',
+          flexDirection: isSmallScreen ? 'column' : 'row',
           flex: 1,
         }}
       >
         <PortalMain
-          orientation={isSmallScreen ? "horizontal" : "vertical"}
+          orientation={isSmallScreen ? 'horizontal' : 'vertical'}
         />
       </Box>
-      <Footer ml={isSmallScreen ? "0" : "240px"} />
+      <Footer ml={isSmallScreen ? '0' : '240px'} />
     </ThemeProvider>
   );
 }

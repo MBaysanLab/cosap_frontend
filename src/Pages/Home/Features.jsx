@@ -1,15 +1,16 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import FeatureCard from "../../Components/FeatureCard";
+/* eslint-disable max-len */
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import FeatureCard from '../../Components/FeatureCard';
 
 function Features() {
   return (
     <Box
       sx={{
         pt: 5,
-        display: "flex",
-        justifyContent: "space-evenly",
-        flexWrap: "wrap",
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        flexWrap: 'wrap',
         gap: 2,
       }}
     >
