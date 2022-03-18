@@ -1,29 +1,28 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-import Banner from './Banner';
-import Features from './Features';
-import {Footer, NavBar} from '../../Components/';
-
+import * as React from "react";
+import Box from "@mui/material/Box";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Banner from "./Banner";
+import Features from "./Features";
+import { Footer, NavBar } from "../../Components/";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#ffffff',
-      dark: '#7896a6',
+      main: "#ffffff",
+      dark: "#7896a6",
     },
     secondary: {
-      main: '#DE1E3D',
+      main: "#DE1E3D",
     },
     action: {
-      active: '#001E3C',
+      active: "#001E3C",
     },
     button: {
-      main: '#428A9C',
+      main: "#428A9C",
     },
   },
   typography: {
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins",
   },
 });
 function Home() {
@@ -31,7 +30,7 @@ function Home() {
     <ThemeProvider theme={theme}>
       <NavBar />
       <Banner />
-      <Box sx={{flex: '1', mb: {xs: '2vh', md: '7vh'}}}>
+      <Box sx={{ flex: "1", mb: { xs: "2vh", md: "7vh" } }}>
         <Features />
       </Box>
       <Footer />

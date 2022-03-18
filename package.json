@@ -23,6 +23,7 @@
     "react-filepond": "^7.1.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "recharts": "^2.1.9",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -41,7 +42,8 @@
       "eslint:recommended",
       "plugin:react/recommended",
       "plugin:import/recommended",
-      "google"
+      "google",
+      "prettier"
     ],
     "parserOptions": {
       "ecmaFeatures": {
@@ -52,9 +54,11 @@
     },
     "plugins": [
       "react",
-      "import"
+      "import",
+      "prettier"
     ],
     "rules": {
+      "prettier/prettier": "error",
       "react/prop-types": "off",
       "require-jsdoc": 0,
       "sort-imports": [
@@ -104,6 +108,8 @@
   "devDependencies": {
     "eslint": "^8.11.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "prettier": "2.5.1"
   }

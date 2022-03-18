@@ -1,20 +1,20 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import {NavLink} from 'react-router-dom';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import { NavLink } from "react-router-dom";
 
-const pages = ['Home', 'Product', 'Pricing'];
-const settings = ['Account', 'Logout'];
+const pages = ["Home", "Product", "Pricing"];
+const settings = ["Account", "Logout"];
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -38,7 +38,7 @@ function NavBar() {
   return (
     <AppBar
       position="static"
-      sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -46,11 +46,11 @@ function NavBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{mr: 20, display: {xs: 'none', md: 'flex'}}}
+            sx={{ mr: 20, display: { xs: "none", md: "flex" } }}
           >
-              Tomorrow Bioinformatics
+            Tomorrow Bioinformatics
           </Typography>
-          <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -65,18 +65,18 @@ function NavBar() {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: {xs: 'block', md: 'none'},
+                display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page) => (
@@ -86,22 +86,22 @@ function NavBar() {
               ))}
             </Menu>
           </Box>
-          <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 component={NavLink}
                 to={
-                    page == 'Home' ? '/' : page.replace(/\s/g, '').toLowerCase()
+                  page == "Home" ? "/" : page.replace(/\s/g, "").toLowerCase()
                 }
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{
-                  'my': 2,
-                  'color': 'black',
-                  'display': 'block',
-                  ':hover': {
-                    bgcolor: 'secondary.main',
-                    color: 'primary',
+                  my: 2,
+                  color: "black",
+                  display: "block",
+                  ":hover": {
+                    bgcolor: "secondary.main",
+                    color: "primary",
                   },
                 }}
               >
@@ -110,24 +110,24 @@ function NavBar() {
             ))}
           </Box>
 
-          <Box sx={{flexGrow: 0}}>
+          <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{mt: '45px'}}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}

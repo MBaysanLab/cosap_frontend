@@ -4,63 +4,482 @@
       "id": 1,
       "name": "CRC WGS Study",
       "time": "2021-02-12 19:25",
-      "status": ["completed","100"],
+      "status": ["completed", "100"],
       "collaborators": "Halit Uğur"
     },
     {
-        "id": 2,
-        "name": "Family Trio Study",
-        "time": "2021-08-01 09:22",
-        "status": ["ongoing","75"],
-        "collaborators": "-"
-      },
-      {
-        "id": 3,
-        "name": "Copy Number Analysis",
-        "time": "2022-01-23 12:43",
-        "status": ["ongoing","25"],
-        "collaborators": "Adem Vural"
-      },
-      {
-        "id": 4,
-        "name": "RNA Seq, expression analysis",
-        "time": "2021-12-23 8:15",
-        "status": ["completed","100"],
-        "collaborators": "-"
-      },
-      {
-        "id": 5,
-        "name": "Gene fusion analysis",
-        "time": "2021-10-08 18:25",
-        "status": ["file_upload","62"],
-        "collaborators": "-"
-      }
+      "id": 2,
+      "name": "Family Trio Study",
+      "time": "2021-08-01 09:22",
+      "status": ["ongoing", "75"],
+      "collaborators": "-"
+    },
+    {
+      "id": 3,
+      "name": "Copy Number Analysis",
+      "time": "2022-01-23 12:43",
+      "status": ["ongoing", "25"],
+      "collaborators": "Adem Vural"
+    },
+    {
+      "id": 4,
+      "name": "RNA Seq, expression analysis",
+      "time": "2021-12-23 8:15",
+      "status": ["completed", "100"],
+      "collaborators": "-"
+    },
+    {
+      "id": 5,
+      "name": "Gene fusion analysis",
+      "time": "2021-10-08 18:25",
+      "status": ["file_upload", "62"],
+      "collaborators": "-"
+    }
   ],
   "actions": [
     {
       "id": 1,
-      "action": ["project_creation","WES Somatic Analysis"],
+      "action": ["project_creation", "WES Somatic Analysis"],
       "time": "2021-10-08 18:25"
     },
     {
       "id": 2,
-      "action": ["file_upload","tumor_wes_sample.fastq.gz"],
+      "action": ["file_upload", "tumor_wes_sample.fastq.gz"],
       "time": "2021-08-01 09:22"
     },
     {
       "id": 3,
-      "action": ["file_upload","normal_wes_sample.fastq.gz"],
+      "action": ["file_upload", "normal_wes_sample.fastq.gz"],
       "time": "2021-12-23 8:15"
     },
     {
       "id": 4,
-      "action": ["report_creation","WES Somatic Analysis"],
+      "action": ["report_creation", "WES Somatic Analysis"],
       "time": "2022-01-23 12:43"
     },
     {
       "id": 5,
-      "action": ["sample_inspection","tumor_wes_sample"],
+      "action": ["sample_inspection", "tumor_wes_sample"],
       "time": "2021-02-12 19:25"
+    }
+  ],
+  "project_stats": [
+    {
+      "id": 1,
+      "coverage_stats": {
+        "mean_coverage": 58,
+        "coverage_hist": [
+          {
+            "coverage": "0",
+            "number_of_locations": "292400"
+          },
+          {
+            "coverage": "1",
+            "number_of_locations": "231311"
+          },
+          {
+            "coverage": "2",
+            "number_of_locations": "266629"
+          },
+          {
+            "coverage": "3",
+            "number_of_locations": "281522"
+          },
+          {
+            "coverage": "4",
+            "number_of_locations": "293312"
+          },
+          {
+            "coverage": "5",
+            "number_of_locations": "304039"
+          },
+          {
+            "coverage": "6",
+            "number_of_locations": "329420"
+          },
+          {
+            "coverage": "7",
+            "number_of_locations": "360156"
+          },
+          {
+            "coverage": "8",
+            "number_of_locations": "393774"
+          },
+          {
+            "coverage": "9",
+            "number_of_locations": "431346"
+          },
+          {
+            "coverage": "10",
+            "number_of_locations": "471270"
+          },
+          {
+            "coverage": "11",
+            "number_of_locations": "507194"
+          },
+          {
+            "coverage": "12",
+            "number_of_locations": "542900"
+          },
+          {
+            "coverage": "13",
+            "number_of_locations": "589100"
+          },
+          {
+            "coverage": "14",
+            "number_of_locations": "630286"
+          },
+          {
+            "coverage": "15",
+            "number_of_locations": "670485"
+          },
+          {
+            "coverage": "16",
+            "number_of_locations": "702702"
+          },
+          {
+            "coverage": "17",
+            "number_of_locations": "740663"
+          },
+          {
+            "coverage": "18",
+            "number_of_locations": "773185"
+          },
+          {
+            "coverage": "19",
+            "number_of_locations": "799666"
+          },
+          {
+            "coverage": "20",
+            "number_of_locations": "828444"
+          },
+          {
+            "coverage": "21",
+            "number_of_locations": "848116"
+          },
+          {
+            "coverage": "22",
+            "number_of_locations": "864999"
+          },
+          {
+            "coverage": "23",
+            "number_of_locations": "876210"
+          },
+          {
+            "coverage": "24",
+            "number_of_locations": "885942"
+          },
+          {
+            "coverage": "25",
+            "number_of_locations": "898071"
+          },
+          {
+            "coverage": "26",
+            "number_of_locations": "910323"
+          },
+          {
+            "coverage": "27",
+            "number_of_locations": "916021"
+          },
+          {
+            "coverage": "28",
+            "number_of_locations": "917954"
+          },
+          {
+            "coverage": "29",
+            "number_of_locations": "925575"
+          },
+          {
+            "coverage": "30",
+            "number_of_locations": "926117"
+          },
+          {
+            "coverage": "31",
+            "number_of_locations": "923038"
+          },
+          {
+            "coverage": "32",
+            "number_of_locations": "921491"
+          },
+          {
+            "coverage": "33",
+            "number_of_locations": "917201"
+          },
+          {
+            "coverage": "34",
+            "number_of_locations": "912531"
+          },
+          {
+            "coverage": "35",
+            "number_of_locations": "905804"
+          },
+          {
+            "coverage": "36",
+            "number_of_locations": "897060"
+          },
+          {
+            "coverage": "37",
+            "number_of_locations": "884455"
+          },
+          {
+            "coverage": "38",
+            "number_of_locations": "876158"
+          },
+          {
+            "coverage": "39",
+            "number_of_locations": "867325"
+          },
+          {
+            "coverage": "40",
+            "number_of_locations": "857639"
+          },
+          {
+            "coverage": "41",
+            "number_of_locations": "847342"
+          },
+          {
+            "coverage": "42",
+            "number_of_locations": "835483"
+          },
+          {
+            "coverage": "43",
+            "number_of_locations": "824965"
+          },
+          {
+            "coverage": "44",
+            "number_of_locations": "810966"
+          },
+          {
+            "coverage": "45",
+            "number_of_locations": "799159"
+          },
+          {
+            "coverage": "46",
+            "number_of_locations": "786975"
+          },
+          {
+            "coverage": "47",
+            "number_of_locations": "774415"
+          },
+          {
+            "coverage": "48",
+            "number_of_locations": "765679"
+          },
+          {
+            "coverage": "49",
+            "number_of_locations": "752018"
+          },
+          {
+            "coverage": "50",
+            "number_of_locations": "737812"
+          },
+          {
+            "coverage": "51",
+            "number_of_locations": "722251"
+          },
+          {
+            "coverage": "52",
+            "number_of_locations": "708751"
+          },
+          {
+            "coverage": "53",
+            "number_of_locations": "694911"
+          },
+          {
+            "coverage": "54",
+            "number_of_locations": "680302"
+          },
+          {
+            "coverage": "55",
+            "number_of_locations": "669302"
+          },
+          {
+            "coverage": "56",
+            "number_of_locations": "652970"
+          },
+          {
+            "coverage": "57",
+            "number_of_locations": "640094"
+          },
+          {
+            "coverage": "58",
+            "number_of_locations": "622853"
+          },
+          {
+            "coverage": "59",
+            "number_of_locations": "606655"
+          },
+          {
+            "coverage": "60",
+            "number_of_locations": "593191"
+          },
+          {
+            "coverage": "61",
+            "number_of_locations": "578586"
+          },
+          {
+            "coverage": "62",
+            "number_of_locations": "564616"
+          },
+          {
+            "coverage": "63",
+            "number_of_locations": "551458"
+          },
+          {
+            "coverage": "64",
+            "number_of_locations": "536964"
+          },
+          {
+            "coverage": "65",
+            "number_of_locations": "521851"
+          },
+          {
+            "coverage": "66",
+            "number_of_locations": "507211"
+          },
+          {
+            "coverage": "67",
+            "number_of_locations": "495415"
+          },
+          {
+            "coverage": "68",
+            "number_of_locations": "480433"
+          },
+          {
+            "coverage": "69",
+            "number_of_locations": "467240"
+          },
+          {
+            "coverage": "70",
+            "number_of_locations": "453657"
+          },
+          {
+            "coverage": "71",
+            "number_of_locations": "441805"
+          },
+          {
+            "coverage": "72",
+            "number_of_locations": "428635"
+          },
+          {
+            "coverage": "73",
+            "number_of_locations": "416620"
+          },
+          {
+            "coverage": "74",
+            "number_of_locations": "405118"
+          },
+          {
+            "coverage": "75",
+            "number_of_locations": "392666"
+          },
+          {
+            "coverage": "76",
+            "number_of_locations": "380379"
+          },
+          {
+            "coverage": "77",
+            "number_of_locations": "369156"
+          },
+          {
+            "coverage": "78",
+            "number_of_locations": "359004"
+          },
+          {
+            "coverage": "79",
+            "number_of_locations": "349357"
+          },
+          {
+            "coverage": "80",
+            "number_of_locations": "336762"
+          },
+          {
+            "coverage": "81",
+            "number_of_locations": "325769"
+          },
+          {
+            "coverage": "82",
+            "number_of_locations": "315226"
+          },
+          {
+            "coverage": "83",
+            "number_of_locations": "306275"
+          },
+          {
+            "coverage": "84",
+            "number_of_locations": "296484"
+          },
+          {
+            "coverage": "85",
+            "number_of_locations": "286429"
+          },
+          {
+            "coverage": "86",
+            "number_of_locations": "279558"
+          },
+          {
+            "coverage": "87",
+            "number_of_locations": "268868"
+          },
+          {
+            "coverage": "88",
+            "number_of_locations": "260775"
+          },
+          {
+            "coverage": "89",
+            "number_of_locations": "252554"
+          },
+          {
+            "coverage": "90",
+            "number_of_locations": "243592"
+          },
+          {
+            "coverage": "91",
+            "number_of_locations": "237103"
+          },
+          {
+            "coverage": "92",
+            "number_of_locations": "228946"
+          },
+          {
+            "coverage": "93",
+            "number_of_locations": "222803"
+          },
+          {
+            "coverage": "94",
+            "number_of_locations": "215487"
+          },
+          {
+            "coverage": "95",
+            "number_of_locations": "208937"
+          },
+          {
+            "coverage": "96",
+            "number_of_locations": "201103"
+          },
+          {
+            "coverage": "97",
+            "number_of_locations": "193321"
+          },
+          {
+            "coverage": "98",
+            "number_of_locations": "186628"
+          },
+          {
+            "coverage": "99",
+            "number_of_locations": "180859"
+          }
+        ]
+      },
+      "mapping_stats": {
+        "percetange_of_mapped_reads": 99.8
+      },
+      "variant_stats": {
+        "total_variants": 5213,
+        "pathogenic_variants": 12,
+        "likely_pathogenic_variants": 8,
+        "benign_variants": 72
+      }
     }
   ]
 }
