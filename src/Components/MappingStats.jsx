@@ -8,6 +8,12 @@ function MappingStats(props) {
   return (
     <Box
       sx={{
+        mb: { xs: 3, md: 1 },
+        p: 2,
+        borderRadius: 3,
+        background:
+          "rgba(0, 0, 0, 0) linear-gradient(100.66deg, rgb(67, 67, 67) 6.56%, rgb(0, 0, 0) 93.57%) repeat scroll 0% 0%",
+
         display: "flex",
         justifyContent: "space-evenly",
       }}
@@ -20,7 +26,7 @@ function MappingStats(props) {
           {data.percetange_of_mapped_reads}%
         </Typography>
       </Box>
-      <Box sx={{ width: { xs: "55vw", md: "15vw" } }}>
+      <Box sx={{ width: { xs: "40vw", md: "15vw" } }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart width={400} height={400}>
             <Pie

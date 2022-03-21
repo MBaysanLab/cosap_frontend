@@ -9,6 +9,12 @@ function VariantStats(props) {
   return (
     <Box
       sx={{
+        mb: { xs: 3, md: 1 },
+        p: 2,
+        borderRadius: 3,
+        background:
+          "rgba(0, 0, 0, 0) linear-gradient(100.66deg, rgb(67, 67, 67) 6.56%, rgb(0, 0, 0) 93.57%) repeat scroll 0% 0%",
+
         display: "flex",
         justifyContent: "space-evenly",
       }}
@@ -26,7 +32,7 @@ function VariantStats(props) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          width: { xs: "65vw", md: "10vw" },
+          width: { xs: "45vw", md: "10vw" },
         }}
       >
         <Box

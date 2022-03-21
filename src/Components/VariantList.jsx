@@ -3,51 +3,45 @@ import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 
-import { Complete, FileUpload, Ongoing } from "./StatusIcons";
-
 const columns = [
-  { field: "id", headerName: "ID", flex: 0.1 },
-  { field: "name", headerName: "Project Name", flex: 1 },
-  { field: "time", headerName: "Time", flex: 0.3 },
+  { field: "#Chr", headerName: "CHR", flex: 0.05 },
+  { field: "Ref", headerName: "Ref", flex: 0.1 },
+  { field: "Alt", headerName: "Alt", flex: 0.1 },
+  { field: "Ref.Gene", headerName: "Gene", flex: 0.2 },
+  { field: "Func.refGene", headerName: "Function", flex: 0.2 },
+  { field: "ExonicFunc.refGene", headerName: "Exonic Function", flex: 0.2 },
+  { field: "avsnp147", headerName: "RS ID", flex: 0.2 },
+  { field: "AAChange.ensGene", headerName: "AAChange.ensGene", flex: 0.4 },
+  { field: "clinvar:Clinvar", headerName: "Clinvar Significance", flex: 0.4 },
+  { field: "Classification", headerName: "Significance", flex: 0.4 },
   {
     field: "status",
     headerName: "Status",
     flex: 0.3,
     align: "center",
-    renderCell: (params) => {
-      switch (params.value[0]) {
-        case "completed":
-          return <Complete />;
-        case "file_upload":
-          return <FileUpload value={Number(params.value[1])} />;
-        case "ongoing":
-          return <Ongoing value={Number(params.value[1])} />;
-      }
-    },
+    renderCell: (params) => {},
   },
-  { field: "collaborators", headerName: "Collaborators", flex: 0.5 },
 ];
 
-function ProjectList(props) {
-  const [projects, setProjects] = React.useState([]);
+function VariantList() {
+  const [variants, setVariants] = React.useState([]);
   const navigate = useNavigate();
   const handleOnClick = React.useCallback((params) =>
     navigate(`./${params.id}`)
   );
 
   React.useEffect(() => {
-    fetch("http://localhost:9000/projects")
+    fetch("http://localhost:9000/variants")
       .then((res) => res.json())
-      .then((data) => setProjects(data));
+      .then((data) => setVariants(data));
   }, []);
-
   return (
     <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
             columns={columns}
-            rows={projects}
+            rows={variants}
             hideFooter
             onRowClick={handleOnClick}
             sx={{
@@ -65,4 +59,4 @@ function ProjectList(props) {
     </Box>
   );
 }
-export default ProjectList;
+export default VariantList;
