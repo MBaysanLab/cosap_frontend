@@ -2,8 +2,6 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 
-import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
-
 const columns = [
   { field: "#Chr", headerName: "CHR", flex: 0.1 },
   { field: "Start", headerName: "Position", flex: 0.2 },
@@ -15,21 +13,13 @@ const columns = [
   { field: "avsnp147", headerName: "RS ID", flex: 0.2 },
   { field: "AAChange.ensGene", headerName: "AAChange.ensGene", flex: 0.4 },
   { field: "Clinvar", headerName: "Clinvar Significance", flex: 0.4 },
-  {
-    field: "Classification",
-    headerName: "ACMG",
-    flex: 0.4,
-    renderCell: (params) => {
-      return <VariantSignificanceIcon classification={params.value} />;
-    },
-  },
 ];
 
-function VariantList() {
+function DrugList() {
   const [variants, setVariants] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("http://localhost:9000/variants")
+    fetch("http://localhost:9000/drugs")
       .then((res) => res.json())
       .then((data) => setVariants(data));
   }, []);
@@ -55,4 +45,4 @@ function VariantList() {
     </Box>
   );
 }
-export default VariantList;
+export default DrugList;

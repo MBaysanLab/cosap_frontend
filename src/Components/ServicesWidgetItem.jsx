@@ -17,13 +17,14 @@ function ServicesWidgetItem(props) {
         alignItems: "center",
         p: "25px",
         mb: props.mb,
+        boxShadow: 3,
         background: props.background,
         "&:hover": {
           background: "#ccc",
         },
       }}
     >
-      <Typography variant="h6" color="text.main">
+      <Typography variant="h6" color="primary">
         {props.name}
       </Typography>
       <Box

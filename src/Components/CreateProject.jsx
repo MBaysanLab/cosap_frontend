@@ -85,9 +85,14 @@ function CreateProject() {
           />
         </Box>
       </Box>
-      <Button variant="contained" sx={{ backgroundColor: "#428A9C" }}>
-        Create
-      </Button>
+      <Box width={"100px"}>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: "#428A9C", color: "#fff" }}
+        >
+          Create
+        </Button>
+      </Box>
     </Box>
   );
 }

@@ -21,7 +21,7 @@ function ProjectDetailHeaderItem(props) {
       >
         {props.title}:
       </Typography>
-      <Typography>{props.content}</Typography>
+      <Typography component={"span"}>{props.content}</Typography>
     </Box>
   );
 }

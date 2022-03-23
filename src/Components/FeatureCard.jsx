@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography";
 
 function FeatureCard(props) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia component="img" height="140" image={props.media} />
+    <Card raised={true} sx={{ maxWidth: 345 }}>
+      <CardMedia component="img" image={props.media} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {props.header}

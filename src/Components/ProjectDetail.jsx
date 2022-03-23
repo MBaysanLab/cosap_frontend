@@ -3,17 +3,40 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
+import { Document, Page, pdfjs } from "react-pdf";
 import CoverageStats from "./CoverageStats";
 import MappingStats from "./MappingStats";
 import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import VariantList from "./VariantList";
+import drugPdf from "../assets/pharmcat_example_report.pdf";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function ProjectDetail(props) {
   const [projectMetadata, setMetadata] = React.useState({});
   const [coverageStats, setCoverageStats] = React.useState({});
   const [mappingStats, setMappingStats] = React.useState({});
   const [variantStats, setVariantStats] = React.useState({});
+  const [numPages, setNumPages] = React.useState(null);
+  const [pageNumber, setPageNumber] = React.useState(1);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
+
+  function changePage(offset) {
+    setPageNumber((prevPageNumber) => prevPageNumber + offset);
+  }
+
+  function previousPage() {
+    changePage(-1);
+  }
+
+  function nextPage() {
+    changePage(1);
+  }
 
   const { id } = useParams();
   React.useEffect(() => {
@@ -51,6 +74,34 @@ function ProjectDetail(props) {
         <Typography variant="h6">Variants</Typography>
         <Divider />
         <VariantList />
+      </Box>
+      <Box sx={{ mt: { xs: 1, md: 3 } }}>
+        <Typography variant="h6">Drug Report</Typography>
+        <Divider />
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Document file={drugPdf} onLoadSuccess={onDocumentLoadSuccess}>
+            <Page pageNumber={pageNumber} scale="2" />
+          </Document>
+          <Box>
+            <p>
+              Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+            </p>
+            <button
+              type="button"
+              disabled={pageNumber <= 1}
+              onClick={previousPage}
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              disabled={pageNumber >= numPages}
+              onClick={nextPage}
+            >
+              Next
+            </button>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
