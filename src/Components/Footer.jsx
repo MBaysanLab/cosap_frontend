@@ -27,11 +27,12 @@ const theme = createTheme({
   },
 });
 
-function Footer(props) {
+function Footer() {
+  const isSmallScreen = window.innerWidth < 900;
   const styles = {
     minHeight: "130px",
     background: "-webkit-linear-gradient(left,#092224, #181818, #092224)",
-    marginLeft: props.ml,
+    marginLeft: isSmallScreen ? "0" : "240px",
   };
 
   return (

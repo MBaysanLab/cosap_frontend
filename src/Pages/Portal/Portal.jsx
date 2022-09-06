@@ -1,43 +1,13 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PortalMain from "./PortalMain";
-import NavBar from "../../Components/Navbar";
-import Footer from "../../Components/Footer";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#ffffff",
-      dark: "#7896a6",
-    },
-    secondary: {
-      main: "#DE1E3D",
-    },
-    action: {
-      active: "#001E3C",
-    },
-    button: {
-      main: "#428A9C",
-    },
-    success: {
-      main: "#5be5a5",
-    },
-    progress: {
-      main: "#68d4e8",
-    },
-  },
-  typography: {
-    fontFamily: "Poppins",
-  },
-});
+import Layout from "../../Layout/Layout";
 
 function Portal() {
   const isSmallScreen = window.innerWidth < 900;
 
   return (
-    <ThemeProvider theme={theme}>
-      <NavBar />
+    <Layout>
       <Box
         sx={{
           display: "flex",
@@ -47,8 +17,7 @@ function Portal() {
       >
         <PortalMain />
       </Box>
-      <Footer ml={isSmallScreen ? "0" : "240px"} />
-    </ThemeProvider>
+    </Layout>
   );
 }
 

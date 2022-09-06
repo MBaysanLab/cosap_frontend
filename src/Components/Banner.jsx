@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
+import { ReactComponent as BannerSVG } from "../assets/images/banner.svg";
 
 const BannerStyles = createTheme({
   palette: {
