@@ -8,40 +8,13 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Hidden from "@mui/material/Hidden";
 
-import { Link, Outlet, Route, Routes } from "react-router-dom";
-import ProjectsMenu from "../../Components/ProjectMenu";
-import ProjectList from "../../Components/ProjectList";
-import Dashboard from "../../Components/Dashboard";
-import CreateProject from "../../Components/CreateProject";
-import ProjectDetail from "../../Components/ProjectDetail";
+import { Link, Outlet } from "react-router-dom";
 
 const menuItems = {
   Dashboard: <LineStyleIcon />,
   Projects: <ScatterPlotIcon />,
   Reports: <AssessmentIcon />,
 };
-
-const menuPages = {
-  Dashboard: <Dashboard />,
-  Projects: <ProjectsMenu />,
-  Reports: <AssessmentIcon />,
-};
-
-function PortalMain() {
-  return (
-    <Routes>
-      <Route path="/" element={<PortalTabs />}>
-        <Route index element={menuPages["Dashboard"]} />
-        <Route path="projects" element={menuPages["Projects"]}>
-          <Route index element={<ProjectList />} />
-          <Route path="create_project" element={<CreateProject />} />
-          <Route path=":id" element={<ProjectDetail />} />
-        </Route>
-        <Route path="reports" element={menuPages["Reports"]} />
-      </Route>
-    </Routes>
-  );
-}
 
 function PortalTabs(props) {
   const [activeMenu, setMenu] = React.useState(0);
@@ -102,4 +75,4 @@ function PortalTabs(props) {
     </>
   );
 }
-export default PortalMain;
+export default PortalTabs;

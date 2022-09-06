@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
+import getVariants from "../../apis/getVariants";
 
 const columns = [
   { field: "#Chr", headerName: "CHR", flex: 0.1 },
@@ -29,9 +30,7 @@ function VariantList() {
   const [variants, setVariants] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("http://localhost:9000/variants")
-      .then((res) => res.json())
-      .then((data) => setVariants(data));
+    getVariants().then((res) => setVariants(res.data));
   }, []);
   return (
     <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>

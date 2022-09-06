@@ -18,6 +18,7 @@ const VariantCallers = [
   "Octopus",
   "SomaticSniper",
   "VarDict",
+  "HapotypeCaller",
 ];
 
 function CreateProject() {

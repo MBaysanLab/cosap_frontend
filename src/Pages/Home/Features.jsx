@@ -1,12 +1,12 @@
 /* eslint-disable max-len */
 import * as React from "react";
 import Box from "@mui/material/Box";
-import FeatureCard from "../Components/FeatureCard";
-import aiLogo from "../assets/images/ai-150x119.png";
-import meta from "../assets/images/meta-new-190x114.png";
-import synth from "../assets/images/synth-2.png";
-import high from "../assets/images/high.png";
-import igv from "../assets/images/igv.png";
+import FeatureCard from "./FeatureCard";
+import aiLogo from "../../assets/images/ai-150x119.png";
+import meta from "../../assets/images/meta-new-190x114.png";
+import synth from "../../assets/images/synth-2.png";
+import high from "../../assets/images/high.png";
+import igv from "../../assets/images/igv.png";
 
 function Features() {
   return (

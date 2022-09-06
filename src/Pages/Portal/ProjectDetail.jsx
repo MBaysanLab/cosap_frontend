@@ -9,7 +9,8 @@ import MappingStats from "./MappingStats";
 import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import VariantList from "./VariantList";
-import drugPdf from "../assets/pharmcat_example_report.pdf";
+import getProjectDetail from "../../apis/getProjectDetail";
+import drugPdf from "../../assets/pharmcat_example_report.pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -40,16 +41,14 @@ function ProjectDetail(props) {
 
   const { id } = useParams();
   React.useEffect(() => {
-    fetch(`http://localhost:9000/project_stats/${id}`)
-      .then((res) => res.json())
-      .then(
-        (data) => (
-          setMetadata(data.metadata),
-          setCoverageStats(data.coverage_stats),
-          setMappingStats(data.mapping_stats),
-          setVariantStats(data.variant_stats)
-        )
-      );
+    getProjectDetail(id).then(
+      (res) => (
+        setMetadata(res.data.metadata),
+        setCoverageStats(res.data.coverage_stats),
+        setMappingStats(res.data.mapping_stats),
+        setVariantStats(res.data.variant_stats)
+      )
+    );
   }, []);
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>

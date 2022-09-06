@@ -1,6 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
+import getUserActions from "../../apis/getUserActions";
 
 const columns = [
   {
@@ -44,9 +45,7 @@ function LatestActionsWidget(props) {
   const [actions, setProjects] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("http://localhost:9000/actions")
-      .then((res) => res.json())
-      .then((data) => setProjects(data));
+    getUserActions().then((res) => setProjects(res.data));
   }, []);
 
   return (

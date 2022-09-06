@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { ReactComponent as BannerSVG } from "../assets/images/banner.svg";
+import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
 
 function Banner() {
   return (

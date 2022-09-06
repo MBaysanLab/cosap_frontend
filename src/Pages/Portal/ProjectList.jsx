@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 
 import { Complete, FileUpload, Ongoing } from "./StatusIcons";
+import getProjects from "../../apis/getProjects";
 
 const columns = [
   { field: "id", headerName: "ID", flex: 0.1 },
@@ -36,9 +37,7 @@ function ProjectList(props) {
   );
 
   React.useEffect(() => {
-    fetch("http://localhost:9000/projects")
-      .then((res) => res.json())
-      .then((data) => setProjects(data));
+    getProjects().then((res) => setProjects(res.data));
   }, []);
 
   return (

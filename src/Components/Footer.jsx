@@ -5,11 +5,10 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
 function Footer() {
-  const isSmallScreen = window.innerWidth < 900;
   const styles = {
     minHeight: "130px",
     background: "-webkit-linear-gradient(left,#092224, #181818, #092224)",
-    marginLeft: isSmallScreen ? "0" : "240px",
+    marginLeft: "0",
   };
 
   return (

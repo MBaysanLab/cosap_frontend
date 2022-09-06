@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import PortalMain from "./PortalMain";
+import PortalRoutes from "./routes/PortalRoutes";
 import Layout from "../../Layout/Layout";
 
 function Portal() {
@@ -15,7 +15,7 @@ function Portal() {
           flex: 1,
         }}
       >
-        <PortalMain />
+        <PortalRoutes />
       </Box>
     </Layout>
   );
