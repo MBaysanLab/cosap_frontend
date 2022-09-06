@@ -4,6 +4,7 @@ import { Footer, NavBar } from "../Components";
 
 const theme = createTheme({
   palette: {
+    type: "light",
     primary: {
       main: "#ffffff",
       dark: "#7896a6",

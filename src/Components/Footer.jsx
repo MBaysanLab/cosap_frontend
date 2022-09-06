@@ -3,29 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const theme = createTheme({
-  palette: {
-    type: "light",
-    primary: {
-      main: "#ffffff",
-      dark: "#7896a6",
-    },
-    secondary: {
-      main: "#00e2f5",
-    },
-    action: {
-      active: "#001E3C",
-    },
-  },
-  typography: {
-    fontFamily: "Poppins",
-    h6: {
-      color: "red",
-    },
-  },
-});
 
 function Footer() {
   const isSmallScreen = window.innerWidth < 900;
@@ -37,21 +14,19 @@ function Footer() {
 
   return (
     <footer style={styles}>
-      <ThemeProvider theme={theme}>
-        <Box sx={{ pt: 4 }}>
-          <Container maxWidth="xl">
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <center>
-                  <Typography variant="subtitle1" sx={{ color: "white" }}>
-                    Copyright
-                  </Typography>
-                </center>
-              </Grid>
+      <Box sx={{ pt: 4 }}>
+        <Container maxWidth="xl">
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <center>
+                <Typography variant="subtitle1" sx={{ color: "white" }}>
+                  Copyright
+                </Typography>
+              </center>
             </Grid>
-          </Container>
-        </Box>
-      </ThemeProvider>
+          </Grid>
+        </Container>
+      </Box>
     </footer>
   );
 }
