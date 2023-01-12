@@ -10,11 +10,11 @@ import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import VariantList from "./VariantList";
 import getProjectDetail from "../../apis/getProjectDetail";
-import drugPdf from "../../assets/pharmcat_example_report.pdf";
+import drugPdf from "../../assets/Report.pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function ProjectDetail(props) {
+function ProjectDetail() {
   const [projectMetadata, setMetadata] = React.useState({});
   const [coverageStats, setCoverageStats] = React.useState({});
   const [mappingStats, setMappingStats] = React.useState({});
@@ -43,10 +43,10 @@ function ProjectDetail(props) {
   React.useEffect(() => {
     getProjectDetail(id).then(
       (res) => (
-        setMetadata(res.data.metadata),
-        setCoverageStats(res.data.coverage_stats),
-        setMappingStats(res.data.mapping_stats),
-        setVariantStats(res.data.variant_stats)
+        setMetadata(res.metadata),
+        setCoverageStats(res.coverage_stats),
+        setMappingStats(res.mapping_stats),
+        setVariantStats(res.variant_stats)
       )
     );
   }, []);

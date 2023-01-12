@@ -8,27 +8,19 @@ function ServicesWidget(props) {
     <Box elevation={0} sx={{ display: "flex", flexDirection: "column" }}>
       <ServicesWidgetItem
         name="Somatic Variant Analysis"
-        background="#dc8665"
-        mb="20px"
-        to="/portal/projects/create_project"
+        to="/portal/projects/create_project?type=somatic"
       />
       <ServicesWidgetItem
         name="Germline & Trio Analysis"
-        background="#138086"
-        mb="20px"
-        to="/portal/projects/create_project"
+        to="/portal/projects/create_project?type=germline"
       />
       <ServicesWidgetItem
         name="Copy Number Analysis"
-        background="#cd7672"
-        mb="20px"
-        to="/portal/projects/create_project"
+        to="/portal/projects/create_project?type=cnv"
       />
       <ServicesWidgetItem
         name="Comparative Analysis"
-        background="#eeb462"
-        mb="20px"
-        to="/portal/projects/create_project"
+        to="/portal/projects/create_project?type=comp"
       />
     </Box>
   );

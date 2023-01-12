@@ -28,11 +28,15 @@ function PortalTabs(props) {
     <>
       <Box
         sx={{
-          height: "calc(100vh-70px)",
+          height: "calc(100vh - 68.5px);",
           width: { sm: "100%", md: "240px" },
-          bgcolor: "#DE1E3D",
+          backgroundImage:
+            "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%);",
           mb: { sm: "10px", md: "-130px" },
           zIndex: "1",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
         }}
       >
         <Tabs
@@ -41,7 +45,8 @@ function PortalTabs(props) {
           onChange={handleChange}
           TabIndicatorProps={{
             style: {
-              background: "black",
+              background: "#171A1E",
+              width: 10,
             },
           }}
         >
@@ -57,7 +62,7 @@ function PortalTabs(props) {
                 color: "white",
                 "&.Mui-selected": {
                   background: "white",
-                  color: "black",
+                  color: "#171A1E",
                 },
               }}
             />

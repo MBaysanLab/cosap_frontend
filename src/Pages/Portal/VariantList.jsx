@@ -30,7 +30,7 @@ function VariantList() {
   const [variants, setVariants] = React.useState([]);
 
   React.useEffect(() => {
-    getVariants().then((res) => setVariants(res.data));
+    getVariants().then((res) => setVariants(res));
   }, []);
   return (
     <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>

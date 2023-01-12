@@ -14,17 +14,16 @@ function ServicesWidgetItem(props) {
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
         p: "25px",
-        mb: props.mb,
+        mb: "20px",
         boxShadow: 3,
-        background: props.background,
         "&:hover": {
-          background: "#ccc",
+          border: 1,
+          borderColor: "#de1e3d",
         },
       }}
     >
-      <Typography variant="h6" color="primary">
+      <Typography variant="h6" color="black">
         {props.name}
       </Typography>
       <Box
@@ -32,13 +31,19 @@ function ServicesWidgetItem(props) {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          background: "rgba(255, 255, 255, 0.2) none repeat scroll 0% 0%",
           borderRadius: "5px",
           width: "75px",
           height: "75px",
         }}
       >
-        <AddIcon sx={{ fontSize: 40 }} />
+        <AddIcon
+          color="primary"
+          sx={{
+            fontSize: 40,
+            backgroundColor: "#171A1E",
+            borderRadius: 3,
+          }}
+        />
       </Box>
     </ButtonBase>
   );

@@ -11,12 +11,16 @@ function AlgorithmSelector(props) {
         {props.title}
       </Typography>
       <Autocomplete
+        ref={props.ref}
         multiple
         options={props.options}
         defaultValue={props.options.slice(0, 1)}
         renderInput={(params) => (
           <TextField {...params} variant="standard" placeholder={props.type} />
         )}
+        onChange={(e, v) => {
+          props.onChange(props.name, v);
+        }}
       />
     </Box>
   );

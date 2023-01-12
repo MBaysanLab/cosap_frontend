@@ -23,7 +23,7 @@ function PortalRoutes() {
         <Route path="projects" element={menuPages["Projects"]}>
           <Route index element={<ProjectList />} />
           <Route path="create_project" element={<CreateProject />} />
-          <Route path=":id" element={<ProjectDetail />} />
+          <Route path="project_details" element={<ProjectDetail />} />
         </Route>
         <Route path="reports" element={menuPages["Reports"]} />
       </Route>

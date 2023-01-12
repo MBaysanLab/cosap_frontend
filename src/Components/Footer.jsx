@@ -7,9 +7,10 @@ import Grid from "@mui/material/Grid";
 function Footer() {
   const styles = {
     minHeight: "130px",
-    background: "-webkit-linear-gradient(left,#092224, #181818, #092224)",
+    background: "#ffffff",
     marginLeft: "0",
   };
+  const year = new Date().getFullYear();
 
   return (
     <footer style={styles}>
@@ -18,8 +19,8 @@ function Footer() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <center>
-                <Typography variant="subtitle1" sx={{ color: "white" }}>
-                  Copyright
+                <Typography variant="subtitle1" sx={{ color: "black" }}>
+                  CosapSEQ&copy; {year}
                 </Typography>
               </center>
             </Grid>

@@ -6,16 +6,21 @@ import Divider from "@mui/material/Divider";
 import Card from "@mui/material/Card";
 
 import ServicesWidget from "./ServicesWidget";
-import LatestActionsWidget from "./LatestActionsWidget";
+import ActionsWidget from "./ActionsWidget";
 
 function Dashboard() {
   return (
     <Grid
       container
       spacing={3}
-      sx={{ display: "flex", justifyContent: "space-around" }}
+      sx={{
+        display: "flex",
+        justifyContent: "space-around",
+        marginTop: "auto",
+        paddingBottom: 2,
+      }}
     >
-      <Grid item sm={12} md={5}>
+      <Grid item xs={12} md={5}>
         <Card raised sx={{ p: { xs: 1, md: 3 } }}>
           <Box sx={{ display: "flex", justifyContent: "center", pb: 2 }}>
             <Typography variant="h5">Services</Typography>
@@ -26,14 +31,14 @@ function Dashboard() {
           </Box>
         </Card>
       </Grid>
-      <Grid item sm={12} md={7}>
+      <Grid item xs={12} md={7}>
         <Card raised sx={{ p: { xs: 1, md: 3 } }}>
           <Box sx={{ display: "flex", justifyContent: "center", pb: 2 }}>
-            <Typography variant="h5">Latest Actions</Typography>
+            <Typography variant="h5">Activity</Typography>
           </Box>
           <Divider sx={{ mb: 3 }} />
           <Box>
-            <LatestActionsWidget />
+            <ActionsWidget />
           </Box>
         </Card>
       </Grid>

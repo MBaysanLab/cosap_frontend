@@ -11,20 +11,29 @@ function Banner() {
       sx={{
         display: "flex",
         justifyContent: "space-evenly",
-        mt: { xs: "2vh", md: "7vh" },
+        pt: { xs: "2vh", md: "7vh" },
+        backgroundColor: "#fffff",
       }}
     >
-      <Box sx={{ width: "50vh", minWidth: "500px" }}>
+      <Box sx={{ width: "50vh", display: { xs: "none", md: "block" } }}>
         <BannerSVG />
       </Box>
-      <Box>
-        <Typography variant="h2" sx={{ fontWeight: 1000 }}>
+      <Box
+        sx={{
+          padding: { xs: 3 },
+        }}
+      >
+        <Typography variant="h2" sx={{ fontSize: { xs: 48, md: "3.5em" } }}>
           Flexible
         </Typography>
-        <Typography variant="h2" sx={{ fontWeight: 1000 }} color="secondary">
+        <Typography
+          variant="h2"
+          sx={{ fontSize: { xs: 48, md: "3.5em" } }}
+          color="#de1e3d"
+        >
           Next Generation Sequencing
         </Typography>
-        <Typography variant="h2" sx={{ fontWeight: 1000 }}>
+        <Typography variant="h2" sx={{ fontSize: { xs: 48, md: "3.5em" } }}>
           Analysis
         </Typography>
         <Typography
@@ -39,14 +48,19 @@ function Banner() {
           that allows users to select algorithms and adjust parameters. <br />
           No technical expertise is required!
         </Typography>
+
         <Button
           component={NavLink}
-          to="/signup"
+          to="/portal"
           variant="contained"
           size="large"
-          color="primary"
+          sx={{
+            ":hover": {
+              backgroundColor: "#de1e3d",
+            },
+          }}
         >
-          Create Account for Free Trial
+          Go to the COSAP APP
         </Button>
       </Box>
     </Box>

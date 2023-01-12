@@ -4,13 +4,18 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import "@fontsource/poppins/400.css";
-import { Home, Portal } from "./Pages";
+import { Home, Login, Portal, Register } from "./Pages";
+import PrivateRoutes from "./utils/privateRoutes";
 
 ReactDOM.render(
   <Router>
     <Routes>
       <Route index element={<Home />} />
-      <Route path="/portal/*" element={<Portal />}></Route>
+      <Route element={<PrivateRoutes />}>
+        <Route path="/portal/*" element={<Portal />} />
+      </Route>
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
     </Routes>
   </Router>,
   document.getElementById("root")

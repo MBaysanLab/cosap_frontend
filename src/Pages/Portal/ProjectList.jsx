@@ -7,9 +7,8 @@ import { Complete, FileUpload, Ongoing } from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
 
 const columns = [
-  { field: "id", headerName: "ID", flex: 0.1 },
   { field: "name", headerName: "Project Name", flex: 1 },
-  { field: "time", headerName: "Time", flex: 0.3 },
+  { field: "created_at", headerName: "Time", flex: 0.4 },
   {
     field: "status",
     headerName: "Status",
@@ -33,11 +32,24 @@ function ProjectList(props) {
   const [projects, setProjects] = React.useState([]);
   const navigate = useNavigate();
   const handleOnClick = React.useCallback((params) =>
-    navigate(`./${params.id}`)
+    navigate(`./project_details?${params.id}`)
   );
 
+  const handleProjectData = (data) => {
+    for (const item in data) {
+      if (Object.prototype.hasOwnProperty.call(data, item)) {
+        data[item]["collaborators"] = data[item]["collaborators"].join(",");
+        data[item]["created_at"] = new Date(
+          data[item]["created_at"]
+        ).toLocaleString("en-US");
+        setProjects(data);
+      }
+    }
+  };
   React.useEffect(() => {
-    getProjects().then((res) => setProjects(res.data));
+    getProjects().then((res) => {
+      handleProjectData(res.data);
+    });
   }, []);
 
   return (
