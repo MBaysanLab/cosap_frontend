@@ -6,7 +6,7 @@ import ScatterPlotIcon from "@mui/icons-material/ScatterPlot";
 import PendingIcon from "@mui/icons-material/Pending";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ProjectDetailHeaderItem from "./ProjectDetailHeaderItem";
-import { Complete, FileUpload, Ongoing } from "./StatusIcons";
+import { Complete, FileUpload, InProgress } from "./StatusIcons";
 
 const renderStatus = (params) => {
   if (typeof params == "undefined") {
@@ -18,7 +18,7 @@ const renderStatus = (params) => {
     case "file_upload":
       return <FileUpload value={Number(params[1])} />;
     case "ongoing":
-      return <Ongoing value={Number(params[1])} />;
+      return <InProgress value={Number(params[1])} />;
   }
 };
 

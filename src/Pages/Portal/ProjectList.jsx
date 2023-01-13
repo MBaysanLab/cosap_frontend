@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 
-import { Complete, FileUpload, Ongoing } from "./StatusIcons";
+import { Complete, InProgress } from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
 
 const columns = [
@@ -15,13 +15,11 @@ const columns = [
     flex: 0.3,
     align: "center",
     renderCell: (params) => {
-      switch (params.value[0]) {
+      switch (params.value) {
         case "completed":
           return <Complete />;
-        case "file_upload":
-          return <FileUpload value={Number(params.value[1])} />;
-        case "ongoing":
-          return <Ongoing value={Number(params.value[1])} />;
+        case "in_progress":
+          return <InProgress value={Number(params.value[1])} />;
       }
     },
   },

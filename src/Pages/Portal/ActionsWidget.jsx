@@ -7,43 +7,30 @@ const columns = [
   {
     field: "action_type",
     headerName: "Action",
-    flex: 0.8,
+    flex: 0.3,
     renderCell: (params) => {
-      switch (params.value[0]) {
+      switch (params.value) {
         case "file_upload":
-          return (
-            <Box>
-              File <strong>{params.value[1]}</strong> is uploaded successfully.
-            </Box>
-          );
+          return <Box>Uploaded a file successfully.</Box>;
         case "project_creation":
-          return (
-            <Box>
-              Project <strong>{params.value[1]}</strong> is created
-              successfully.
-            </Box>
-          );
+          return <Box>Created a project successfully.</Box>;
         case "report_creation":
-          return (
-            <Box>
-              Report <strong>{params.value[1]}</strong> is created successfully.
-            </Box>
-          );
-        case "sample_inspection":
-          return (
-            <Box>
-              You inspected <strong>{params.value[1]}</strong>.
-            </Box>
-          );
+          return <Box>Created a report created successfully.</Box>;
       }
     },
   },
   {
-    field: "created",
+    field: "action_detail",
+    headerName: "Detail",
+    flex: 0.5,
+  },
+  {
+    field: "created_at",
     headerName: "Action Time",
     flex: 0.2,
     valueGetter: (date) => {
-      return date;
+      date = new Date(date.value);
+      return date.toLocaleString();
     },
   },
 ];
@@ -61,7 +48,7 @@ function ActionsWidget() {
           <DataGrid
             columns={columns}
             rows={actions}
-            getRowId={(row) => row.created}
+            getRowId={(row) => row.id}
             hideFooter
             sx={{
               border: 0,

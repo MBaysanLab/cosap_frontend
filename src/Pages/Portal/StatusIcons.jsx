@@ -5,7 +5,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 
-export function Complete(props) {
+export function Complete() {
   return (
     <Box
       sx={{
@@ -17,37 +17,23 @@ export function Complete(props) {
       }}
     >
       <DoneIcon color="#ffffff" />
-      <Typography variant="body" sx={{ display: "inline" }}>
+      <Typography variant="body" sx={{ display: "inline", fontSize: 15 }}>
         Completed
       </Typography>
     </Box>
   );
 }
 
-export function Ongoing(props) {
+export function InProgress(props) {
   return (
     <Box sx={{ position: "relative", display: "inline-flex" }}>
-      <CircularProgress
-        variant="determinate"
-        value={Number(props.value)}
-        color="progress"
-      />
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: "absolute",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+      <CircularProgress color="progress" size={20} />
+      <Typography
+        variant="body"
+        sx={{ pl: 1, display: "inline", fontSize: 15 }}
       >
-        <Typography variant="caption" component="div" color="text.secondary">
-          {`${Math.round(props.value)}%`}
-        </Typography>
-      </Box>
+        Running
+      </Typography>
     </Box>
   );
 }
