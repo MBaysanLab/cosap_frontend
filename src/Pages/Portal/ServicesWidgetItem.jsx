@@ -3,7 +3,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import AddIcon from "@mui/icons-material/Add";
+import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ButtonBase from "@mui/material/ButtonBase";
 
 function ServicesWidgetItem(props) {
@@ -18,8 +18,7 @@ function ServicesWidgetItem(props) {
         mb: "20px",
         boxShadow: 3,
         "&:hover": {
-          border: 1,
-          borderColor: "#de1e3d",
+          boxShadow: "inset 10px -10px 90px 41px rgba(58,112,155,0.1);",
         },
       }}
     >
@@ -34,14 +33,13 @@ function ServicesWidgetItem(props) {
           borderRadius: "5px",
           width: "75px",
           height: "75px",
+          backgroundImage: "linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);",
         }}
       >
-        <AddIcon
-          color="primary"
+        <ArrowForwardIosRoundedIcon
+          color="black"
           sx={{
-            fontSize: 40,
-            backgroundColor: "#171A1E",
-            borderRadius: 3,
+            fontSize: 30,
           }}
         />
       </Box>

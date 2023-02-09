@@ -23,15 +23,15 @@ function CoverageStats(props) {
           Mean Coverage
         </Typography>
         <Typography variant="h2" color="primary">
-          {data.mean_coverage}
+          {data.median_coverage}
         </Typography>
       </Box>
       <Box sx={{ width: { xs: "55vw", md: "15vw" } }}>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart width={500} height={300} data={data.coverage_hist}>
-            <XAxis dataKey="coverage" tick={{ fill: "#fff" }} />
+          <BarChart width={500} height={300} data={data.hist}>
+            <XAxis dataKey="0" tick={{ fill: "#fff" }} />
             <Tooltip />
-            <Bar dataKey="number_of_locations" fill="#1DB954" />
+            <Bar dataKey="1" fill="#1DB954" />
           </BarChart>
         </ResponsiveContainer>
       </Box>

@@ -17,7 +17,7 @@ function FileUpload(props) {
         allowMultiple={props.allowMultiple}
         instantUpload={false}
         allowProcess={false}
-        onprocessfiles={props.handleProcessFiles}
+        onprocessfile={props.handleProcessFiles}
         onprocessfilestart={props.handleStartFileUpload}
         server={{
           process: (
@@ -33,7 +33,8 @@ function FileUpload(props) {
             const formData = new FormData();
             formData.append("name", file.name);
             formData.append("file", file, file.name);
-            formData.append("file_type", "fastq");
+            formData.append("file_type", "FQ");
+            formData.append("sample_type", props.sampleType);
             formData.append("project", props.projectId);
 
             postFile(formData)

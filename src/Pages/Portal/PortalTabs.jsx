@@ -53,7 +53,7 @@ function PortalTabs(props) {
           {Object.keys(menuItems).map((text, index) => (
             <Tab
               component={Link}
-              to={text === "Dashboard" ? "/portal" : text}
+              to={text === "Dashboard" ? "/portal" : text.toLowerCase()}
               key={text}
               icon={menuItems[text]}
               label={<Hidden smDown>{text}</Hidden>}

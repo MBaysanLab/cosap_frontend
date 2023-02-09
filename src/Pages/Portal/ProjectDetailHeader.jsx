@@ -24,6 +24,8 @@ const renderStatus = (params) => {
 
 function ProjectDetailHeader(props) {
   const data = props.data;
+  const date = new Date(data.time);
+  const dateLocal = date.toLocaleString();
 
   return (
     <Paper
@@ -52,7 +54,7 @@ function ProjectDetailHeader(props) {
       <ProjectDetailHeaderItem
         icon={<AccessTimeIcon />}
         title="Created at"
-        content={data.time}
+        content={dateLocal}
       />
     </Paper>
   );

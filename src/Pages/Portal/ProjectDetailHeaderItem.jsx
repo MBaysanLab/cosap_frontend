@@ -12,12 +12,12 @@ function ProjectDetailHeaderItem(props) {
     >
       {props.icon}
       <Typography
-        variant="h6"
+        variant="subtitle"
         sx={{
           pr: 1,
           pl: 1,
         }}
-        color="secondary"
+        color="black"
       >
         {props.title}:
       </Typography>

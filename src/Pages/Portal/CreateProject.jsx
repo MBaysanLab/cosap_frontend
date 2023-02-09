@@ -42,6 +42,7 @@ function CreateProject(props) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    console.log(fileUploadStatus);
     if (fileUploadStatus === 0) {
       navigate("../");
     }
@@ -106,20 +107,28 @@ function CreateProject(props) {
       }}
     >
       <Box>
-        <Typography variant="h4">Create New Project</Typography>
+        <Typography variant="h5" color="secondary">
+          New Project
+        </Typography>
       </Box>
-      <Box sx={{ width: { sm: "100vw", md: "10vw" } }}>
+      <Box sx={{ width: { sm: "100vw", md: "25vw" } }}>
         <TextField
           name="name"
           label="Project Name"
           variant="standard"
+          required={true}
           onChange={(e) => {
             handleInput(e.target.name, e.target.value);
+          }}
+          sx={{
+            "& label.Mui-focused": {
+              color: "black",
+            },
           }}
         />
       </Box>
       <Box sx={{ mt: 3 }}>
-        <Typography variant="h6" color="#1164a7">
+        <Typography variant="h6" color="secondary">
           Upload Sample Files
         </Typography>
         <Alert severity="info">
@@ -135,6 +144,7 @@ function CreateProject(props) {
             title="Normal Samples"
             allowMultiple={true}
             projectId={projectId}
+            sampleType="NM"
             handleProcessFiles={handleFileUploadComplete}
             handleStartFileUpload={handleStartFileUpload}
           />
@@ -152,6 +162,7 @@ function CreateProject(props) {
             title="Tumor Samples"
             allowMultiple={true}
             projectId={projectId}
+            sampleType="TM"
             handleProcessFiles={handleFileUploadComplete}
             handleStartFileUpload={handleStartFileUpload}
           />
@@ -175,7 +186,7 @@ function CreateProject(props) {
         </Box>
       </Box>
       <Box sx={{ mt: 3 }}>
-        <Typography variant="h6" color="#1164a7">
+        <Typography variant="h6" color="secondary">
           Select Workflow Algorithms
         </Typography>
         <Alert severity="info">

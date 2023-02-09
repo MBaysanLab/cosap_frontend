@@ -42,7 +42,7 @@ function VariantList() {
             sx={{
               border: 0,
               "& .MuiDataGrid-columnHeaderTitle": {
-                color: "#de1e3d",
+                color: "black",
               },
               "& .MuiDataGrid-cell": {
                 borderBottom: "none",

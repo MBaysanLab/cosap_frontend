@@ -2,10 +2,15 @@
 import * as React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import storage from "./storage";
+import { verifyUser } from "../lib/auth";
 
 const PrivateRoutes = () => {
+  let user = null;
   const authToken = storage.getToken();
-  return authToken ? <Outlet /> : <Navigate to="/login" />;
+  if (authToken) {
+    user = verifyUser();
+  }
+  return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoutes;

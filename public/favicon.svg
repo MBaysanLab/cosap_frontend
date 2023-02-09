@@ -1,4 +1,4 @@
-<svg width="100%" viewBox="0 0 960 960" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="100%" viewBox="0 0 48 48" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>helix-banner</title>
   <path class="clr-i-outline clr-i-outline-path-1" d="M236.8 348.534a24 24 0 0 1 -13.066 -44.267l238.133 -152.8a24 24 0 1 1 26.666 40.533L249.867 344.534A24 24 0 0 1 236.8 348.534Z"/>
   <path class="clr-i-outline clr-i-outline-path-2" d="M353.334 402.933a24 24 0 0 1 -13.066 -44.267L480 268.8a24 24 0 1 1 26.666 40.533L366.4 400A24 24 0 0 1 353.334 402.933Z"/>
@@ -12,4 +12,5 @@
       <stop offset="1" stop-color="#DE1E3D"/>
     </linearGradient>
   </defs>
+  
 </svg>

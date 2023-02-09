@@ -19,7 +19,7 @@ const columns = [
         case "completed":
           return <Complete />;
         case "in_progress":
-          return <InProgress value={Number(params.value[1])} />;
+          return <InProgress />;
       }
     },
   },
@@ -29,9 +29,11 @@ const columns = [
 function ProjectList(props) {
   const [projects, setProjects] = React.useState([]);
   const navigate = useNavigate();
-  const handleOnClick = React.useCallback((params) =>
-    navigate(`./project_details?${params.id}`)
-  );
+  const handleOnClick = React.useCallback((params) => {
+    const rowId = params.row.id;
+    console.log(rowId);
+    navigate(`./${rowId}`);
+  });
 
   const handleProjectData = (data) => {
     for (const item in data) {
