@@ -56,14 +56,14 @@ function Register() {
             justifyContent="center"
             flexDirection="row"
             sx={{
-              height: { xs: "calc(100vh - 130px)", md: "calc(90vh - 130px)" },
-              mt: { xs: 0, md: "10vh" },
+              height: { xs: "calc(100vh - 130px)", md: "calc(95vh - 130px)" },
+              mt: { xs: 0, md: "5vh" },
             }}
           >
             <Card
               variant="outlined"
               sx={{
-                maxHeight: { xs: "100vh", md: "60vh" },
+                maxHeight: { xs: "100vh", md: "75vh" },
                 maxWidth: { xs: "100vw", md: "40vw" },
               }}
             >
