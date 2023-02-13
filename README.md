@@ -1,4 +1,4 @@
-# Front-end ReachJS application for COSAP app
+# ReactJS application for COSAP.
 
 ## Available Scripts
 
