@@ -3,22 +3,19 @@ import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ScatterPlotIcon from "@mui/icons-material/ScatterPlot";
-import PendingIcon from "@mui/icons-material/Pending";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ProjectDetailHeaderItem from "./ProjectDetailHeaderItem";
-import { Complete, FileUpload, InProgress } from "./StatusIcons";
+import { Complete, InProgress } from "./StatusIcons";
 
 const renderStatus = (params) => {
   if (typeof params == "undefined") {
     return <CircularProgress />;
   }
-  switch (params[0]) {
-    case "completed":
+  switch (params) {
+    case "CO":
       return <Complete />;
-    case "file_upload":
-      return <FileUpload value={Number(params[1])} />;
-    case "ongoing":
-      return <InProgress value={Number(params[1])} />;
+    case "IP":
+      return <InProgress />;
   }
 };
 
@@ -42,7 +39,6 @@ function ProjectDetailHeader(props) {
         content={data.name}
       />
       <ProjectDetailHeaderItem
-        icon={<PendingIcon />}
         title="Status"
         content={renderStatus(data.status)}
       />

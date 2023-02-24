@@ -5,12 +5,10 @@ import Typography from "@mui/material/Typography";
 export function VariantSignificanceIcon(props) {
   const [bgColor, setbgColor] = React.useState("#aaaab7");
   React.useEffect(() => {
-    if (props.classification === "Pathogenic") {
+    if (props.classification.toLowerCase().includes("pathogenic")) {
       setbgColor("#f54242");
-    } else if (props.classification === "Likely benign") {
+    } else if (props.classification.toLowerCase().includes("benign")) {
       setbgColor("#b0e5c6");
-    } else if (props.classification === "Benign") {
-      setbgColor("#39E382");
     }
   });
 

@@ -11,11 +11,11 @@ const columns = [
     renderCell: (params) => {
       switch (params.value) {
         case "file_upload":
-          return <Box>Uploaded a file successfully.</Box>;
+          return <Box>File Upload</Box>;
         case "project_creation":
-          return <Box>Created a project successfully.</Box>;
+          return <Box>Project Creation</Box>;
         case "report_creation":
-          return <Box>Created a report created successfully.</Box>;
+          return <Box>Report Creation</Box>;
       }
     },
   },

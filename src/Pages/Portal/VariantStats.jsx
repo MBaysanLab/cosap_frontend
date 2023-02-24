@@ -31,46 +31,32 @@ function VariantStats(props) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: "end",
           width: { xs: "45vw", md: "10vw" },
         }}
       >
         <Box
           sx={{
-            m: "2px",
+            m: "3px",
             textAlign: "center",
             background: "#f54242",
             borderRadius: 3,
           }}
         >
-          <Tooltip title="Pathogenic Variants">
-            <Typography color="primary">{data.pathogenic_variants}</Typography>
+          <Tooltip title="Significant Variants">
+            <Typography color="primary">{data.significant_variants}</Typography>
           </Tooltip>
         </Box>
         <Box
           sx={{
-            m: "2px",
+            m: "3px",
             textAlign: "center",
-            background: "#e3d839",
+            background: "grey",
             borderRadius: 3,
           }}
         >
-          <Tooltip title="Likely Pathogenic Variants">
-            <Typography color="primary">
-              {data.likely_pathogenic_variants}
-            </Typography>
-          </Tooltip>
-        </Box>
-        <Box
-          sx={{
-            m: "2px",
-            textAlign: "center",
-            background: "#39e382",
-            borderRadius: 3,
-          }}
-        >
-          <Tooltip title="Benign Variants">
-            <Typography color="primary">{data.benign_variants}</Typography>
+          <Tooltip title="Uncertain Variants">
+            <Typography color="primary">{data.uncertain_variants}</Typography>
           </Tooltip>
         </Box>
       </Box>

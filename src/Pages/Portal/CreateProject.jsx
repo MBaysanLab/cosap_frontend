@@ -6,8 +6,7 @@ import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
-import FileUpload from "./FileUpload.jsx";
+const FileUpload = React.lazy(() => import("./FileUpload.jsx"));
 import AlgorithmSelector from "./AlgorithmSelector";
 import postProject from "../../apis/postProject.js";
 
@@ -138,52 +137,54 @@ function CreateProject(props) {
         </Alert>
       </Box>
       <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}>
-        <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
-          <FileUpload
-            refSetter={setNormalFileUploader}
-            title="Normal Samples"
-            allowMultiple={true}
-            projectId={projectId}
-            sampleType="NM"
-            handleProcessFiles={handleFileUploadComplete}
-            handleStartFileUpload={handleStartFileUpload}
-          />
-        </Box>
-        <Box
-          sx={{
-            width: { sm: "100%", md: "20vw" },
-            mt: 1,
-            mb: 2,
-            ml: { xs: 0, md: 3 },
-          }}
-        >
-          <FileUpload
-            refSetter={setTumorFileUploader}
-            title="Tumor Samples"
-            allowMultiple={true}
-            projectId={projectId}
-            sampleType="TM"
-            handleProcessFiles={handleFileUploadComplete}
-            handleStartFileUpload={handleStartFileUpload}
-          />
-        </Box>
-        <Box
-          sx={{
-            width: { sm: "100%", md: "20vw" },
-            mt: 1,
-            mb: 2,
-            ml: { xs: 0, md: 3 },
-          }}
-        >
-          <FileUpload
-            refSetter={setBedFileUploader}
-            title="BED File"
-            allowMultiple={true}
-            projectId={projectId}
-            handleProcessFiles={handleFileUploadComplete}
-            handleStartFileUpload={handleStartFileUpload}
-          />
-        </Box>
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
+            <FileUpload
+              refSetter={setNormalFileUploader}
+              title="Normal Samples"
+              allowMultiple={true}
+              projectId={projectId}
+              sampleType="NM"
+              handleProcessFiles={handleFileUploadComplete}
+              handleStartFileUpload={handleStartFileUpload}
+            />
+          </Box>
+          <Box
+            sx={{
+              width: { sm: "100%", md: "20vw" },
+              mt: 1,
+              mb: 2,
+              ml: { xs: 0, md: 3 },
+            }}
+          >
+            <FileUpload
+              refSetter={setTumorFileUploader}
+              title="Tumor Samples"
+              allowMultiple={true}
+              projectId={projectId}
+              sampleType="TM"
+              handleProcessFiles={handleFileUploadComplete}
+              handleStartFileUpload={handleStartFileUpload}
+            />
+          </Box>
+          <Box
+            sx={{
+              width: { sm: "100%", md: "20vw" },
+              mt: 1,
+              mb: 2,
+              ml: { xs: 0, md: 3 },
+            }}
+          >
+            <FileUpload
+              refSetter={setBedFileUploader}
+              title="BED File"
+              allowMultiple={true}
+              projectId={projectId}
+              handleProcessFiles={handleFileUploadComplete}
+              handleStartFileUpload={handleStartFileUpload}
+            />
+          </Box>
+        </React.Suspense>
       </Box>
       <Box sx={{ mt: 3 }}>
         <Typography variant="h6" color="secondary">
