@@ -5,19 +5,21 @@ import Box from "@mui/material/Box";
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 
 const columns = [
-  { field: "Chr", headerName: "CHR", flex: 0.1 },
-  { field: "Start", headerName: "Position", flex: 0.2 },
-  { field: "Ref", headerName: "Ref", flex: 0.1 },
-  { field: "Alt", headerName: "Alt", flex: 0.1 },
-  { field: "Gene", headerName: "Gene", flex: 0.2 },
-  { field: "Function", headerName: "Function", flex: 0.2 },
-  { field: "ExonicFunc.refGene", headerName: "Exonic Function", flex: 0.2 },
-  { field: "avsnp147", headerName: "RS ID", flex: 0.2 },
-  { field: "AAChange.ensGene", headerName: "AAChange", flex: 0.4 },
-  { field: "Clinvar", headerName: "Clinvar Significance", flex: 0.4 },
+  { field: "location", headerName: "Position", flex: 0.2 },
+  { field: "ref", headerName: "Ref", flex: 0.1 },
+  { field: "alt", headerName: "Alt", flex: 0.1 },
+  { field: "gene_symbol", headerName: "Gene", flex: 0.2 },
+  { field: "function", headerName: "Function", flex: 0.2 },
+  { field: "rs_id", headerName: "RS_ID", flex: 0.2 },
+  { field: "aa_change", headerName: "AAChange", flex: 0.4 },
   {
-    field: "Classification",
-    headerName: "Classification",
+    field: "clinvar_classification",
+    headerName: "Clinvar Significance",
+    flex: 0.4,
+  },
+  {
+    field: "classification",
+    headerName: "classification",
     flex: 0.4,
     renderCell: (params) => {
       return <VariantSignificanceIcon classification={params.value} />;

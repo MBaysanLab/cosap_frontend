@@ -9,7 +9,7 @@ import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import VariantList from "./VariantList";
 import getProjectDetail from "../../apis/getProjectDetail";
-import storage from "../../utils/storage";
+// import storage from "../../utils/storage";
 
 function ProjectDetail() {
   const [projectMetadata, setMetadata] = React.useState({});
@@ -33,18 +33,17 @@ function ProjectDetail() {
 
   React.useEffect(() => {
     const igvDiv = document.getElementById("igv-div");
-    const token = storage.getToken();
+    // const token = storage.getToken();
     const options = {
       genome: "hg38",
       locus: "chr8:127,736,588-127,739,371",
       tracks: [
         {
           name: "HG00103",
-          url: "http://localhost:8000/alignments/105_api_test/CALIBRATED_BAM/calibrated_tumor_bwa.bam",
+          url: "https://s3.amazonaws.com/1000genomes/data/HG00103/alignment/HG00103.alt_bwamem_GRCh38DH.20150718.GBR.low_coverage.cram",
           indexURL:
-            "http://localhost:8000/files/105_api_test/CALIBRATED_BAM/calibrated_tumor_bwa.bai",
-          oauthToken: token,
-          format: "sam",
+            "https://s3.amazonaws.com/1000genomes/data/HG00103/alignment/HG00103.alt_bwamem_GRCh38DH.20150718.GBR.low_coverage.cram.crai",
+          format: "cram",
         },
       ],
     };

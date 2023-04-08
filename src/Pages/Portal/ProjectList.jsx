@@ -31,7 +31,6 @@ function ProjectList(props) {
   const navigate = useNavigate();
   const handleOnClick = React.useCallback((params) => {
     const rowId = params.row.id;
-    console.log(rowId);
     navigate(`./${rowId}`);
   });
 
@@ -48,6 +47,7 @@ function ProjectList(props) {
   };
   React.useEffect(() => {
     getProjects().then((res) => {
+      console.log(res);
       handleProjectData(res.data);
     });
   }, []);
