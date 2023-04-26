@@ -41,7 +41,6 @@ function CreateProject(props) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    console.log(fileUploadStatus);
     if (fileUploadStatus === 0) {
       navigate("../");
     }
@@ -94,8 +93,13 @@ function CreateProject(props) {
     }
   };
 
-  const handleFileUploadComplete = () => {
-    setfileUploadStatus(fileUploadStatus + 1);
+  const handleFileUploadComplete = (error, file) => {
+    if (error) {
+      setfileUploadStatus(null);
+    } else {
+      console.log(file);
+      setfileUploadStatus(fileUploadStatus + 1);
+    }
   };
 
   return (

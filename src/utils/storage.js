@@ -2,7 +2,11 @@ const storagePrefix = "auth_";
 
 const storage = {
   getToken: () => {
-    return JSON.parse(window.localStorage.getItem(`${storagePrefix}token`));
+    if (typeof localStorage.getItem(`${storagePrefix}token`) === "string") {
+      return JSON.parse(window.localStorage.getItem(`${storagePrefix}token`));
+    } else {
+      return null;
+    }
   },
   setToken: (token) => {
     window.localStorage.setItem(`${storagePrefix}token`, JSON.stringify(token));

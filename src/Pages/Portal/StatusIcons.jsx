@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import DoneIcon from "@mui/icons-material/Done";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 
@@ -10,15 +10,15 @@ export function Complete() {
     <Box
       sx={{
         p: "5px",
-        backgroundColor: "#5be5a5",
+        backgroundColor: "white",
         borderRadius: "155px",
         display: "flex",
         alignItems: "center",
       }}
     >
-      <DoneIcon color="#ffffff" />
+      <CheckCircleOutlineOutlinedIcon htmlColor="green" />
       <Typography variant="body" sx={{ display: "inline", fontSize: 15 }}>
-        Completed
+        View Results
       </Typography>
     </Box>
   );
