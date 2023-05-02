@@ -10,7 +10,7 @@ const theme = createTheme({
       dark: "#7896a6",
     },
     secondary: {
-      main: "#DE1E3D",
+      main: "#0f0f4d",
     },
     action: {
       active: "#001E3C",

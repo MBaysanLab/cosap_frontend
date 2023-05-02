@@ -37,8 +37,12 @@ const columns = [
 
 function ActionsWidget() {
   const [actions, setProjects] = React.useState([]);
+
   React.useEffect(() => {
     getUserActions().then((res) => setProjects(res.data));
+    return () => {
+      setProjects([]);
+    };
   }, []);
 
   return (
@@ -53,7 +57,7 @@ function ActionsWidget() {
             sx={{
               border: 0,
               "& .MuiDataGrid-columnHeaderTitle": {
-                color: "#de1e3d",
+                color: "#0f0f4d",
               },
               "& .MuiDataGrid-cell": {
                 borderBottom: "none",

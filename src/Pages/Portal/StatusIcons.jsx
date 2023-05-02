@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 export function Complete() {
   return (
@@ -19,6 +20,20 @@ export function Complete() {
       <CheckCircleOutlineOutlinedIcon htmlColor="green" />
       <Typography variant="body" sx={{ display: "inline", fontSize: 15 }}>
         View Results
+      </Typography>
+    </Box>
+  );
+}
+
+export function Pending() {
+  return (
+    <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <HourglassEmptyIcon htmlColor="#b7b02c" />
+      <Typography
+        variant="body"
+        sx={{ pl: 1, display: "inline", fontSize: 15 }}
+      >
+        Pending
       </Typography>
     </Box>
   );

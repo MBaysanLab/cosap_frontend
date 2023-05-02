@@ -28,7 +28,7 @@ function ProjectMenu() {
         {isCreateActice ? (
           <Button
             component={Link}
-            to="create_project"
+            to="/portal"
             variant="text"
             size="small"
             startIcon={<AddIcon />}

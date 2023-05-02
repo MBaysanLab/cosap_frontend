@@ -15,6 +15,7 @@ function FileUpload(props) {
         {props.title}
       </Typography>
       <FilePond
+        name="file"
         ref={(ref) => props.refSetter(ref)}
         credits={false}
         allowMultiple={props.allowMultiple}
@@ -23,19 +24,20 @@ function FileUpload(props) {
         onprocessfile={props.handleProcessFiles}
         onprocessfilestart={props.handleStartFileUpload}
         chunkUploads={true}
+        oninitfile={props.onAddfile}
+        onremovefile={props.onRemoveFile}
+        maxFiles={props.maxFiles ? props.maxFiles : 100}
         server={{
           url: `${API_URL}files`,
           process: {
-            url: "/process/",
             method: "POST",
             headers: {
               authorization: `Token ${token}`,
             },
             withCredentials: true,
             ondata: (formData) => {
-              formData.append("file_type", "FQ");
               formData.append("sample_type", props.sampleType);
-              formData.append("project", props.projectId);
+              formData.append("fp_upload_field", "file");
               return formData;
             },
           },
@@ -46,56 +48,9 @@ function FileUpload(props) {
               authorization: `Token ${token}`,
             },
             withCredentials: true,
-            ondata: (formData) => {
-              formData.append("file_type", "FQ");
-              formData.append("sample_type", props.sampleType);
-              formData.append("project", props.projectId);
-              return formData;
-            },
           },
           load: "/load/",
         }}
-        // server={{
-        //   process: (
-        //     fieldName,
-        //     file,
-        //     metadata,
-        //     load,
-        //     error,
-        //     progress,
-        //     abort
-        //   ) => {
-        //     // set data
-        //     const formData = new FormData();
-        //     formData.append("name", file.name);
-        //     formData.append("file", file, file.name);
-        //     formData.append("file_type", "FQ");
-        //     formData.append("sample_type", props.sampleType);
-        //     formData.append("project", props.projectId);
-
-        //     postFile(formData)
-        //       .then((response) => {
-        //         load(response.data.id);
-        //       })
-        //       .catch((e) => {
-        //         error();
-        //       });
-
-        //     progress(
-        //       uploadProgressEvent.lengthComputable,
-        //       uploadProgressEvent.loaded,
-        //       uploadProgressEvent.total
-        //     );
-
-        //     // Setup abort interface
-        //     return {
-        //       abort: () => {
-        //         postFileController.abort();
-        //         abort();
-        //       },
-        //     };
-        //   },
-        // }}
       />
     </Box>
   );

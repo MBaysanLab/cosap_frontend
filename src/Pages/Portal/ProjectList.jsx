@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 
-import { Complete, InProgress } from "./StatusIcons";
+import { Complete, InProgress, Pending } from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
 
 const columns = [
@@ -20,6 +20,8 @@ const columns = [
           return <Complete />;
         case "in_progress":
           return <InProgress />;
+        case "pending":
+          return <Pending />;
       }
     },
   },
@@ -65,7 +67,7 @@ function ProjectList(props) {
             sx={{
               border: 0,
               "& .MuiDataGrid-columnHeaderTitle": {
-                color: "#de1e3d",
+                color: "#0f0f4d",
               },
               "& .MuiDataGrid-cell": {
                 borderBottom: "none",

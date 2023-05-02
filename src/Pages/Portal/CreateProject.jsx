@@ -10,6 +10,7 @@ const FileUpload = React.lazy(() => import("./FileUpload.jsx"));
 import AlgorithmSelector from "./AlgorithmSelector";
 import postProject from "../../apis/postProject.js";
 
+// Predifened values for algorithms
 const mappers = ["BWA2", "BWA", "Bowtie2"];
 const variantCallers = [
   "Mutect2",
@@ -29,6 +30,7 @@ const variantAnnotators = [
   "CancerVAR",
 ];
 
+// Predifened values for algorithm keys
 const algorithmKeys = ["aligner", "variantCaller", "variantAnnotator"];
 
 function CreateProject(props) {
@@ -36,15 +38,9 @@ function CreateProject(props) {
   const [normalFileUploader, setNormalFileUploader] = React.useState(null);
   const [bedFileUploader, setBedFileUploader] = React.useState(null);
   const [searchParams] = useSearchParams();
-  const [projectId, setProjectId] = React.useState();
-  const [fileUploadStatus, setfileUploadStatus] = React.useState(null);
+  const [numberOfAddedFiles, setNumberOfAddedFiles] = React.useState(0);
+  const [FileUploadAlert, setFileUploadAlert] = React.useState(false);
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    if (fileUploadStatus === 0) {
-      navigate("../");
-    }
-  }, [fileUploadStatus]);
 
   // Set predifened values for algorithms
   const [inputs, setInputs] = React.useState({
@@ -61,8 +57,43 @@ function CreateProject(props) {
     }));
   };
 
-  const handleCreateProject = () => {
+  const handleCreateProject = async () => {
+    // Check if any files are added
+    if (numberOfAddedFiles < 1) {
+      setFileUploadAlert(true);
+      return;
+    }
+
+    // Create form data
     const formData = new FormData();
+
+    // Process files
+    const tumorUploadPromise = tumorFileUploader.processFiles();
+    const normalUploadPromise = normalFileUploader.processFiles();
+    const bedUploadPromise = bedFileUploader.processFiles();
+
+    // Wait for files to be uploaded
+    await tumorUploadPromise.then((files) => {
+      formData.append(
+        "tumor_files",
+        JSON.stringify(files.map((file) => file.serverId))
+      );
+    });
+
+    await normalUploadPromise.then((files) => {
+      formData.append(
+        "normal_files",
+        JSON.stringify(files.map((file) => file.serverId))
+      );
+    });
+
+    await bedUploadPromise.then((files) => {
+      formData.append(
+        "bed_files",
+        JSON.stringify(files.map((file) => file.serverId))
+      );
+    });
+
     const algorithmDict = {};
     for (const key in inputs) {
       if (Object.prototype.hasOwnProperty.call(inputs, key)) {
@@ -74,32 +105,21 @@ function CreateProject(props) {
       }
     }
     formData.append("algorithms", JSON.stringify(algorithmDict));
+
+    // Post project to backend and redirect to project page
     postProject(formData).then((response) => {
-      // If project is created successfully, start the file upload.
       if (response.status == "201") {
-        setProjectId(response.data.id);
-        tumorFileUploader.processFiles();
-        normalFileUploader.processFiles();
-        bedFileUploader.processFiles();
+        navigate("../");
       }
     });
   };
 
-  const handleStartFileUpload = () => {
-    if (fileUploadStatus === null) {
-      setfileUploadStatus(-1);
-    } else {
-      setfileUploadStatus(fileUploadStatus - 1);
-    }
+  const handleAddFile = () => {
+    setFileUploadAlert(false);
+    setNumberOfAddedFiles(numberOfAddedFiles + 1);
   };
-
-  const handleFileUploadComplete = (error, file) => {
-    if (error) {
-      setfileUploadStatus(null);
-    } else {
-      console.log(file);
-      setfileUploadStatus(fileUploadStatus + 1);
-    }
+  const handleRemoveFile = () => {
+    setNumberOfAddedFiles(numberOfAddedFiles - 1);
   };
 
   return (
@@ -136,9 +156,13 @@ function CreateProject(props) {
         </Typography>
         <Alert severity="info">
           Somatic variant calling can be made with tumor samples alone. However,
-          suppying normal samples increases sensitivity and specificity
-          dramatically.
+          suppying normal samples increases sensitivity and specificity.
         </Alert>
+        {FileUploadAlert ? (
+          <Alert severity="error" sx={{ mt: 3 }}>
+            Please upload at least one sample.
+          </Alert>
+        ) : null}
       </Box>
       <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}>
         <React.Suspense fallback={<div>Loading...</div>}>
@@ -147,10 +171,10 @@ function CreateProject(props) {
               refSetter={setNormalFileUploader}
               title="Normal Samples"
               allowMultiple={true}
-              projectId={projectId}
-              sampleType="NM"
-              handleProcessFiles={handleFileUploadComplete}
-              handleStartFileUpload={handleStartFileUpload}
+              sampleType="NORMAL"
+              onAddfile={handleAddFile}
+              onRemoveFile={handleRemoveFile}
+              maxFiles={2}
             />
           </Box>
           <Box
@@ -165,10 +189,9 @@ function CreateProject(props) {
               refSetter={setTumorFileUploader}
               title="Tumor Samples"
               allowMultiple={true}
-              projectId={projectId}
-              sampleType="TM"
-              handleProcessFiles={handleFileUploadComplete}
-              handleStartFileUpload={handleStartFileUpload}
+              sampleType="TUMOR"
+              onAddfile={handleAddFile}
+              onRemoveFile={handleRemoveFile}
             />
           </Box>
           <Box
@@ -182,10 +205,9 @@ function CreateProject(props) {
             <FileUpload
               refSetter={setBedFileUploader}
               title="BED File"
-              allowMultiple={true}
-              projectId={projectId}
-              handleProcessFiles={handleFileUploadComplete}
-              handleStartFileUpload={handleStartFileUpload}
+              allowMultiple={false}
+              onAddfile={handleAddFile}
+              onRemoveFile={handleRemoveFile}
             />
           </Box>
         </React.Suspense>
