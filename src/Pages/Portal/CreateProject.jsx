@@ -40,6 +40,7 @@ function CreateProject(props) {
   const [searchParams] = useSearchParams();
   const [numberOfAddedFiles, setNumberOfAddedFiles] = React.useState(0);
   const [FileUploadAlert, setFileUploadAlert] = React.useState(false);
+  const [projectNameAlert, setProjectNameAlert] = React.useState(false);
   const navigate = useNavigate();
 
   // Set predifened values for algorithms
@@ -61,6 +62,11 @@ function CreateProject(props) {
     // Check if any files are added
     if (numberOfAddedFiles < 1) {
       setFileUploadAlert(true);
+      return;
+    }
+
+    if (!("name" in inputs)) {
+      setProjectNameAlert(true);
       return;
     }
 
@@ -136,6 +142,7 @@ function CreateProject(props) {
       </Box>
       <Box sx={{ width: { sm: "100vw", md: "25vw" } }}>
         <TextField
+          error={projectNameAlert}
           name="name"
           label="Project Name"
           variant="standard"
@@ -267,7 +274,7 @@ function CreateProject(props) {
         <Button
           variant="contained"
           onClick={handleCreateProject}
-          sx={{ backgroundColor: "#428A9C", color: "#fff" }}
+          sx={{ backgroundColor: "#428AAE", color: "#fff" }}
         >
           Create
         </Button>
