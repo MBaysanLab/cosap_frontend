@@ -56,6 +56,7 @@ function CreateProject(props) {
       ...prevState,
       [name]: value,
     }));
+    setProjectNameAlert(false);
   };
 
   const handleCreateProject = async () => {
@@ -65,7 +66,7 @@ function CreateProject(props) {
       return;
     }
 
-    if (!("name" in inputs)) {
+    if (!inputs.name) {
       setProjectNameAlert(true);
       return;
     }
