@@ -11,9 +11,17 @@ function FileUpload(props) {
   const token = storage.getToken();
   return (
     <Box>
-      <Typography color={"#1164a7"} sx={{ pb: 2 }}>
-        {props.title}
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <Typography color={"#1164a7"} sx={{ pb: 2, pr: 1 }}>
+          {props.title}
+        </Typography>
+        {props.tooltip}
+      </Box>
       <FilePond
         name="file"
         ref={(ref) => props.refSetter(ref)}

@@ -1,27 +1,34 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import { NavLink } from "react-router-dom";
+import KeyIcon from "@mui/icons-material/Key";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { logoutFn, verifyUser } from "../lib/auth";
 
 const pages = ["Home"];
-const settings = ["Logout"];
+const settings = ["Change Password", "Logout"];
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [user, setUser] = React.useState(null);
 
+  const navigate = useNavigate();
   React.useEffect(() => {
     verifyUser().then((data) => {
       setUser(data);
@@ -48,6 +55,10 @@ function NavBar() {
     switch (e.target.outerText) {
       case "Logout":
         logoutFn();
+        break;
+      case "Change Password":
+        navigate("change_password");
+        break;
     }
   };
   return (
@@ -84,10 +95,6 @@ function NavBar() {
                 horizontal: "left",
               }}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
@@ -125,7 +132,7 @@ function NavBar() {
           </Box>
           {user ? (
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
+              <Tooltip title="Open options">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar />
                 </IconButton>
@@ -145,11 +152,44 @@ function NavBar() {
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleSettingsClick}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
+                {settings.map((setting, index) => (
+                  <>
+                    <MenuItem key={setting} onClick={handleSettingsClick}>
+                      <ListItemIcon>
+                        {setting === "Change Password" && <KeyIcon />}
+                        {setting === "Logout" && <LogoutIcon />}
+                      </ListItemIcon>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                    {index !== settings.length - 1 && <Divider />}
+                  </>
                 ))}
               </Menu>
             </Box>

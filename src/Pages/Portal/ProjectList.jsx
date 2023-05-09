@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 
-import { Complete, InProgress, Pending } from "./StatusIcons";
+import { Complete, Failed, InProgress, Pending } from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
 
 const columns = [
@@ -22,6 +22,8 @@ const columns = [
           return <InProgress />;
         case "pending":
           return <Pending />;
+        case "failed":
+          return <Failed />;
       }
     },
   },

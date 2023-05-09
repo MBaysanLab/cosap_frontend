@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import WarningIcon from "@mui/icons-material/Warning";
 import { useNavigate, useSearchParams } from "react-router-dom";
 const FileUpload = React.lazy(() => import("./FileUpload.jsx"));
 import AlgorithmSelector from "./AlgorithmSelector";
@@ -23,7 +25,7 @@ const variantCallers = [
   "HapotypeCaller",
 ];
 const variantAnnotators = [
-  "Ensembl-VEP",
+  "VEP",
   "Annovar",
   "PharmGKB",
   "InterVAR",
@@ -48,7 +50,7 @@ function CreateProject(props) {
     project_type: searchParams.get("type"),
     aligner: ["BWA2"],
     variantCaller: ["Mutect2"],
-    variantAnnotator: ["Ensembl-VEP"],
+    variantAnnotator: ["VEP"],
   });
 
   const handleInput = (name, value) => {
@@ -60,14 +62,14 @@ function CreateProject(props) {
   };
 
   const handleCreateProject = async () => {
-    // Check if any files are added
-    if (numberOfAddedFiles < 1) {
-      setFileUploadAlert(true);
+    if (!inputs.name) {
+      setProjectNameAlert(true);
       return;
     }
 
-    if (!inputs.name) {
-      setProjectNameAlert(true);
+    // Check if any files are added
+    if (numberOfAddedFiles < 1) {
+      setFileUploadAlert(true);
       return;
     }
 
@@ -213,6 +215,11 @@ function CreateProject(props) {
             <FileUpload
               refSetter={setBedFileUploader}
               title="BED File"
+              tooltip={
+                <Tooltip title="BED file should be the same genome build as samples.">
+                  <WarningIcon sx={{ mr: 1 }} htmlColor="#BBB539" />
+                </Tooltip>
+              }
               allowMultiple={false}
               onAddfile={handleAddFile}
               onRemoveFile={handleRemoveFile}

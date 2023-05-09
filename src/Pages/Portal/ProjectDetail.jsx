@@ -7,7 +7,7 @@ import CoverageStats from "./CoverageStats";
 import MappingStats from "./MappingStats";
 import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
-import VariantList from "./VariantList";
+import ResultsTabs from "./ResultsTabs";
 import getProjectDetail from "../../apis/getProjectDetail";
 // import storage from "../../utils/storage";
 
@@ -60,7 +60,7 @@ function ProjectDetail() {
       <ProjectDetailHeader data={projectMetadata} />
       <Box>
         <Typography variant="h6" color="secondary">
-          Basic Stats
+          Summary
         </Typography>
         <Divider />
         <Box
@@ -78,10 +78,10 @@ function ProjectDetail() {
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6" color="secondary">
-          Variants
+          Results
         </Typography>
         <Divider />
-        <VariantList data={variants} />
+        <ResultsTabs data={variants} />
       </Box>
       <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>
     </Box>

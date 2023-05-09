@@ -8,6 +8,7 @@ import Dashboard from "../Dashboard";
 import CreateProject from "../CreateProject";
 import ProjectDetail from "../ProjectDetail";
 import PortalTabs from "../PortalTabs";
+import ChangePassword from "../../Auth/ChangePasswordForm";
 
 const menuPages = {
   Dashboard: <Dashboard />,
@@ -26,6 +27,7 @@ function PortalRoutes() {
           <Route path=":id" element={<ProjectDetail />} />
         </Route>
         <Route path="reports" element={menuPages["Reports"]} />
+        <Route path="change_password" element={<ChangePassword />} />
       </Route>
     </Routes>
   );

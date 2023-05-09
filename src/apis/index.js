@@ -7,5 +7,6 @@ export { default as loginWithEmail } from "./login";
 export { default as getUser } from "./getUser";
 export { default as postFile } from "./postFile";
 export { default as registerWithEmail } from "./register";
+export { default as changePassword } from "./changePassword";
 export { controller as postFileController } from "./postFile";
 export { uploadProgressEvent as uploadProgressEvent } from "./postFile";

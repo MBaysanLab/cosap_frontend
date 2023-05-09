@@ -5,6 +5,7 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 export function Complete() {
   return (
@@ -48,6 +49,20 @@ export function InProgress(props) {
         sx={{ pl: 1, display: "inline", fontSize: 15 }}
       >
         Running
+      </Typography>
+    </Box>
+  );
+}
+
+export function Failed() {
+  return (
+    <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <ErrorOutlineIcon htmlColor="red" />
+      <Typography
+        variant="body"
+        sx={{ pl: 1, display: "inline", fontSize: 15 }}
+      >
+        Failed
       </Typography>
     </Box>
   );
