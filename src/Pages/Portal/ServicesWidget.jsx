@@ -9,14 +9,15 @@ function ServicesWidget(props) {
       <ServicesWidgetItem
         name="Somatic Variant Analysis"
         to="/portal/projects/create_project?type=SM"
+        description="SNVs, SVs, CNVs, MSI and Fusions and their annotations"
       />
       <ServicesWidgetItem
-        name="Germline & Trio Analysis"
+        name="Germline Variant Analysis"
         to="/portal/projects/create_project?type=GM"
       />
       <ServicesWidgetItem
-        name="Copy Number Analysis"
-        to="/portal/projects/create_project?type=CNV"
+        name="Comparative Variant Analysis with Customizable Pipeline"
+        to="/portal/projects/create_project?type=COMP"
       />
     </Box>
   );

@@ -32,7 +32,12 @@
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
+    "react-tsparticles": "^2.9.3",
     "recharts": "^2.1.9",
+    "tsparticles": "^2.9.3",
+    "tsparticles-path-polygon": "^2.9.3",
+    "tsparticles-plugin-canvas-mask": "^2.9.3",
+    "tsparticles-plugin-polygon-mask": "^2.9.3",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11",
     "zustand": "^4.1.1"

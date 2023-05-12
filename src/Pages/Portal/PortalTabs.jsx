@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import AssessmentIcon from "@mui/icons-material/Assessment";
+// import AssessmentIcon from "@mui/icons-material/Assessment";
 import Box from "@mui/material/Box";
 import LineStyleIcon from "@mui/icons-material/LineStyle";
 import ScatterPlotIcon from "@mui/icons-material/ScatterPlot";
@@ -13,7 +13,7 @@ import { Link, Outlet } from "react-router-dom";
 const menuItems = {
   Dashboard: <LineStyleIcon />,
   Projects: <ScatterPlotIcon />,
-  Reports: <AssessmentIcon />,
+  // Reports: <AssessmentIcon />,
 };
 
 function PortalTabs(props) {

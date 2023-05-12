@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Container,
-  Divider,
   IconButton,
   ListItemIcon,
   Menu,
@@ -180,16 +179,17 @@ function NavBar() {
                 }}
               >
                 {settings.map((setting, index) => (
-                  <>
-                    <MenuItem key={setting} onClick={handleSettingsClick}>
-                      <ListItemIcon>
-                        {setting === "Change Password" && <KeyIcon />}
-                        {setting === "Logout" && <LogoutIcon />}
-                      </ListItemIcon>
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                    {index !== settings.length - 1 && <Divider />}
-                  </>
+                  <MenuItem
+                    key={setting}
+                    onClick={handleSettingsClick}
+                    divider={index !== settings.length - 1}
+                  >
+                    <ListItemIcon>
+                      {setting === "Change Password" && <KeyIcon />}
+                      {setting === "Logout" && <LogoutIcon />}
+                    </ListItemIcon>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
                 ))}
               </Menu>
             </Box>

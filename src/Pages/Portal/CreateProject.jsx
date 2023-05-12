@@ -45,9 +45,11 @@ function CreateProject(props) {
   const [projectNameAlert, setProjectNameAlert] = React.useState(false);
   const navigate = useNavigate();
 
+  const projectType = searchParams.get("type");
+
   // Set predifened values for algorithms
   const [inputs, setInputs] = React.useState({
-    project_type: searchParams.get("type"),
+    project_type: projectType,
     aligner: ["BWA2"],
     variantCaller: ["Mutect2"],
     variantAnnotator: ["VEP"],
@@ -187,23 +189,25 @@ function CreateProject(props) {
               maxFiles={2}
             />
           </Box>
-          <Box
-            sx={{
-              width: { sm: "100%", md: "20vw" },
-              mt: 1,
-              mb: 2,
-              ml: { xs: 0, md: 3 },
-            }}
-          >
-            <FileUpload
-              refSetter={setTumorFileUploader}
-              title="Tumor Samples"
-              allowMultiple={true}
-              sampleType="TUMOR"
-              onAddfile={handleAddFile}
-              onRemoveFile={handleRemoveFile}
-            />
-          </Box>
+          {projectType === "SM" || projectType === "COMP" ? (
+            <Box
+              sx={{
+                width: { sm: "100%", md: "20vw" },
+                mt: 1,
+                mb: 2,
+                ml: { xs: 0, md: 3 },
+              }}
+            >
+              <FileUpload
+                refSetter={setTumorFileUploader}
+                title="Tumor Samples"
+                allowMultiple={true}
+                sampleType="TUMOR"
+                onAddfile={handleAddFile}
+                onRemoveFile={handleRemoveFile}
+              />
+            </Box>
+          ) : null}
           <Box
             sx={{
               width: { sm: "100%", md: "20vw" },
@@ -227,57 +231,65 @@ function CreateProject(props) {
           </Box>
         </React.Suspense>
       </Box>
-      <Box sx={{ mt: 3 }}>
-        <Typography variant="h6" color="secondary">
-          Select Workflow Algorithms
-        </Typography>
-        <Alert severity="info">
-          If you want to continue with default workflow, you can skip this part.
-        </Alert>
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}>
-        <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 3 }}>
-          <AlgorithmSelector
-            title="Aligner"
-            name="aligner"
-            options={mappers}
-            type="Aligner"
-            onChange={handleInput}
-          />
-        </Box>
-        <Box
-          sx={{
-            width: { sm: "100%", md: "20vw" },
-            mt: 1,
-            mb: 3,
-            ml: { xs: 0, md: 3 },
-          }}
-        >
-          <AlgorithmSelector
-            title="Variant Caller"
-            name="variantCaller"
-            options={variantCallers}
-            type="Variant Detector"
-            onChange={handleInput}
-          />
-        </Box>
-        <Box
-          sx={{
-            width: { sm: "100%", md: "20vw" },
-            mt: 1,
-            mb: 3,
-            ml: { xs: 0, md: 3 },
-          }}
-        >
-          <AlgorithmSelector
-            title="Variant Annotator"
-            name="variantAnnotator"
-            options={variantAnnotators}
-            type="Variant Annotator"
-            onChange={handleInput}
-          />
-        </Box>
-      </Box>
+      {projectType === "COMP" ? (
+        <>
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="h6" color="secondary">
+              Select Workflow Algorithms
+            </Typography>
+            <Alert severity="info">
+              If you want to continue with default workflow, you can skip this
+              part.
+            </Alert>
+          </Box>
+          <Box
+            sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
+          >
+            <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 3 }}>
+              <AlgorithmSelector
+                title="Aligner"
+                name="aligner"
+                options={mappers}
+                type="Aligner"
+                onChange={handleInput}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: { sm: "100%", md: "20vw" },
+                mt: 1,
+                mb: 3,
+                ml: { xs: 0, md: 3 },
+              }}
+            >
+              <AlgorithmSelector
+                title="Variant Caller"
+                name="variantCaller"
+                options={variantCallers}
+                type="Variant Detector"
+                onChange={handleInput}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: { sm: "100%", md: "20vw" },
+                mt: 1,
+                mb: 3,
+                ml: { xs: 0, md: 3 },
+              }}
+            >
+              <AlgorithmSelector
+                title="Variant Annotator"
+                name="variantAnnotator"
+                options={variantAnnotators}
+                type="Variant Annotator"
+                onChange={handleInput}
+              />
+            </Box>
+          </Box>
+        </>
+      ) : null}
+
       <Box width={"100px"}>
         <Button
           variant="contained"

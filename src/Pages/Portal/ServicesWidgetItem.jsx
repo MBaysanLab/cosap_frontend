@@ -22,9 +22,21 @@ function ServicesWidgetItem(props) {
         },
       }}
     >
-      <Typography variant="h6" color="black">
-        {props.name}
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          maxWidth: "15vw",
+        }}
+      >
+        <Typography variant="h6" color="black">
+          {props.name}
+        </Typography>
+        <Typography variant="body2" color="#686b6d">
+          {props.description}
+        </Typography>
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -39,7 +51,7 @@ function ServicesWidgetItem(props) {
         <ArrowForwardIosRoundedIcon
           color="black"
           sx={{
-            fontSize: 30,
+            fontSize: 20,
           }}
         />
       </Box>
