@@ -3,7 +3,6 @@ import { Particles } from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { loadCanvasMaskPlugin } from "tsparticles-plugin-canvas-mask";
 import * as React from "react";
-import Background from "../assets/images/amongus_cyan.png";
 
 const ParticlesComponent = () => {
   const particlesInit = useCallback(async (engine) => {
@@ -69,7 +68,7 @@ const ParticlesComponent = () => {
             filter: "pixelFilter",
           },
           image: {
-            src: `url(${Background})`,
+            src: `https://raw.githubusercontent.com/MBaysanLab/cosap_frontend/develop/src/assets/images/amongus_cyan.png`,
           },
         },
       }}
