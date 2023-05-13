@@ -3,6 +3,7 @@ import { Particles } from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { loadCanvasMaskPlugin } from "tsparticles-plugin-canvas-mask";
 import * as React from "react";
+import "../assets/styles/styles.css";
 
 const ParticlesComponent = () => {
   const particlesInit = useCallback(async (engine) => {
@@ -33,17 +34,17 @@ const ParticlesComponent = () => {
           },
           modes: {
             bubble: {
-              distance: 40,
+              distance: 30,
               duration: 2,
               opacity: 8,
-              size: 15,
+              size: 7,
             },
           },
         },
         particles: {
           move: {
             direction: "none",
-            distance: 5,
+            distance: 10,
             enable: true,
             outModes: "none",
             speed: 1,
@@ -52,7 +53,7 @@ const ParticlesComponent = () => {
             value: 600,
           },
           shape: {
-            type: ["circle", "square", "triangle"],
+            type: ["circle"],
           },
           size: {
             value: {
@@ -63,12 +64,12 @@ const ParticlesComponent = () => {
         },
         canvasMask: {
           enable: true,
-          scale: 1.5,
+          scale: 0.55,
           pixels: {
             filter: "pixelFilter",
           },
           image: {
-            src: `https://raw.githubusercontent.com/MBaysanLab/cosap_frontend/develop/src/assets/images/amongus_cyan.png`,
+            src: "https://raw.githubusercontent.com/MBaysanLab/cosap_frontend/develop/src/assets/images/banner.png",
           },
         },
       }}

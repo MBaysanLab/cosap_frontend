@@ -16,7 +16,6 @@ function ProjectDetail() {
   const [coverageStats, setCoverageStats] = React.useState({});
   const [mappingStats, setMappingStats] = React.useState({});
   const [variantStats, setVariantStats] = React.useState({});
-  const [variants, setVariants] = React.useState([]);
 
   const { id } = useParams();
   React.useEffect(() => {
@@ -25,8 +24,7 @@ function ProjectDetail() {
         setMetadata(res.data.metadata),
         setCoverageStats(res.data.coverage_stats),
         setMappingStats(res.data.mapping_stats),
-        setVariantStats(res.data.variant_stats),
-        setVariants(res.data.variants)
+        setVariantStats(res.data.variant_stats)
       )
     );
   }, []);
@@ -81,7 +79,7 @@ function ProjectDetail() {
           Results
         </Typography>
         <Divider />
-        <ResultsTabs data={variants} />
+        <ResultsTabs project_id={id} />
       </Box>
       <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>
     </Box>

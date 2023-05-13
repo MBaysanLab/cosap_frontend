@@ -1,7 +1,7 @@
 import { axios } from "../lib/axios";
 
-const getVariants = () => {
-  return axios.get(`variants/`);
+const getVariants = (projectID) => {
+  return axios.get(`variants/${projectID}`);
 };
 
 export default getVariants;

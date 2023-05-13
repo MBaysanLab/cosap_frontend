@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import Background from "../../assets/images/bg-11.png";
 import { Particles } from "../../Components";
 
 function Banner() {
@@ -13,14 +12,12 @@ function Banner() {
         display: "flex",
         justifyContent: "space-evenly",
         pt: { xs: "2vh", md: "7vh" },
-        backgroundColor: "#fffff",
       }}
     >
       <Box
         sx={{
-          width: "50vw",
+          width: "30vw",
           display: { xs: "none", md: "block" },
-          zIndex: "-1",
         }}
       >
         <Particles />
@@ -28,7 +25,8 @@ function Banner() {
       <Box
         sx={{
           padding: { xs: 3 },
-          backgroundImage: `url(${Background})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "auto",
         }}
       >
         <Typography variant="h2" sx={{ fontSize: { xs: 48, md: "3.5em" } }}>

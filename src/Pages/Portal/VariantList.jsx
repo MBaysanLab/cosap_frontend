@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
+import getVariants from "../../apis/getVariants";
 
 const columns = [
   { field: "location", headerName: "Position", flex: 0.2 },
@@ -28,13 +29,17 @@ const columns = [
 ];
 
 function VariantList(props) {
+  const [variants, setVariants] = React.useState([]);
+  React.useEffect(() => {
+    getVariants(props.project_id).then((res) => setVariants(res.data));
+  }, []);
   return (
     <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
             columns={columns}
-            rows={props.data}
+            rows={variants}
             sx={{
               border: 0,
               "& .MuiDataGrid-columnHeaderTitle": {
