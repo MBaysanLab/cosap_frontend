@@ -17,7 +17,7 @@ function ProjectDetailHeaderItem(props) {
           pr: 1,
           pl: 1,
         }}
-        color="black"
+        color="#6D6D6D"
       >
         {props.title}:
       </Typography>

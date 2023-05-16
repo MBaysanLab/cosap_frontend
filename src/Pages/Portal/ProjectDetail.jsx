@@ -3,8 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import CoverageStats from "./CoverageStats";
-import MappingStats from "./MappingStats";
+import CustomStats from "./CustomStats";
 import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
@@ -16,6 +15,8 @@ function ProjectDetail() {
   const [coverageStats, setCoverageStats] = React.useState({});
   const [mappingStats, setMappingStats] = React.useState({});
   const [variantStats, setVariantStats] = React.useState({});
+  const [msiStats, setMsiStats] = React.useState({});
+  const [cnvStats, setCnvStats] = React.useState({});
 
   const { id } = useParams();
   React.useEffect(() => {
@@ -24,7 +25,10 @@ function ProjectDetail() {
         setMetadata(res.data.metadata),
         setCoverageStats(res.data.coverage_stats),
         setMappingStats(res.data.mapping_stats),
-        setVariantStats(res.data.variant_stats)
+        setVariantStats(res.data.variant_stats),
+        setMsiStats(res.data.msi_stats),
+        setCnvStats(res.data.cnv_stats)
+        //
       )
     );
   }, []);
@@ -69,15 +73,23 @@ function ProjectDetail() {
             mt: 3,
           }}
         >
-          <MappingStats data={mappingStats} />
-          <CoverageStats data={coverageStats} />
+          <CustomStats
+            data1={mappingStats.percetange_of_mapped_reads}
+            data2={coverageStats.mean_coverage}
+            title1="Mapped Reads %"
+            title2="Mean Coverage"
+          />
+          <CustomStats
+            data1={msiStats.msi_score}
+            data2={cnvStats.total_cnvs}
+            title1="MSI Score %"
+            title2="# of CNV's"
+            warn1={msiStats.msi_score > 0.3}
+          />
           <VariantStats data={variantStats} />
         </Box>
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
-        <Typography variant="h6" color="secondary">
-          Results
-        </Typography>
         <Divider />
         <ResultsTabs project_id={id} />
       </Box>

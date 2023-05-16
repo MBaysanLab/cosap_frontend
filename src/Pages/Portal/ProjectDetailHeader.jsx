@@ -31,6 +31,7 @@ function ProjectDetailHeader(props) {
         justifyContent: "space-between",
         flexWrap: "wrap",
         p: 3,
+        background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
       }}
     >
       <ProjectDetailHeaderItem

@@ -2,6 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 
 function VariantStats(props) {
   const data = props.data;
@@ -12,26 +13,29 @@ function VariantStats(props) {
         mb: { xs: 3, md: 1 },
         p: 2,
         borderRadius: 3,
-        background:
-          "rgba(0, 0, 0, 0) linear-gradient(100.66deg, rgb(67, 67, 67) 6.56%, rgb(0, 0, 0) 93.57%) repeat scroll 0% 0%",
-
+        background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
         display: "flex",
         justifyContent: "space-evenly",
       }}
     >
       <Box>
-        <Typography variant="h6" color="primary">
-          Number of Variants
+        <Typography fontSize={14} color="#6D6D6D">
+          # of SNPs
         </Typography>
-        <Typography variant="h2" color="primary">
+        <Typography variant="h3" color="black">
           {data.total_variants}
         </Typography>
       </Box>
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{ borderRightWidth: 1, background: "black", m: 1 }}
+      />
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "end",
+          justifyContent: "center",
           width: { xs: "45vw", md: "10vw" },
         }}
       >
@@ -39,12 +43,12 @@ function VariantStats(props) {
           sx={{
             m: "3px",
             textAlign: "center",
-            background: "#f54242",
+            background: "#FF5656",
             borderRadius: 3,
           }}
         >
           <Tooltip title="Significant Variants">
-            <Typography color="primary">{data.significant_variants}</Typography>
+            <Typography color="black">{data.significant_variants}</Typography>
           </Tooltip>
         </Box>
         <Box
@@ -56,7 +60,7 @@ function VariantStats(props) {
           }}
         >
           <Tooltip title="Uncertain Variants">
-            <Typography color="primary">{data.uncertain_variants}</Typography>
+            <Typography color="black">{data.uncertain_variants}</Typography>
           </Tooltip>
         </Box>
       </Box>
