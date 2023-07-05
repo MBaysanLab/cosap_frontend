@@ -8,6 +8,12 @@ import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
 import getProjectDetail from "../../apis/getProjectDetail";
+import AnalysisTabs from "./AnalysisTabs";
+
+
+
+
+
 // import storage from "../../utils/storage";
 
 function ProjectDetail() {
@@ -33,30 +39,6 @@ function ProjectDetail() {
     );
   }, []);
 
-  React.useEffect(() => {
-    const igvDiv = document.getElementById("igv-div");
-    // const token = storage.getToken();
-    const options = {
-      genome: "hg38",
-      locus: "chr8:127,736,588-127,739,371",
-      tracks: [
-        {
-          name: "HG00103",
-          url: "https://s3.amazonaws.com/1000genomes/data/HG00103/alignment/HG00103.alt_bwamem_GRCh38DH.20150718.GBR.low_coverage.cram",
-          indexURL:
-            "https://s3.amazonaws.com/1000genomes/data/HG00103/alignment/HG00103.alt_bwamem_GRCh38DH.20150718.GBR.low_coverage.cram.crai",
-          format: "cram",
-        },
-      ],
-    };
-
-    import("igv").then((igv) => {
-      igv.createBrowser(igvDiv, options).then(function (browser) {
-        console.log("Created IGV browser");
-      });
-    });
-  }, []);
-
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <ProjectDetailHeader data={projectMetadata} />
@@ -80,11 +62,8 @@ function ProjectDetail() {
             title2="Mean Coverage"
           />
           <CustomStats
-            data1={msiStats.msi_score}
-            data2={cnvStats.total_cnvs}
             title1="MSI Score %"
             title2="# of CNV's"
-            warn1={msiStats.msi_score > 0.3}
           />
           <VariantStats data={variantStats} />
         </Box>
@@ -93,8 +72,14 @@ function ProjectDetail() {
         <Divider />
         <ResultsTabs project_id={id} />
       </Box>
-      <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>
+       {/*<Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>*/}
+      
+      <AnalysisTabs />
+      
+      
+
     </Box>
+    
   );
 }
 

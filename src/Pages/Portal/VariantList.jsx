@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 import getVariants from "../../apis/getVariants";
+import getVariantReports from '../../apis/getVariantReports';
+
 
 const columns = [
   { field: "location", headerName: "Position", flex: 0.2 },
@@ -30,14 +32,28 @@ const columns = [
 
 function VariantList(props) {
   const [variants, setVariants] = React.useState([]);
+  const [selectedRows, setSelectedRows] = React.useState([]);
   React.useEffect(() => {
     getVariants(props.project_id).then((res) => setVariants(res.data));
   }, []);
+
+  const handleButtonClick = () => {
+
+    let payload = {ids: selectedRows.map(index => variants[index - 1].id)};
+    getVariantReports(payload)
+  };
+
+  const handleSelectionChange = (selection) => {
+    setSelectedRows(selection);
+  };
+
   return (
     <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
+            onSelectionModelChange={handleSelectionChange}
+            checkboxSelection
             columns={columns}
             rows={variants}
             sx={{
@@ -50,6 +66,7 @@ function VariantList(props) {
               },
             }}
           />
+          <button onClick={handleButtonClick}>Download</button>
         </Box>
       </Box>
     </Box>
