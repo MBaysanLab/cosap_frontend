@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 import getVariants from "../../apis/getVariants";
 import getVariantReports from '../../apis/getVariantReports';
+import { PropaneSharp } from "@mui/icons-material";
 
 
 const columns = [
@@ -34,7 +35,9 @@ function VariantList(props) {
   const [variants, setVariants] = React.useState([]);
   const [selectedRows, setSelectedRows] = React.useState([]);
   React.useEffect(() => {
-    getVariants(props.project_id).then((res) => setVariants(res.data));
+    getVariants(props.project_id).then((res) => {setVariants(res.data);
+    });
+
   }, []);
 
   const handleButtonClick = () => {
@@ -46,6 +49,10 @@ function VariantList(props) {
   const handleSelectionChange = (selection) => {
     setSelectedRows(selection);
   };
+  function handlegetVariantDetails(event){
+    props.getAndSetVariantDetail(event.id);
+  }
+  
 
   return (
     <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>
@@ -56,6 +63,7 @@ function VariantList(props) {
             checkboxSelection
             columns={columns}
             rows={variants}
+            onRowClick={handlegetVariantDetails}
             sx={{
               border: 0,
               "& .MuiDataGrid-columnHeaderTitle": {

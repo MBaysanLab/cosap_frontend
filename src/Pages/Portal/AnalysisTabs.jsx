@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import OverViewTable from "./OverViewTable";
 import TagList from '../../Components/Graph/Tag';
 import DetailsTable from "./DetailsTable";
+import VariantStats from "./VariantStats";
 
 
 
@@ -55,7 +56,7 @@ function AnalysisTabs(props) {
   const handleChange = (event, newMenu) => {
     setMenu(newMenu);
   };
-
+ 
   React.useEffect(() => {
     const igvDiv = document.getElementById("igv-div");
     // const token = storage.getToken();
@@ -114,10 +115,19 @@ function AnalysisTabs(props) {
       </Box>
       <Box>
         <TabPanel value={activeMenu} index={0}>
-        <OverViewTable />
+        <OverViewTable
+          variantDetail = {props.variantDetail}
+        />
         </TabPanel>
+
         <TabPanel value={activeMenu} index={1}>
-          <DetailsTable />
+        
+        <DetailsTable
+          variantDetail ={props.variantDetail}
+        />
+
+
+
         </TabPanel>
         <TabPanel value={activeMenu} index={2}>
           <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box> 

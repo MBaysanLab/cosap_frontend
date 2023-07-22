@@ -1,7 +1,34 @@
 import React from "react";
 import TagList from "../../Components/Graph/Tag";
 
-function DetailsTable() {
+function DetailsTable({
+variantDetail
+}) {
+
+  if (Object.keys(variantDetail).length === 0) {
+
+    return (
+    "To see the details of the variant, click on the relevant variant."
+    )
+    }
+    else{
+
+    var aliasesTags = variantDetail.details.aliasesTags;
+    var variantTypesTags = variantDetail.details.variantTypesTags;
+    var hgvsTags = variantDetail.details.hgvsTags;
+    var maneTags = variantDetail.details.maneTags;
+    var geneTag = variantDetail.details.geneTag;
+    var alleleRegistryTag = variantDetail.details.alleleRegistryTag;
+    var clinTag = variantDetail.details.clinTag;
+    var openCRAVATTag = variantDetail.details.openCRAVATTag;
+    var transcriptTag = variantDetail.details.transcriptTag;
+    var refBuildValue = variantDetail.details.refBuildValue;
+    var ensemblyVersionValue = variantDetail.details.enssemblyVersionValue;
+    var chrValue = variantDetail.details.chrValue;
+    var startValue = variantDetail.details.startValue;
+    var stopValue = variantDetail.details.stopValue;
+    var refBasesValue = variantDetail.details.refBasesValue;
+    
   return (
     <div className="table-container">
       <table>
@@ -11,63 +38,79 @@ function DetailsTable() {
               Aliases
             </td>
             <td colSpan="4">
-              <TagList tags={['Allies1', 'Allies2', 'Allies3', 'Allies4', 'Allies5']} />
+              <TagList tags={aliasesTags} />
             </td>
-            <td className="specialCell">gene</td>
-            <td>1</td>
-            <td className="specialCell">allel</td>
-            <td>2</td>
+            <td className="specialCell">Gene</td>
+            <td>
+              <TagList tags={geneTag} />
+            </td>
+            <td className="specialCell">Allele Registry ID</td>
+            <td>
+              <TagList tags={alleleRegistryTag} />
+            </td>
             <td colSpan="2"></td>
           </tr>
           <tr>
             <td className="specialCell" colSpan="2">Variant Types</td>
-            <td colSpan="4">x1</td>
+            <td colSpan="4">
+              <TagList tags={variantTypesTags} />
+            </td>
             <td className="specialCell">clin</td>
-            <td>x2</td>
-            <td className="specialCell">open</td>
-            <td>x3</td>
+            <td>
+              <TagList tags={clinTag} />
+            </td>
+            <td className="specialCell">OpenCRAVAT</td>
+            <td>
+              <TagList tags={openCRAVATTag} />
+            </td>
           </tr>
           <tr>
             <td className="specialCell" colSpan="2">HGVS</td>
-            <td colSpan="4">x4</td>
+            <td colSpan="4">
+              <TagList tags={hgvsTags} />
+            </td>
             <td colSpan="5"></td>
           </tr>
           <tr>
             <td className="specialCell" colSpan="2">MANE</td>
-            <td colSpan="4">x5</td>
+            <td colSpan="4">
+              <TagList tags={maneTags} />
+            </td>
             <td colSpan="5"></td>
           </tr>
           <tr>
-            <td colSpan="7">Representative</td>
+            <td className="detailTableHeader" colSpan="7">Representative Variant Coordinates</td>
             <td colSpan="5"></td>
           </tr>
           <tr>
-            <td className="specialCell" colSpan="2">ref</td>
-            <td colSpan="2">gr</td>
-            <td className="specialCell" colSpan="2">ensembly</td>
-            <td colSpan="2">75</td>
+            <td className="specialCell" colSpan="2">Ref. Build</td>
+            <td colSpan="2">{refBuildValue}</td>
+            <td className="specialCell" colSpan="2">Ensembly Version</td>
+            <td colSpan="2">{ensemblyVersionValue}</td>
             <td colSpan="5"></td>
           </tr>
           <tr>
-            <td colSpan="7">coordinates</td>
+            <td className="detailTableHeader" colSpan="7">Coordinates</td>
             <td colSpan="5"></td>
           </tr>
           <tr>
-            <td className="specialCell">chr</td>
-            <td>9</td>
-            <td className="specialCell">start</td>
-            <td>3</td>
-            <td className="specialCell">stop</td>
-            <td>3</td>
-            <td className="specialCell">ref</td>
-            <td>3</td>
+            <td className="specialCell">Chr.</td>
+            <td>{chrValue}</td>
+            <td className="specialCell">Start</td>
+            <td>{startValue}</td>
+            <td className="specialCell">Stop</td>
+            <td>{stopValue}</td>
+            <td className="specialCell">Ref. Bases</td>
+            <td>{refBasesValue}</td>
             <td colSpan="5"></td>
           </tr>
           <tr>
-            <td className="specialCell" colSpan="2">var</td>
-            <td colSpan="2">a</td>
-            <td className="specialCell" colSpan="2">trans</td>
-            <td colSpan="2">ens123</td>
+            <td className="specialCell" colSpan="2">Var. Bases</td>
+            <td colSpan="2">A</td>
+            <td className="specialCell" colSpan="2">Transcript</td>
+            <td colSpan="2">
+              <TagList tags={transcriptTag} />
+            </td>
             <td colSpan="5"></td>
           </tr>
           <tr>
@@ -80,6 +123,7 @@ function DetailsTable() {
       </table>
     </div>
   );
+}
 }
 
 export default DetailsTable;

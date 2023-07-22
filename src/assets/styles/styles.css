@@ -24,3 +24,12 @@
         background-color: #e8e8e8; 
         padding: 9px;
       }
+      .detailTableHeader{
+        background-color: #adadad; 
+        font-weight: bold;
+        text-align: center;
+
+      }
+      .css-7m04wo-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, .css-7m04wo-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+        color: unset !important;
+    }

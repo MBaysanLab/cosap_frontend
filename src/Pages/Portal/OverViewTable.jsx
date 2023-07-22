@@ -4,24 +4,52 @@ import HalfCircleSlider from "../../Components/Graph/HalfCircleSlider";
 import Speedometer from "../../Components/Graph/Speedometer";
 import TextBoxForGraph from "./TextBoxForGraph";
 
+function OverViewTable({
+  variantDetail
+}) {
 
 
-function OverViewTable() {
+if (Object.keys(variantDetail).length === 0) {
+
+return (
+  "To see the details of the variant, click on the relevant variant."
+  )
+}
+else{
+
+  var depthMin = variantDetail.overview.depthMin;
+  var depthMax = variantDetail.overview.depthMax;
+  var depthValue = variantDetail.overview.depthValue;
+  var runPercent = variantDetail.overview.runPercent;
+  var transcriptText = variantDetail.overview.transcriptText;
+  var cDNAText = variantDetail.overview.cDNAText;
+  var accountPercent = variantDetail.overview.accountPercent;
+  var varFraction = variantDetail.overview.varFraction;
+  var sequenceFirstText = variantDetail.overview.sequenceFirstText;
+  var sequenceSecondText = variantDetail.overview.sequenceSecondText;
+  var refAltFirstText = variantDetail.overview.refAltFirstText;
+  var refAltSecondText = variantDetail.overview.refAltSecondText;
+  var aminoacidFirstText = variantDetail.overview.aminoacidFirstText;
+  var aminoacidSecondText = variantDetail.overview.aminoacidSecondText;
+  var communityPercent = variantDetail.overview.communityPercent;
+  var proteinText = variantDetail.overview.proteinText;
+
+
   return (
     <table>
       <tbody>
         <tr>
           <th rowSpan="3">
-            <Depth min={50} max={200} value={85} />
+            <Depth min={depthMin} max={depthMax} value={depthValue} />
           </th>
           <th rowSpan="2">
-            <Speedometer title={"RUN"} percent={100} size={125} />
+            <Speedometer title={"RUN"} percent={runPercent} size={125} />
           </th>
           <th rowSpan="6">unknown</th>
           <th>
             <TextBoxForGraph
               isArrowed={false}
-              firstText="NM_0000222.2"
+              firstText={transcriptText}
               title="transcript"
             />
           </th>
@@ -30,20 +58,20 @@ function OverViewTable() {
         </tr>
         <tr>
           <td>
-            <TextBoxForGraph isArrowed={false} firstText="c.129" title="cDNA" />
+            <TextBoxForGraph isArrowed={false} firstText={cDNAText} title="cDNA" />
           </td>
           <td></td>
           <td></td>
         </tr>
         <tr>
           <th rowSpan="2">
-            <Speedometer title={"ACCOUNT"} percent={100} size={125} />
+            <Speedometer title={"ACCOUNT"} percent={accountPercent} size={125} />
           </th>
           <td>
             <TextBoxForGraph
               isArrowed={true}
-              firstText="ACTGT"
-              secondText="T"
+              firstText={refAltFirstText}
+              secondText={refAltSecondText}
               title="ref/alt"
             />
           </td>
@@ -52,13 +80,13 @@ function OverViewTable() {
         </tr>
         <tr>
           <th rowSpan="3">
-            <HalfCircleSlider percentage={75} title={"var FRACTION"} />
+            <HalfCircleSlider percentage={varFraction} title={"var FRACTION"} />
           </th>
           <td>
             <TextBoxForGraph
               isArrowed={true}
-              firstText="ACTGT"
-              secondText="T"
+              firstText={sequenceFirstText}
+              secondText={sequenceSecondText}
               title="sequence"
             />
           </td>
@@ -67,13 +95,13 @@ function OverViewTable() {
         </tr>
         <tr>
           <th rowSpan="2">
-            <Speedometer title={"COMMINTY"} percent={100} size={125} />
+            <Speedometer title={"COMMUNITY"} percent={communityPercent} size={125} />
           </th>{" "}
           <td>
             <TextBoxForGraph
               isArrowed={true}
-              firstText="ACTGT"
-              secondText="T"
+              firstText={aminoacidFirstText}
+              secondText={aminoacidSecondText}
               title="aminoacid"
             />
           </td>
@@ -82,10 +110,9 @@ function OverViewTable() {
         </tr>
         <tr>
           <td>
-            <TextBoxForGraph />
             <TextBoxForGraph
               isArrowed={false}
-              firstText="protein1"
+              firstText={proteinText}
               title="protein"
             />
           </td>
@@ -95,6 +122,7 @@ function OverViewTable() {
       </tbody>
     </table>
   );
+}
 }
 
 export default OverViewTable;

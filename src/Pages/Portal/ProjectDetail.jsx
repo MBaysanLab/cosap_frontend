@@ -8,10 +8,9 @@ import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
 import getProjectDetail from "../../apis/getProjectDetail";
+import getVariantDetail from "../../apis/getVariantDetail";
+
 import AnalysisTabs from "./AnalysisTabs";
-
-
-
 
 
 // import storage from "../../utils/storage";
@@ -23,6 +22,21 @@ function ProjectDetail() {
   const [variantStats, setVariantStats] = React.useState({});
   const [msiStats, setMsiStats] = React.useState({});
   const [cnvStats, setCnvStats] = React.useState({});
+
+  const [variantDetail, setVariantDetail] = React.useState({});
+
+
+  function getAndSetVariantDetail(variantId) {
+    
+   // detail apiden variant ID ile veri çekilecek
+
+   getVariantDetail(variantId).then((res) => {
+    setVariantDetail(res.data)
+   })
+
+
+  }
+
 
   const { id } = useParams();
   React.useEffect(() => {
@@ -70,11 +84,11 @@ function ProjectDetail() {
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Divider />
-        <ResultsTabs project_id={id} />
+        <ResultsTabs  getAndSetVariantDetail={getAndSetVariantDetail} project_id={id} />
       </Box>
        {/*<Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>*/}
       
-      <AnalysisTabs />
+      <AnalysisTabs variantDetail = {variantDetail}/>
       
       
 

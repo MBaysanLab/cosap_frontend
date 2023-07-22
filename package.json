@@ -41,7 +41,8 @@
     "tsparticles-plugin-polygon-mask": "^2.9.3",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11",
-    "zustand": "^4.1.1"
+    "zustand": "^4.1.1",
+    "d3":"^7.8.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -124,6 +125,7 @@
     ]
   },
   "devDependencies": {
+    "dotnet": "^1.1.4",
     "eslint": "^8.11.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.5.0",
