@@ -1,100 +1,75 @@
 import React from "react";
 import Depth from "../../Components/Graph/Depth";
-import HalfCircleSlider from "../../Components/Graph/HalfCircleSlider";
-import Speedometer from "../../Components/Graph/Speedometer";
-import TextBoxForGraph from "./TextBoxForGraph";
+import AlleleFrequency from "../../Components/Graph/AlleleFrequency";
+import VariantDetails from "./VariantDetails";
+import { Box, Grid, Typography } from "@mui/material";
+import { Divider } from "@mui/material";
 
+function OverviewTable(props) {
+  const [variant, setVariant] = React.useState(null);
 
+  React.useEffect(() => {
+    setVariant(props.variant);
+  }, [props.variant]);
 
-function OverViewTable() {
   return (
-    <table>
-      <tbody>
-        <tr>
-          <th rowSpan="3">
-            <Depth min={50} max={200} value={85} />
-          </th>
-          <th rowSpan="2">
-            <Speedometer title={"RUN"} percent={100} size={125} />
-          </th>
-          <th rowSpan="6">unknown</th>
-          <th>
-            <TextBoxForGraph
-              isArrowed={false}
-              firstText="NM_0000222.2"
-              title="transcript"
-            />
-          </th>
-          <th>Exon rank</th>
-          <th>CDNs rank</th>
-        </tr>
-        <tr>
-          <td>
-            <TextBoxForGraph isArrowed={false} firstText="c.129" title="cDNA" />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th rowSpan="2">
-            <Speedometer title={"ACCOUNT"} percent={100} size={125} />
-          </th>
-          <td>
-            <TextBoxForGraph
-              isArrowed={true}
-              firstText="ACTGT"
-              secondText="T"
-              title="ref/alt"
-            />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th rowSpan="3">
-            <HalfCircleSlider percentage={75} title={"var FRACTION"} />
-          </th>
-          <td>
-            <TextBoxForGraph
-              isArrowed={true}
-              firstText="ACTGT"
-              secondText="T"
-              title="sequence"
-            />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th rowSpan="2">
-            <Speedometer title={"COMMINTY"} percent={100} size={125} />
-          </th>{" "}
-          <td>
-            <TextBoxForGraph
-              isArrowed={true}
-              firstText="ACTGT"
-              secondText="T"
-              title="aminoacid"
-            />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <TextBoxForGraph />
-            <TextBoxForGraph
-              isArrowed={false}
-              firstText="protein1"
-              title="protein"
-            />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+    <Grid
+      container
+      spacing={1}
+      sx={{
+        background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
+        borderRadius: 3,
+      }}
+    >
+      <Grid item xs={3}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography color="#6D6D6D">Variant Summary</Typography>
+          <Depth value={props.variant ? props.variant.depth : null} />
+          <Divider orientation="horizontal" flexItem color="black" />
+          <AlleleFrequency value={variant ? variant.af : null} title="VAF" />
+        </Box>
+      </Grid>
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{ borderRightWidth: 1, background: "black", m: 1 }}
+      />
+      <Grid item xs={3}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography color="#6D6D6D">Allele Frequencies</Typography>
+          <AlleleFrequency
+            value={variant ? variant.user_af : null}
+            title="User"
+          />
+          <Divider orientation="horizontal" flexItem />
+          <AlleleFrequency
+            value={variant ? variant.gnomad_af : null}
+            title="GNOMAD"
+          />
+        </Box>
+      </Grid>
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{ borderRightWidth: 1, background: "black", m: 1 }}
+      />
+      <Grid item xs={5}>
+        <VariantDetails title="Variant ID" variant={variant} />
+      </Grid>
+    </Grid>
   );
 }
 
-export default OverViewTable;
+export default OverviewTable;

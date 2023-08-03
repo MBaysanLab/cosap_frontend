@@ -18,7 +18,7 @@ function FeatureCard(props) {
       <CardContent
         sx={{
           minHeight: { xs: "200px", md: "350px" },
-          minWidth: { xs: "200px" },
+          minWidth: { xs: "250px" },
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-around",

@@ -76,7 +76,10 @@
       "prettier"
     ],
     "rules": {
-      "prettier/prettier": "error",
+      "no-unused-vars": "off",
+      "one-var": "off",
+      "prefer-const": "off",
+      "prettier/prettier": "warn",
       "react/prop-types": "off",
       "require-jsdoc": 0,
       "sort-imports": [

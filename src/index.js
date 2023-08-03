@@ -10,7 +10,10 @@ import PrivateRoutes from "./utils/privateRoutes";
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
-  integrations: [new Sentry.BrowserTracing(), new Sentry.Replay()],
+  integrations: [
+    new Sentry.BrowserTracing({ tracingOrigins: ["*"] }),
+    new Sentry.Replay(),
+  ],
   // Performance Monitoring
   tracesSampleRate: 1.0, // Capture 100% of the transactions, reduce in production!
   // Session Replay

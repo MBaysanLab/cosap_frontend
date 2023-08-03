@@ -8,36 +8,33 @@ import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
 import getProjectDetail from "../../apis/getProjectDetail";
-import AnalysisTabs from "./AnalysisTabs";
-
-
-
-
+import DetailTabs from "./DetailTabs";
 
 // import storage from "../../utils/storage";
 
 function ProjectDetail() {
   const [projectMetadata, setMetadata] = React.useState({});
-  const [coverageStats, setCoverageStats] = React.useState({});
-  const [mappingStats, setMappingStats] = React.useState({});
-  const [variantStats, setVariantStats] = React.useState({});
-  const [msiStats, setMsiStats] = React.useState({});
-  const [cnvStats, setCnvStats] = React.useState({});
+  const [activeVariant, setActiveVariant] = React.useState(null);
+  const [projectSummary, setProjectSummary] = React.useState({});
+
+  const detailTabsRef = React.useRef(null);
 
   const { id } = useParams();
   React.useEffect(() => {
     getProjectDetail(id).then(
       (res) => (
-        setMetadata(res.data.metadata),
-        setCoverageStats(res.data.coverage_stats),
-        setMappingStats(res.data.mapping_stats),
-        setVariantStats(res.data.variant_stats),
-        setMsiStats(res.data.msi_stats),
-        setCnvStats(res.data.cnv_stats)
-        //
+        setMetadata(res.data.metadata), setProjectSummary(res.data.summary)
       )
     );
   }, []);
+
+  const selectVariant = (variant) => {
+    setActiveVariant(variant);
+  };
+
+  const scrollToVariantDetail = () => {
+    detailTabsRef.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -56,30 +53,33 @@ function ProjectDetail() {
           }}
         >
           <CustomStats
-            data1={mappingStats.percetange_of_mapped_reads}
-            data2={coverageStats.mean_coverage}
+            data1={projectSummary.mapped_reads}
+            data2={projectSummary.mean_coverage}
             title1="Mapped Reads %"
             title2="Mean Coverage"
           />
           <CustomStats
+            data1={projectSummary.msi_score}
+            data2={projectSummary.cnv_count}
             title1="MSI Score %"
             title2="# of CNV's"
           />
-          <VariantStats data={variantStats} />
+          <VariantStats data={projectSummary} />
         </Box>
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Divider />
-        <ResultsTabs project_id={id} />
+        <ResultsTabs
+          project_id={id}
+          variant_selector_function={selectVariant}
+          scroll_ref={scrollToVariantDetail}
+        />
       </Box>
-       {/*<Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>*/}
-      
-      <AnalysisTabs />
-      
-      
-
+      <Box ref={detailTabsRef} sx={{ mt: { xs: 1, md: 3 } }}>
+        <DetailTabs variant={activeVariant} />
+      </Box>
+      {/*  <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>  */}
     </Box>
-    
   );
 }
 
