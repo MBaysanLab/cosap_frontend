@@ -83,7 +83,32 @@ function ResultsTabs(props) {
       </Box>
       <Box>
         <TabPanel value={activeMenu} index={0}>
-          <VariantList getAndSetVariantDetail={props.getAndSetVariantDetail} project_id={props.project_id} />
+          <VariantList
+            project_id={props.project_id}
+            variant_selector_function={props.variant_selector_function}
+            scroll_ref={props.scroll_ref}
+          />
+        </TabPanel>
+        <TabPanel value={activeMenu} index={0}>
+          <VariantList
+            project_id={props.project_id}
+            variant_selector_function={props.variant_selector_function}
+            scroll_ref={props.scroll_ref}
+          />
+        </TabPanel>
+        <TabPanel value={activeMenu} index={0}>
+          <VariantList
+            project_id={props.project_id}
+            variant_selector_function={props.variant_selector_function}
+            scroll_ref={props.scroll_ref}
+          />
+        </TabPanel>
+        <TabPanel value={activeMenu} index={0}>
+          <VariantList
+            project_id={props.project_id}
+            variant_selector_function={props.variant_selector_function}
+            scroll_ref={props.scroll_ref}
+          />
         </TabPanel>
       </Box>
     </>

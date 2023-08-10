@@ -63,7 +63,7 @@ function Login() {
             <Card
               variant="outlined"
               sx={{
-                maxHeight: { xs: "100vh", md: "60vh" },
+                maxHeight: { xs: "100vh", md: "70vh" },
                 maxWidth: { xs: "100vw", md: "40vw" },
               }}
             >

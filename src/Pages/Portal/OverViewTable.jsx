@@ -1,128 +1,75 @@
 import React from "react";
 import Depth from "../../Components/Graph/Depth";
-import HalfCircleSlider from "../../Components/Graph/HalfCircleSlider";
-import Speedometer from "../../Components/Graph/Speedometer";
-import TextBoxForGraph from "./TextBoxForGraph";
+import AlleleFrequency from "../../Components/Graph/AlleleFrequency";
+import VariantDetails from "./VariantDetails";
+import { Box, Grid, Typography } from "@mui/material";
+import { Divider } from "@mui/material";
 
-function OverViewTable({
-  variantDetail
-}) {
+function OverviewTable(props) {
+  const [variant, setVariant] = React.useState(null);
 
-
-if (Object.keys(variantDetail).length === 0) {
-
-return (
-  "To see the details of the variant, click on the relevant variant."
-  )
-}
-else{
-
-  var depthMin = variantDetail.overview.depthMin;
-  var depthMax = variantDetail.overview.depthMax;
-  var depthValue = variantDetail.overview.depthValue;
-  var runPercent = variantDetail.overview.runPercent;
-  var transcriptText = variantDetail.overview.transcriptText;
-  var cDNAText = variantDetail.overview.cDNAText;
-  var accountPercent = variantDetail.overview.accountPercent;
-  var varFraction = variantDetail.overview.varFraction;
-  var sequenceFirstText = variantDetail.overview.sequenceFirstText;
-  var sequenceSecondText = variantDetail.overview.sequenceSecondText;
-  var refAltFirstText = variantDetail.overview.refAltFirstText;
-  var refAltSecondText = variantDetail.overview.refAltSecondText;
-  var aminoacidFirstText = variantDetail.overview.aminoacidFirstText;
-  var aminoacidSecondText = variantDetail.overview.aminoacidSecondText;
-  var communityPercent = variantDetail.overview.communityPercent;
-  var proteinText = variantDetail.overview.proteinText;
-
+  React.useEffect(() => {
+    setVariant(props.variant);
+  }, [props.variant]);
 
   return (
-    <table>
-      <tbody>
-        <tr>
-          <th rowSpan="3">
-            <Depth min={depthMin} max={depthMax} value={depthValue} />
-          </th>
-          <th rowSpan="2">
-            <Speedometer title={"RUN"} percent={runPercent} size={125} />
-          </th>
-          <th rowSpan="6">unknown</th>
-          <th>
-            <TextBoxForGraph
-              isArrowed={false}
-              firstText={transcriptText}
-              title="transcript"
-            />
-          </th>
-          <th>Exon rank</th>
-          <th>CDNs rank</th>
-        </tr>
-        <tr>
-          <td>
-            <TextBoxForGraph isArrowed={false} firstText={cDNAText} title="cDNA" />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th rowSpan="2">
-            <Speedometer title={"ACCOUNT"} percent={accountPercent} size={125} />
-          </th>
-          <td>
-            <TextBoxForGraph
-              isArrowed={true}
-              firstText={refAltFirstText}
-              secondText={refAltSecondText}
-              title="ref/alt"
-            />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th rowSpan="3">
-            <HalfCircleSlider percentage={varFraction} title={"var FRACTION"} />
-          </th>
-          <td>
-            <TextBoxForGraph
-              isArrowed={true}
-              firstText={sequenceFirstText}
-              secondText={sequenceSecondText}
-              title="sequence"
-            />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th rowSpan="2">
-            <Speedometer title={"COMMUNITY"} percent={communityPercent} size={125} />
-          </th>{" "}
-          <td>
-            <TextBoxForGraph
-              isArrowed={true}
-              firstText={aminoacidFirstText}
-              secondText={aminoacidSecondText}
-              title="aminoacid"
-            />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <TextBoxForGraph
-              isArrowed={false}
-              firstText={proteinText}
-              title="protein"
-            />
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+    <Grid
+      container
+      spacing={1}
+      sx={{
+        background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
+        borderRadius: 3,
+      }}
+    >
+      <Grid item xs={3}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography color="#6D6D6D">Variant Summary</Typography>
+          <Depth value={props.variant ? props.variant.depth : null} />
+          <Divider orientation="horizontal" flexItem color="black" />
+          <AlleleFrequency value={variant ? variant.af : null} title="VAF" />
+        </Box>
+      </Grid>
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{ borderRightWidth: 1, background: "black", m: 1 }}
+      />
+      <Grid item xs={3}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography color="#6D6D6D">Allele Frequencies</Typography>
+          <AlleleFrequency
+            value={variant ? variant.user_af : null}
+            title="User"
+          />
+          <Divider orientation="horizontal" flexItem />
+          <AlleleFrequency
+            value={variant ? variant.gnomad_af : null}
+            title="GNOMAD"
+          />
+        </Box>
+      </Grid>
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{ borderRightWidth: 1, background: "black", m: 1 }}
+      />
+      <Grid item xs={5}>
+        <VariantDetails title="Variant ID" variant={variant} />
+      </Grid>
+    </Grid>
   );
 }
-}
 
-export default OverViewTable;
+export default OverviewTable;

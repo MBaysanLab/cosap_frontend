@@ -62,6 +62,7 @@ function ProjectList(props) {
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
+            noRowsOverlay={<div>No projects found</div>}
             columns={columns}
             rows={projects}
             hideFooter

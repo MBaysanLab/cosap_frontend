@@ -21,7 +21,7 @@ export function VariantSignificanceIcon(props) {
         borderRadius: 3,
       }}
     >
-      <Typography fontSize={"0.875rem"}>{props.classification}</Typography>
+      <Typography fontSize={"0.755rem"}>{props.classification}</Typography>
     </Box>
   );
 }
