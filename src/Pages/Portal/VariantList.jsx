@@ -4,9 +4,8 @@ import Box from "@mui/material/Box";
 
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 import getVariants from "../../apis/getVariants";
-import getVariantReports from '../../apis/getVariantReports';
+import getVariantReports from "../../apis/getVariantReports";
 import { PropaneSharp } from "@mui/icons-material";
-
 
 const columns = [
   { field: "location", headerName: "Position", flex: 0.2 },
@@ -35,24 +34,22 @@ function VariantList(props) {
   const [variants, setVariants] = React.useState([]);
   const [selectedRows, setSelectedRows] = React.useState([]);
   React.useEffect(() => {
-    getVariants(props.project_id).then((res) => {setVariants(res.data);
+    getVariants(props.project_id).then((res) => {
+      setVariants(res.data);
     });
-
   }, []);
 
   const handleButtonClick = () => {
-
-    let payload = {ids: selectedRows.map(index => variants[index - 1].id)};
-    getVariantReports(payload)
+    let payload = { ids: selectedRows.map((index) => variants[index - 1].id) };
+    getVariantReports(payload);
   };
 
   const handleSelectionChange = (selection) => {
     setSelectedRows(selection);
   };
-  function handlegetVariantDetails(event){
+  function handlegetVariantDetails(event) {
     props.getAndSetVariantDetail(event.id);
   }
-  
 
   return (
     <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>
