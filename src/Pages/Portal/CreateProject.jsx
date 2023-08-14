@@ -166,10 +166,13 @@ function CreateProject(props) {
         <Typography variant="h6" color="secondary">
           Upload Sample Files
         </Typography>
-        <Alert severity="info">
-          Somatic variant calling can be made with tumor samples alone. However,
-          suppying normal samples increases sensitivity and specificity.
-        </Alert>
+        {projectType !== "GM" ? (
+          <Alert severity="info">
+            Somatic variant calling can be made with tumor samples alone.
+            However, suppying normal samples increases sensitivity and
+            specificity.
+          </Alert>
+        ) : null}
         {FileUploadAlert ? (
           <Alert severity="error" sx={{ mt: 3 }}>
             Please upload at least one sample.
