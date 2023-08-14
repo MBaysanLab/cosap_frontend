@@ -18,6 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import KeyIcon from "@mui/icons-material/Key";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logoutFn, verifyUser } from "../lib/auth";
+import { GithubButton } from "../Components";
 
 const pages = ["Home"];
 const settings = ["Change Password", "Logout"];
@@ -128,6 +129,9 @@ function NavBar() {
                 {page}
               </Button>
             ))}
+          </Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <GithubButton />
           </Box>
           {user ? (
             <Box sx={{ flexGrow: 0 }}>

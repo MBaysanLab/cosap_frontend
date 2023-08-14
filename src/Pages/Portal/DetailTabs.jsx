@@ -6,18 +6,10 @@ import Tabs from "@mui/material/Tabs";
 import Hidden from "@mui/material/Hidden";
 import PropTypes from "prop-types";
 import OverviewTable from "./OverviewTable";
-import TagList from '../../Components/Graph/Tag';
 import DetailsTable from "./DetailsTable";
 import GenomeViewer from "./GenomeViewer";
 
-
-
-
-const menuItems = [
-  "OVERVIEW",
-  "DETAILS",
-  "IGV"
-];
+const menuItems = ["OVERVIEW", "DETAILS", "IGV"];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,7 +46,7 @@ function DetailTabs(props) {
   const handleChange = (event, newMenu) => {
     setMenu(newMenu);
   };
-  
+
   return (
     <>
       <Box>
@@ -81,21 +73,21 @@ function DetailTabs(props) {
                 },
               }}
               {...a11yProps(index)}
+              disabled={index === 1}
             />
           ))}
         </Tabs>
       </Box>
       <Box>
         <TabPanel value={activeMenu} index={0}>
-        <OverviewTable variant={props.variant}/>
+          <OverviewTable variant={props.variant} />
         </TabPanel>
         <TabPanel value={activeMenu} index={1}>
-          <DetailsTable />
+          <DetailsTable variant={props.variant} />
         </TabPanel>
         <TabPanel value={activeMenu} index={2}>
-          <GenomeViewer variant={props.variant}/> 
+          <GenomeViewer variant={props.variant} bam_file={props.bam_file} />
         </TabPanel>
-
       </Box>
     </>
   );

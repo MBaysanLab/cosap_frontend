@@ -1,5 +1,3 @@
-
-
 import { axios } from "../lib/axios";
 
 const getVariantDetail = (variantId) => {

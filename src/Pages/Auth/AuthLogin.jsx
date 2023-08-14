@@ -180,12 +180,12 @@ const AuthLogin = () => {
               </Typography>
             </Stack>
             {errors.submit && (
-              <Box sx={{ mt: 3 }}>
+              <Box sx={{ mt: 2 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
 
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{ mt: 1 }}>
               <Button
                 disableElevation
                 fullWidth

@@ -60,62 +60,70 @@ function Login() {
               mt: { xs: 0, md: "10vh" },
             }}
           >
-            <Card
-              variant="outlined"
+            <Box
               sx={{
-                maxHeight: { xs: "100vh", md: "70vh" },
-                maxWidth: { xs: "100vw", md: "40vw" },
+                display: "inline-block",
               }}
             >
-              <CardContent sx={{ m: { xs: 1, sm: 3 }, mb: 30 }}>
-                <Grid
-                  container
-                  spacing={2}
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item sx={{ mb: 3 }}>
-                    <Box sx={{ width: "30px", height: "30px" }}>
-                      <BannerSVG />
-                    </Box>
-                  </Grid>
-                  <Grid item sx={{ mb: 3 }}>
-                    <Typography
-                      variant="h4"
-                      noWrap
-                      component="div"
-                      sx={{ display: { md: "flex" } }}
-                    >
-                      Login
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <AuthLogin />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid
-                      item
-                      container
-                      direction="column"
-                      alignItems="center"
-                      xs={12}
-                    >
+              <Card
+                variant="outlined"
+                sx={{
+                  maxWidth: { xs: "100vw", md: "40vw" },
+                }}
+              >
+                <CardContent sx={{ m: { xs: 1, sm: 2 } }}>
+                  <Grid
+                    container
+                    spacing={2}
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item sx={{ mb: 3 }}>
+                      <Box sx={{ width: "30px", height: "30px" }}>
+                        <BannerSVG />
+                      </Box>
+                    </Grid>
+                    <Grid item sx={{ mb: 3 }}>
                       <Typography
-                        component={Link}
-                        to="/register"
-                        variant="subtitle1"
-                        color="black"
+                        variant="h4"
+                        noWrap
+                        component="div"
+                        sx={{ display: { md: "flex" } }}
                       >
-                        Don&apos;t have an account?
+                        Login
                       </Typography>
                     </Grid>
+                    <Grid item xs={12}>
+                      <AuthLogin />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid
+                        item
+                        container
+                        direction="column"
+                        alignItems="center"
+                        xs={12}
+                      >
+                        <Typography
+                          component={Link}
+                          to="/register"
+                          color="black"
+                          sx={{
+                            fontSize: 13,
+                            textDecoration: "none",
+                          }}
+                        >
+                          Create New Account
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Box>
           </Box>
         </Box>
         <Box>

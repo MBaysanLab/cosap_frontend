@@ -60,62 +60,66 @@ function Register() {
               mt: { xs: 0, md: "5vh" },
             }}
           >
-            <Card
-              variant="outlined"
-              sx={{
-                maxHeight: { xs: "100vh", md: "75vh" },
-                maxWidth: { xs: "100vw", md: "40vw" },
-              }}
-            >
-              <CardContent sx={{ m: { xs: 1, sm: 3 }, mb: 30 }}>
-                <Grid
-                  container
-                  spacing={2}
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item sx={{ mb: 3 }}>
-                    <Box sx={{ width: "30px", height: "30px" }}>
-                      <BannerSVG />
-                    </Box>
-                  </Grid>
-                  <Grid item sx={{ mb: 3 }}>
-                    <Typography
-                      variant="h4"
-                      noWrap
-                      component="div"
-                      sx={{ display: { md: "flex" } }}
-                    >
-                      Register
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <AuthRegister />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid
-                      item
-                      container
-                      direction="column"
-                      alignItems="center"
-                      xs={12}
-                    >
+            <Box sx={{ display: "inline-block" }}>
+              <Card
+                variant="outlined"
+                sx={{
+                  maxWidth: { xs: "100vw", md: "40vw" },
+                }}
+              >
+                <CardContent sx={{ m: { xs: 1, sm: 2 } }}>
+                  <Grid
+                    container
+                    spacing={1}
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item sx={{ mb: 1 }}>
+                      <Box sx={{ width: "30px", height: "30px" }}>
+                        <BannerSVG />
+                      </Box>
+                    </Grid>
+                    <Grid item sx={{ mb: 1 }}>
                       <Typography
-                        component={Link}
-                        to="/login"
-                        variant="subtitle1"
-                        color="black"
+                        variant="h4"
+                        noWrap
+                        component="div"
+                        sx={{ display: { md: "flex" } }}
                       >
-                        I already have an account.
+                        Register
                       </Typography>
                     </Grid>
+                    <Grid item xs={12}>
+                      <AuthRegister />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid
+                        item
+                        container
+                        direction="column"
+                        alignItems="center"
+                        xs={12}
+                      >
+                        <Typography
+                          component={Link}
+                          to="/login"
+                          color="black"
+                          sx={{
+                            fontSize: 13,
+                            textDecoration: "none",
+                          }}
+                        >
+                          Go to Login
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Box>
           </Box>
         </Box>
         <Box>

@@ -48,7 +48,9 @@ function VariantStats(props) {
           }}
         >
           <Tooltip title="Significant Variants">
-            <Typography color="black">{data.number_of_significant_variants}</Typography>
+            <Typography color="black">
+              {data.number_of_significant_variants}
+            </Typography>
           </Tooltip>
         </Box>
         <Box

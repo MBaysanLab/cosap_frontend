@@ -1,35 +1,37 @@
 #tsparticles {
-    height: 50vh;
-    left:   0  }
+  height: 50vh;
+  left: 0;
+}
 
-    .table-container {
-        padding: 20px;
-      }
-      
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      
-      th, td {
-        padding: 9px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      
-      th {
-        background-color: #f2f2f2;
-      }
-      .specialCell {
-        background-color: #e8e8e8; 
-        padding: 9px;
-      }
-      .detailTableHeader{
-        background-color: #adadad; 
-        font-weight: bold;
-        text-align: center;
+.table-container {
+  padding: 20px;
+}
 
-      }
-      .css-7m04wo-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, .css-7m04wo-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
-        color: unset !important;
-    }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 9px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+.specialCell {
+  background-color: #e8e8e8;
+  padding: 9px;
+}
+.detailTableHeader {
+  background-color: #adadad;
+  font-weight: bold;
+  text-align: center;
+}
+.css-7m04wo-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
+.css-7m04wo-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+  color: unset !important;
+}

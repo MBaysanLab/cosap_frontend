@@ -9,7 +9,7 @@ import getVariantReports from "../../apis/getVariantReports";
 const columns = [
   {
     field: "classification",
-    headerName: "Pathogenicity",
+    headerName: "ACMG/AMP Classification",
     flex: 0.4,
     renderCell: (params) => {
       return <VariantSignificanceIcon classification={params.value} />;
@@ -35,16 +35,15 @@ function VariantList(props) {
   }, []);
 
   const handleButtonClick = () => {
-    let payload = { ids: selectedRows.map((index) => variants[index - 1].id) };
+    const payload = {
+      ids: selectedRows.map((index) => variants[index - 1].id),
+    };
     getVariantReports(payload);
   };
 
   const handleSelectionChange = (selection) => {
     setSelectedRows(selection);
   };
-  function handlegetVariantDetails(event) {
-    props.getAndSetVariantDetail(event.id);
-  }
 
   const handleRowClick = (params, event) => {
     props.variant_selector_function(params.row);
@@ -52,16 +51,22 @@ function VariantList(props) {
   };
 
   return (
-    <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>
+    <Box sx={{ height: { xs: "200px", md: "400px" }, width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
             onSelectionModelChange={handleSelectionChange}
+            rowHeight={30}
             checkboxSelection
             columns={columns}
             rows={variants}
             onRowClick={handleRowClick}
             disableSelectionOnClick
+            initialState={{
+              sorting: {
+                sortModel: [{ field: "classification", sort: "asc" }],
+              },
+            }}
             sx={{
               border: 0,
               "& .MuiDataGrid-columnHeaderTitle": {

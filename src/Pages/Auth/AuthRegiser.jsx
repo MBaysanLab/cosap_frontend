@@ -65,7 +65,7 @@ const AuthRegister = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 1 }}>
             <Typography variant="subtitle1">
               Register with Email address
             </Typography>
@@ -146,7 +146,7 @@ const AuthRegister = () => {
             <FormControl
               fullWidth
               error={Boolean(touched.email && errors.email)}
-              sx={{ mb: 1 }}
+              sx={{ mb: 1, mt: 1 }}
             >
               <InputLabel color="button">Email Address</InputLabel>
               <OutlinedInput
@@ -248,11 +248,11 @@ const AuthRegister = () => {
               )}
             </FormControl>
             {errors.submit && (
-              <Box sx={{ mt: 3 }}>
+              <Box sx={{ mt: 2 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{ mt: 1 }}>
               <Button
                 disableElevation
                 fullWidth

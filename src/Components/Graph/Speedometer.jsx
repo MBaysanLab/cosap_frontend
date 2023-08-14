@@ -1,16 +1,11 @@
-import React, { Component } from "react";
-import { Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import Box from "@mui/material/Box";
+import React from "react";
+import { Pie, PieChart } from "recharts";
 
 function Speedometer(props) {
-  const [isDataLoaded, setIsDataLoaded] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   React.useEffect(() => {
-    setIsDataLoaded(props.value && props.value !== null);
-    if (isDataLoaded) {
-      setValue(props.value);
-    }
+    setValue(props.value);
   }, [props]);
 
   return (
@@ -35,7 +30,7 @@ function Speedometer(props) {
         outerRadius={70}
         innerRadius={60}
       />
-      {isDataLoaded ? (
+      {value ? (
         <text x={65} y={70} fill="black" dominantBaseline="central">
           {`${props.value.toFixed(0)}%`}
         </text>

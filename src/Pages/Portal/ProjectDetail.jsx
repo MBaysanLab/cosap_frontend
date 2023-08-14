@@ -16,29 +16,17 @@ function ProjectDetail() {
   const [projectMetadata, setMetadata] = React.useState({});
   const [activeVariant, setActiveVariant] = React.useState(null);
   const [projectSummary, setProjectSummary] = React.useState({});
+  const [bamFile, setBamFile] = React.useState(null);
 
   const detailTabsRef = React.useRef(null);
-
-  const [variantDetail, setVariantDetail] = React.useState({});
-
-
-  function getAndSetVariantDetail(variantId) {
-    
-   // detail apiden variant ID ile veri çekilecek
-
-   getVariantDetail(variantId).then((res) => {
-    setVariantDetail(res.data)
-   })
-
-
-  }
-
 
   const { id } = useParams();
   React.useEffect(() => {
     getProjectDetail(id).then(
       (res) => (
-        setMetadata(res.data.metadata), setProjectSummary(res.data.summary)
+        setMetadata(res.data.metadata),
+        setProjectSummary(res.data.summary),
+        setBamFile(res.data.bam_file)
       )
     );
   }, []);
@@ -91,7 +79,7 @@ function ProjectDetail() {
         />
       </Box>
       <Box ref={detailTabsRef} sx={{ mt: { xs: 1, md: 3 } }}>
-        <DetailTabs variant={activeVariant} />
+        <DetailTabs variant={activeVariant} bam_file={bamFile} />
       </Box>
       {/*  <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>  */}
     </Box>

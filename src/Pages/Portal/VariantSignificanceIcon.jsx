@@ -3,12 +3,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export function VariantSignificanceIcon(props) {
-  const [bgColor, setbgColor] = React.useState("#aaaab7");
+  const [bgColor, setbgColor] = React.useState("#747b87");
   React.useEffect(() => {
-    if (props.classification.toLowerCase().includes("pathogenic")) {
-      setbgColor("#f54242");
+    if (
+      props.classification.toLowerCase().includes("pathogenic") ||
+      props.classification.toLowerCase().includes("strong")
+    ) {
+      setbgColor("#ab0e0e");
     } else if (props.classification.toLowerCase().includes("benign")) {
-      setbgColor("#b0e5c6");
+      setbgColor("#276136");
     }
   });
 
@@ -17,11 +20,16 @@ export function VariantSignificanceIcon(props) {
       sx={{
         p: "5px",
         textAlign: "center",
-        background: bgColor,
         borderRadius: 3,
       }}
     >
-      <Typography fontSize={"0.755rem"}>{props.classification}</Typography>
+      <Typography
+        fontSize={"0.755rem"}
+        color={bgColor}
+        sx={{ fontWeight: "bold" }}
+      >
+        {props.classification}
+      </Typography>
     </Box>
   );
 }
