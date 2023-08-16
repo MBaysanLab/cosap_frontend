@@ -256,6 +256,7 @@ const AuthRegister = () => {
               <Button
                 disableElevation
                 fullWidth
+                variant="contained"
                 size="large"
                 type="submit"
                 color="secondary"

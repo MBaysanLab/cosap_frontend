@@ -8,42 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Layout from "../../Layout/Layout";
 import AuthRegister from "./AuthRegiser";
-import Footer from "../../Components/Footer";
 import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
-
-const theme = createTheme({
-  palette: {
-    type: "light",
-    primary: {
-      main: "#ffffff",
-      dark: "#7896a6",
-    },
-    secondary: {
-      main: "#DE1E3D",
-    },
-    action: {
-      active: "#001E3C",
-    },
-    button: {
-      main: "#428A9C",
-    },
-    success: {
-      main: "#5be5a5",
-    },
-    progress: {
-      main: "#68d4e8",
-    },
-  },
-  typography: {
-    fontFamily: "Poppins",
-  },
-});
 
 function Register() {
   return (
-    <ThemeProvider theme={theme}>
+    <Layout>
       <Box
         display="flex"
         justifyContent="center"
@@ -122,11 +93,8 @@ function Register() {
             </Box>
           </Box>
         </Box>
-        <Box>
-          <Footer />
-        </Box>
       </Box>
-    </ThemeProvider>
+    </Layout>
   );
 }
 export default Register;

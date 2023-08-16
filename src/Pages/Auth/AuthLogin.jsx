@@ -173,7 +173,6 @@ const AuthLogin = () => {
               />
               <Typography
                 variant="subtitle2"
-                color="secondary"
                 sx={{ textDecoration: "none", cursor: "pointer" }}
               >
                 Forgot Password?
@@ -189,6 +188,7 @@ const AuthLogin = () => {
               <Button
                 disableElevation
                 fullWidth
+                variant="contained"
                 size="large"
                 type="submit"
                 color="secondary"

@@ -19,6 +19,7 @@ import KeyIcon from "@mui/icons-material/Key";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logoutFn, verifyUser } from "../lib/auth";
 import { GithubButton } from "../Components";
+import { deepOrange } from "@mui/material/colors";
 
 const pages = ["Home"];
 const settings = ["Change Password", "Logout"];
@@ -30,8 +31,8 @@ function NavBar() {
 
   const navigate = useNavigate();
   React.useEffect(() => {
-    verifyUser().then((data) => {
-      setUser(data);
+    verifyUser().then((user) => {
+      setUser(user);
     });
   }, []);
 
@@ -66,7 +67,7 @@ function NavBar() {
       position="static"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
@@ -108,7 +109,7 @@ function NavBar() {
               ))}
             </Menu>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 0.2, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 component={NavLink}
@@ -131,13 +132,18 @@ function NavBar() {
             ))}
           </Box>
           <Box sx={{ flexGrow: 1 }}>
-            <GithubButton />
+            <Box sx={{ float: "right", mr: 2 }}>
+              <GithubButton />
+            </Box>
           </Box>
           {user ? (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open options">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar />
+                  <Avatar sx={{ bgcolor: deepOrange[400] }}>
+                    {user.first_name[0].toUpperCase() +
+                      user.last_name[0].toUpperCase()}
+                  </Avatar>
                 </IconButton>
               </Tooltip>
               <Menu

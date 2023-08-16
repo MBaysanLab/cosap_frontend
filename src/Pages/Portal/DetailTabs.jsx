@@ -9,7 +9,7 @@ import OverviewTable from "./OverviewTable";
 import DetailsTable from "./DetailsTable";
 import GenomeViewer from "./GenomeViewer";
 
-const menuItems = ["OVERVIEW", "DETAILS", "IGV"];
+const menuItems = ["OVERVIEW", "DETAILS", "GENOME VIEWER"];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

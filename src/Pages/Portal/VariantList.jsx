@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 import getVariants from "../../apis/getVariants";
-import getVariantReports from "../../apis/getVariantReports";
+// import getVariantReports from "../../apis/getVariantReports";
 
 const columns = [
   {
@@ -27,23 +27,23 @@ const columns = [
 
 function VariantList(props) {
   const [variants, setVariants] = React.useState([]);
-  const [selectedRows, setSelectedRows] = React.useState([]);
+  // const [selectedRows, setSelectedRows] = React.useState([]);
   React.useEffect(() => {
     getVariants(props.project_id).then((res) => {
       setVariants(res.data);
     });
   }, []);
 
-  const handleButtonClick = () => {
-    const payload = {
-      ids: selectedRows.map((index) => variants[index - 1].id),
-    };
-    getVariantReports(payload);
-  };
+  // const handleButtonClick = () => {
+  //   const payload = {
+  //     ids: selectedRows.map((index) => variants[index - 1].id),
+  //   };
+  //   getVariantReports(payload);
+  // };
 
-  const handleSelectionChange = (selection) => {
-    setSelectedRows(selection);
-  };
+  // const handleSelectionChange = (selection) => {
+  //   setSelectedRows(selection);
+  // };
 
   const handleRowClick = (params, event) => {
     props.variant_selector_function(params.row);
@@ -55,7 +55,7 @@ function VariantList(props) {
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
-            onSelectionModelChange={handleSelectionChange}
+            // onSelectionModelChange={handleSelectionChange}
             rowHeight={30}
             checkboxSelection
             columns={columns}
@@ -86,9 +86,9 @@ function VariantList(props) {
               },
             }}
           />
-          <button onClick={handleButtonClick}>
+          {/* <button onClick={handleButtonClick}>
             Create Report With Selected Variants
-          </button>
+          </button> */}
         </Box>
       </Box>
     </Box>

@@ -16,27 +16,67 @@ const menuItems = {
   // Reports: <AssessmentIcon />,
 };
 
-function PortalTabs(props) {
+function PortalContent(props) {
   const [activeMenu, setMenu] = React.useState(0);
+  const [isSmallScreen, setSmallScreen] = React.useState(false);
+  const [isMenuOpen, setMenuOpen] = React.useState(true);
+
+  const tabsDivRef = React.useRef(null);
 
   const handleChange = (event, newMenu) => {
     setMenu(newMenu);
   };
-  const isSmallScreen = window.innerWidth < 900;
+
+  React.useEffect(() => {
+    // Set isSmallScreen to true if screen width is less than 600px
+    const mediaQuery = window.matchMedia("(max-width: 600px)");
+    mediaQuery.addEventListener("change", () => {
+      if (mediaQuery.matches) {
+        setSmallScreen(true);
+      } else {
+        setSmallScreen(false);
+      }
+    });
+    // Check if screen width is less than 600px on initial load
+    if (mediaQuery.matches) {
+      setSmallScreen(true);
+    } else {
+      setSmallScreen(false);
+    }
+
+    // On scroll make the side menu smaller
+    const handleScroll = (e) => {
+      const scrollTop = e.target.documentElement.scrollTop;
+      if (tabsDivRef.current === null) return;
+      if (scrollTop > 100) {
+        tabsDivRef.current.style.width = "5vw";
+        setMenuOpen(false);
+      } else {
+        tabsDivRef.current.style.width = "180px";
+        setMenuOpen(true);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
       <Box
+        ref={tabsDivRef}
         sx={{
-          height: "calc(100vh - 68.5px);",
-          width: { sm: "100%", md: "240px" },
+          height: isSmallScreen ? "100%" : "50vh",
+          width: { sm: "100%", md: "180px" },
+          minWidth: "80px",
           backgroundImage:
             "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%);",
-          mb: { sm: "10px", md: "-130px" },
           zIndex: "1",
+          borderRadius: "0px 30px 30px 0px",
           display: "flex",
-          flexDirection: "column",
+          flexDirection: isSmallScreen ? "row" : "column",
           justifyContent: "center",
+          position: "sticky",
+          top: "20vh",
+          transition: "all 0.5s ease",
         }}
       >
         <Tabs
@@ -46,7 +86,8 @@ function PortalTabs(props) {
           TabIndicatorProps={{
             style: {
               background: "#171A1E",
-              width: 10,
+              width: isMenuOpen ? 10 : 5,
+              transition: "all 0.1s ease",
             },
           }}
         >
@@ -56,7 +97,7 @@ function PortalTabs(props) {
               to={text === "Dashboard" ? "/portal" : text.toLowerCase()}
               key={text}
               icon={menuItems[text]}
-              label={<Hidden smDown>{text}</Hidden>}
+              label={<Hidden smDown>{isMenuOpen ? text : null}</Hidden>}
               iconPosition="start"
               sx={{
                 color: "white",
@@ -80,4 +121,4 @@ function PortalTabs(props) {
     </>
   );
 }
-export default PortalTabs;
+export default PortalContent;

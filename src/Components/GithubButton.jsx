@@ -5,7 +5,6 @@ import GithubLogo from "../assets/images/github-mark.png";
 
 function GithubButton(props) {
   const handleClick = () => {
-    console.log(GITHUB_URL);
     window.open(GITHUB_URL, "_blank");
   };
   return (
@@ -29,7 +28,7 @@ function GithubButton(props) {
           marginRight: 1,
         }}
       >
-        Go to Github Page
+        View on Github
       </Typography>
       <img src={GithubLogo} alt="Github Logo" width={25} height={25} />
     </Button>

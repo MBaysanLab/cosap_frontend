@@ -2,6 +2,7 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import igv from "../../../node_modules/igv/dist/igv.esm.min.js";
 import storage from "../../utils/storage";
+import { API_URL } from "../../config/index.js";
 
 function GenomeViewer(props) {
   const [IGVBrowser, setIGVBrowser] = React.useState(null);
@@ -26,8 +27,8 @@ function GenomeViewer(props) {
       return [
         {
           name: "sample",
-          url: "http://localhost:8000/igv/calibrated_tumor_bwa2.bam",
-          indexURL: "http://localhost:8000/igv/calibrated_tumor_bwa2.bai",
+          url: `${API_URL}/igv/calibrated_tumor_bwa2.bam`,
+          indexURL: `${API_URL}/igv/calibrated_tumor_bwa2.bai`,
           format: "bam",
           // prettier-ignore
           headers: { "authorization": "token " + storage.getToken() },
@@ -40,6 +41,7 @@ function GenomeViewer(props) {
     const options = {
       genome: "hg38",
       tracks: getTrack(),
+      locus: createLoci(),
     };
 
     if (!IGVBrowser) {

@@ -10,7 +10,7 @@ const PrivateRoutes = () => {
   if (authToken) {
     user = verifyUser();
   }
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  return user ? <Outlet /> : <Navigate replace to="/login" />;
 };
 
 export default PrivateRoutes;

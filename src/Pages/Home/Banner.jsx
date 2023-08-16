@@ -59,17 +59,12 @@ function Banner() {
           component={NavLink}
           to="/portal"
           variant="contained"
+          color="secondary"
           sx={{
-            fontSize: { xs: 15, md: 20 },
-            color: "black",
-            ":hover": {
-              background: "linear-gradient(90deg, #FC466B 0%, #3F5EFB 100%);",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            },
+            fontSize: { xs: 12, md: 15 },
           }}
         >
-          Try COSAP Now
+          Go to Platform
         </Button>
       </Box>
     </Box>
