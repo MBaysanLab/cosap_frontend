@@ -7,8 +7,8 @@ import ProjectList from "../ProjectList";
 import Dashboard from "../Dashboard";
 import CreateProject from "../CreateProject";
 import ProjectDetail from "../ProjectDetail";
-import PortalTabs from "../PortalTabs";
-import ChangePassword from "../../Auth/ChangePasswordForm";
+import PortalContent from "../PortalContent";
+import ChangePassword from "../../Auth/AuthChangePassword";
 
 const menuPages = {
   Dashboard: <Dashboard />,
@@ -19,7 +19,7 @@ const menuPages = {
 function PortalRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<PortalTabs />}>
+      <Route path="/" element={<PortalContent />}>
         <Route index element={menuPages["Dashboard"]} />
         <Route path="projects" element={menuPages["Projects"]}>
           <Route index element={<ProjectList />} />

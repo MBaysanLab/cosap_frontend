@@ -1,23 +1,9 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
-import CircularProgress from "@mui/material/CircularProgress";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ScatterPlotIcon from "@mui/icons-material/ScatterPlot";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ProjectDetailHeaderItem from "./ProjectDetailHeaderItem";
-import { Complete, InProgress } from "./StatusIcons";
-
-const renderStatus = (params) => {
-  if (typeof params == "undefined") {
-    return <CircularProgress />;
-  }
-  switch (params) {
-    case "CO":
-      return <Complete />;
-    case "IP":
-      return <InProgress />;
-  }
-};
 
 function ProjectDetailHeader(props) {
   const data = props.data;
@@ -32,16 +18,13 @@ function ProjectDetailHeader(props) {
         flexWrap: "wrap",
         p: 3,
         background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
+        borderRadius: 3,
       }}
     >
       <ProjectDetailHeaderItem
         icon={<ScatterPlotIcon />}
         title="Project"
         content={data.name}
-      />
-      <ProjectDetailHeaderItem
-        title="Status"
-        content={renderStatus(data.status)}
       />
       <ProjectDetailHeaderItem
         icon={<GroupsIcon />}

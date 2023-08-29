@@ -1,128 +1,206 @@
+import { useState } from "react";
 import * as React from "react";
+import { useTheme } from "@mui/material/styles";
 import {
   Box,
-  Card,
-  CardContent,
-  Divider,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
   Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Stack,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import AuthLogin from "./AuthLogin";
-import Footer from "../../Components/Footer";
-import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
 
-const theme = createTheme({
-  palette: {
-    type: "light",
-    primary: {
-      main: "#ffffff",
-      dark: "#7896a6",
-    },
-    secondary: {
-      main: "#DE1E3D",
-    },
-    action: {
-      active: "#001E3C",
-    },
-    button: {
-      main: "#428A9C",
-    },
-    success: {
-      main: "#5be5a5",
-    },
-    progress: {
-      main: "#68d4e8",
-    },
-  },
-  typography: {
-    fontFamily: "Poppins",
-  },
-});
+import * as Yup from "yup";
+import { Formik } from "formik";
+import { Navigate } from "react-router-dom";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { loginFn, verifyUser } from "../../lib/auth";
 
-function Login() {
+const LoginForm = () => {
+  const theme = useTheme();
+  const [checked, setChecked] = useState(true);
+  const [user, setUser] = React.useState(null);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  React.useEffect(() => {
+    verifyUser().then((data) => {
+      setUser(data);
+    });
+  }, []);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  async function handleSubmit(values, { setErrors }) {
+    {
+      loginFn(values)
+        .then(() => {
+          setUser(true);
+        })
+        .catch((err) => {
+          setErrors({ password: "Invalid Username/Password" });
+        });
+    }
+  }
+
+  if (user) {
+    return <Navigate replace to="/portal" />;
+  }
   return (
-    <ThemeProvider theme={theme}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        flexDirection="column"
-        sx={{ minHeight: "100vh" }}
-      >
-        <Box display="flex" justifyContent="center" flexDirection="column">
-          <Box
-            display="flex"
-            justifyContent="center"
-            flexDirection="row"
-            sx={{
-              height: { xs: "calc(100vh - 130px)", md: "calc(90vh - 130px)" },
-              mt: { xs: 0, md: "10vh" },
-            }}
-          >
-            <Card
-              variant="outlined"
-              sx={{
-                maxHeight: { xs: "100vh", md: "60vh" },
-                maxWidth: { xs: "100vw", md: "40vw" },
-              }}
-            >
-              <CardContent sx={{ m: { xs: 1, sm: 3 }, mb: 30 }}>
-                <Grid
-                  container
-                  spacing={2}
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item sx={{ mb: 3 }}>
-                    <Box sx={{ width: "30px", height: "30px" }}>
-                      <BannerSVG />
-                    </Box>
-                  </Grid>
-                  <Grid item sx={{ mb: 3 }}>
-                    <Typography
-                      variant="h4"
-                      noWrap
-                      component="div"
-                      sx={{ display: { md: "flex" } }}
-                    >
-                      Login
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <AuthLogin />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid
-                      item
-                      container
-                      direction="column"
-                      alignItems="center"
-                      xs={12}
-                    >
-                      <Typography
-                        component={Link}
-                        to="/register"
-                        variant="subtitle1"
-                        color="black"
-                      >
-                        Don&apos;t have an account?
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
+    <>
+      <Grid container direction="column" justifyContent="center">
+        <Grid
+          item
+          xs={12}
+          container
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="subtitle1">
+              Sign in with Email address
+            </Typography>
           </Box>
-        </Box>
-        <Box>
-          <Footer />
-        </Box>
-      </Box>
-    </ThemeProvider>
+        </Grid>
+      </Grid>
+
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+          submit: null,
+        }}
+        validationSchema={Yup.object().shape({
+          email: Yup.string()
+            .email("Must be a valid email")
+            .max(255)
+            .required("Email is required"),
+          password: Yup.string().max(255).required("Password is required"),
+        })}
+        onSubmit={handleSubmit}
+      >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          touched,
+          values,
+        }) => (
+          <form noValidate onSubmit={handleSubmit}>
+            <FormControl
+              fullWidth
+              error={Boolean(touched.email && errors.email)}
+              sx={{ mb: 3 }}
+            >
+              <InputLabel color="button">Email Address</InputLabel>
+              <OutlinedInput
+                type="email"
+                value={values.email}
+                name="email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                label="Email Address"
+                inputProps={{}}
+              />
+              {touched.email && errors.email && (
+                <FormHelperText error>{errors.email}</FormHelperText>
+              )}
+            </FormControl>
+
+            <FormControl
+              fullWidth
+              error={Boolean(touched.password && errors.password)}
+              sx={{ ...theme.typography.customInput }}
+            >
+              <InputLabel color="button">Password</InputLabel>
+              <OutlinedInput
+                type={showPassword ? "text" : "password"}
+                value={values.password}
+                name="password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      size="large"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+                inputProps={{}}
+              />
+              {touched.password && errors.password && (
+                <FormHelperText error>{errors.password}</FormHelperText>
+              )}
+            </FormControl>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              spacing={1}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checked}
+                    onChange={(event) => setChecked(event.target.checked)}
+                    name="checked"
+                    color="secondary"
+                  />
+                }
+                label="Remember me"
+              />
+              <Typography
+                variant="subtitle2"
+                sx={{ textDecoration: "none", cursor: "pointer" }}
+              >
+                Forgot Password?
+              </Typography>
+            </Stack>
+            {errors.submit && (
+              <Box sx={{ mt: 2 }}>
+                <FormHelperText error>{errors.submit}</FormHelperText>
+              </Box>
+            )}
+
+            <Box sx={{ mt: 1 }}>
+              <Button
+                disableElevation
+                fullWidth
+                variant="contained"
+                size="large"
+                type="submit"
+                color="secondary"
+              >
+                Sign in
+              </Button>
+            </Box>
+          </form>
+        )}
+      </Formik>
+    </>
   );
-}
-export default Login;
+};
+
+export default LoginForm;

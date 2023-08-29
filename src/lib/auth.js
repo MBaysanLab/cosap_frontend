@@ -1,5 +1,6 @@
 import storage from "../utils/storage";
 import { getUser, loginWithEmail, registerWithEmail } from "../apis";
+import { faker } from "@faker-js/faker";
 
 export async function loginFn(data) {
   const response = await loginWithEmail(data);
@@ -24,4 +25,15 @@ export async function verifyUser() {
     return response.status === 200 ? response.data : null;
   }
   return null;
+}
+
+export async function demoLogin() {
+  const response = await registerWithEmail({
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    first_name: "AnonymousUser",
+    last_name: "Guest",
+  });
+  storage.setToken(response.data.token);
+  return response;
 }

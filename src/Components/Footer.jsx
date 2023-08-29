@@ -1,12 +1,12 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
 function Footer() {
   const styles = {
-    minHeight: "130px",
+    minHeight: "100px",
     background: "#ffffff",
     marginLeft: "0",
   };
@@ -19,9 +19,9 @@ function Footer() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <center>
-                <Typography variant="subtitle1" sx={{ color: "black" }}>
+                <Link href="/" variant="subtitle1" sx={{ color: "black" }}>
                   CosapSEQ&copy; {year}
-                </Typography>
+                </Link>
               </center>
             </Grid>
           </Grid>

@@ -52,9 +52,11 @@ function ProjectList(props) {
     }
   };
   React.useEffect(() => {
-    getProjects().then((res) => {
-      handleProjectData(res.data);
-    });
+    getProjects()
+      .then((res) => {
+        handleProjectData(res.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -62,6 +64,7 @@ function ProjectList(props) {
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
+            noRowsOverlay={<div>No projects found</div>}
             columns={columns}
             rows={projects}
             hideFooter

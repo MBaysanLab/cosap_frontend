@@ -76,14 +76,39 @@ function ResultsTabs(props) {
                 },
               }}
               {...a11yProps(index)}
-              disabled={text === "Copy Number Variations"}
+              disabled={index === 1 || index === 2 || index === 3}
             />
           ))}
         </Tabs>
       </Box>
       <Box>
         <TabPanel value={activeMenu} index={0}>
-          <VariantList project_id={props.project_id} />
+          <VariantList
+            project_id={props.project_id}
+            variant_selector_function={props.variant_selector_function}
+            scroll_ref={props.scroll_ref}
+          />
+        </TabPanel>
+        <TabPanel value={activeMenu} index={1}>
+          <VariantList
+            project_id={props.project_id}
+            variant_selector_function={props.variant_selector_function}
+            scroll_ref={props.scroll_ref}
+          />
+        </TabPanel>
+        <TabPanel value={activeMenu} index={2}>
+          <VariantList
+            project_id={props.project_id}
+            variant_selector_function={props.variant_selector_function}
+            scroll_ref={props.scroll_ref}
+          />
+        </TabPanel>
+        <TabPanel value={activeMenu} index={3}>
+          <VariantList
+            project_id={props.project_id}
+            variant_selector_function={props.variant_selector_function}
+            scroll_ref={props.scroll_ref}
+          />
         </TabPanel>
       </Box>
     </>

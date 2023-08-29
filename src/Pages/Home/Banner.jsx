@@ -59,14 +59,12 @@ function Banner() {
           component={NavLink}
           to="/portal"
           variant="contained"
-          size="large"
+          color="secondary"
           sx={{
-            ":hover": {
-              background: "linear-gradient(to right, #bbd2c5, #536976);",
-            },
+            fontSize: { xs: 12, md: 15 },
           }}
         >
-          Go to the COSAP APP
+          Go to Platform
         </Button>
       </Box>
     </Box>

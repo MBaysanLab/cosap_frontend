@@ -23,7 +23,7 @@ function VariantStats(props) {
           # of SNPs
         </Typography>
         <Typography variant="h3" color="black">
-          {data.total_variants}
+          {data.number_of_variants}
         </Typography>
       </Box>
       <Divider
@@ -48,7 +48,9 @@ function VariantStats(props) {
           }}
         >
           <Tooltip title="Significant Variants">
-            <Typography color="black">{data.significant_variants}</Typography>
+            <Typography color="black">
+              {data.number_of_significant_variants}
+            </Typography>
           </Tooltip>
         </Box>
         <Box
@@ -60,7 +62,7 @@ function VariantStats(props) {
           }}
         >
           <Tooltip title="Uncertain Variants">
-            <Typography color="black">{data.uncertain_variants}</Typography>
+            <Typography color="black">{data.number_of_vus}</Typography>
           </Tooltip>
         </Box>
       </Box>
