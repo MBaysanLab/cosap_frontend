@@ -8,7 +8,7 @@ import Dashboard from "../Dashboard";
 import CreateProject from "../CreateProject";
 import ProjectDetail from "../ProjectDetail";
 import PortalContent from "../PortalContent";
-import ChangePassword from "../../Auth/ChangePasswordForm";
+import ChangePassword from "../../Auth/AuthChangePassword";
 
 const menuPages = {
   Dashboard: <Dashboard />,
