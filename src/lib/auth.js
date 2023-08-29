@@ -31,8 +31,8 @@ export async function demoLogin() {
   const response = await registerWithEmail({
     email: faker.internet.email(),
     password: faker.internet.password(),
-    first_name: "AnonymousUser",
-    last_name: "Guest",
+    first_name: "Guest",
+    last_name: "User",
   });
   storage.setToken(response.data.token);
   return response;
