@@ -39,7 +39,9 @@ function ActionsWidget() {
   const [actions, setProjects] = React.useState([]);
 
   React.useEffect(() => {
-    getUserActions().then((res) => setProjects(res.data));
+    getUserActions()
+      .then((res) => setProjects(res.data))
+      .catch((err) => console.log(err));
     return () => {
       setProjects([]);
     };

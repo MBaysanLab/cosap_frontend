@@ -43,9 +43,7 @@ function ProjectDetail() {
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <ProjectDetailHeader data={projectMetadata} />
       <Box>
-        <Typography variant="h6" color="secondary">
-          Summary
-        </Typography>
+        <Typography variant="h6">Summary</Typography>
         <Divider />
         <Box
           sx={{

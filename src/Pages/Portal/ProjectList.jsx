@@ -52,9 +52,11 @@ function ProjectList(props) {
     }
   };
   React.useEffect(() => {
-    getProjects().then((res) => {
-      handleProjectData(res.data);
-    });
+    getProjects()
+      .then((res) => {
+        handleProjectData(res.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (

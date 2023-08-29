@@ -31,9 +31,13 @@ function NavBar() {
 
   const navigate = useNavigate();
   React.useEffect(() => {
-    verifyUser().then((user) => {
-      setUser(user);
-    });
+    verifyUser()
+      .then((user) => {
+        setUser(user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const handleOpenNavMenu = (event) => {

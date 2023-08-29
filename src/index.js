@@ -5,7 +5,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import "@fontsource/poppins/400.css";
-import { Home, Login, Portal, Register } from "./Pages";
+import { AuthLanding, Home, Portal, Register } from "./Pages";
 import PrivateRoutes from "./utils/privateRoutes";
 
 // Sentry.init({
@@ -25,7 +25,7 @@ ReactDOM.render(
       <Route element={<PrivateRoutes />}>
         <Route path="/portal/*" element={<Portal />} />
       </Route>
-      <Route path="login" element={<Login />} />
+      <Route path="login" element={<AuthLanding />} />
       <Route path="register" element={<Register />} />
     </Routes>
   </Router>,
