@@ -9,6 +9,7 @@ import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
 import getProjectDetail from "../../apis/getProjectDetail";
 import DetailTabs from "./DetailTabs";
+import ProjectFileBrowser from "./FileExplorer";
 
 // import storage from "../../utils/storage";
 
@@ -50,7 +51,7 @@ function ProjectDetail() {
             display: "flex",
             justifyContent: "space-evenly",
             flexWrap: "wrap",
-            mt: 3,
+            mt: 1,
           }}
         >
           <CustomStats
@@ -69,6 +70,12 @@ function ProjectDetail() {
         </Box>
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
+        <Typography variant="h6">Files</Typography>
+        <Divider />
+        <ProjectFileBrowser project_id={id} />
+      </Box>
+      <Box sx={{ mt: { xs: 1, md: 3 } }}>
+        <Typography variant="h6">Results</Typography>
         <Divider />
         <ResultsTabs
           project_id={id}
@@ -77,7 +84,11 @@ function ProjectDetail() {
         />
       </Box>
       <Box ref={detailTabsRef} sx={{ mt: { xs: 1, md: 3 } }}>
-        <DetailTabs variant={activeVariant} bam_file={bamFile} />
+        <DetailTabs
+          variant={activeVariant}
+          bam_file={bamFile}
+          project_id={id}
+        />
       </Box>
       {/*  <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>  */}
     </Box>

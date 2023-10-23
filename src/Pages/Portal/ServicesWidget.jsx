@@ -9,11 +9,12 @@ function ServicesWidget(props) {
       <ServicesWidgetItem
         name="Somatic Variant Analysis"
         to="/portal/projects/create_project?type=SM"
-        description="SNVs, SVs, CNVs, MSI, Fusions and their annotations"
+        description="SNVs, SVs, CNVs, MSI, Fusions and their annotations. Implements the GATK Best Practices pipeline."
       />
       <ServicesWidgetItem
         name="Germline Variant Analysis"
         to="/portal/projects/create_project?type=GM"
+        description="SNVs, SVs and their annotations. Implements the GATK Best Practices pipeline."
       />
       <ServicesWidgetItem
         name="Comparative Variant Analysis with Customizable Pipeline"

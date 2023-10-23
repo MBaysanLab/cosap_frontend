@@ -7,6 +7,8 @@ import "./index.css";
 import "@fontsource/poppins/400.css";
 import { AuthLanding, Home, Portal, Register } from "./Pages";
 import PrivateRoutes from "./utils/privateRoutes";
+import { setChonkyDefaults } from "chonky";
+import { ChonkyIconFA } from "chonky-icon-fontawesome";
 
 // Sentry.init({
 //   dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -31,6 +33,8 @@ ReactDOM.render(
   </Router>,
   document.getElementById("root")
 );
+
+setChonkyDefaults({ iconComponent: ChonkyIconFA });
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

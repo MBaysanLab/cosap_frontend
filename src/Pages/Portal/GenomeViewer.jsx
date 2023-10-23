@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import igv from "../../../node_modules/igv/dist/igv.esm.min.js";
 import storage from "../../utils/storage";
 import { API_URL } from "../../config/index.js";
+import { Base64 } from "js-base64";
 
 function GenomeViewer(props) {
   const [IGVBrowser, setIGVBrowser] = React.useState(null);
@@ -20,6 +21,9 @@ function GenomeViewer(props) {
     return `${chrom}:${start}-${end}`;
   };
 
+  const bamUrl = Base64.encode("432_somatic_demo/calibrated_tumor_bwa2.bam");
+  const baiUrl = Base64.encode("432_somatic_demo/calibrated_tumor_bwa2.bai");
+
   const getTrack = () => {
     if (props.variant === null) {
       return [];
@@ -27,8 +31,8 @@ function GenomeViewer(props) {
       return [
         {
           name: "sample",
-          url: `${API_URL}/igv/calibrated_tumor_bwa2.bam`,
-          indexURL: `${API_URL}/igv/calibrated_tumor_bwa2.bai`,
+          url: `${API_URL}igv/${bamUrl}`,
+          indexURL: `${API_URL}igv/${baiUrl}`,
           format: "bam",
           // prettier-ignore
           headers: { "authorization": "token " + storage.getToken() },
@@ -53,7 +57,7 @@ function GenomeViewer(props) {
     }
   }, [props.variant]);
 
-  return <Box ref={igvRef} sx={{ mt: { xs: 1, md: 3 } }}></Box>;
+  return <Box ref={igvRef}></Box>;
 }
 
 export default GenomeViewer;

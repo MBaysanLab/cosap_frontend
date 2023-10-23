@@ -16,7 +16,7 @@ function ProjectDetailHeader(props) {
         display: "flex",
         justifyContent: "space-between",
         flexWrap: "wrap",
-        p: 3,
+        p: 1,
         background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
         borderRadius: 3,
       }}

@@ -22,7 +22,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
     </div>
   );
 }
@@ -86,7 +86,11 @@ function DetailTabs(props) {
           <DetailsTable variant={props.variant} />
         </TabPanel>
         <TabPanel value={activeMenu} index={2}>
-          <GenomeViewer variant={props.variant} bam_file={props.bam_file} />
+          <GenomeViewer
+            variant={props.variant}
+            bam_file={props.bam_file}
+            project_id={props.project_id}
+          />
         </TabPanel>
       </Box>
     </>

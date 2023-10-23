@@ -11,11 +11,26 @@ import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
 import { NavLink } from "react-router-dom";
 import { demoLogin, verifyUser } from "../../lib/auth";
 
+export function useIsMounted() {
+  const isMounted = React.useRef(false);
+
+  React.useEffect(() => {
+    isMounted.current = true;
+    return () => (isMounted.current = false);
+  }, []);
+
+  return isMounted;
+}
+
 function DemoLogin(props) {
+  const isMounted = useIsMounted();
   const [user, setUser] = React.useState(null);
+
   React.useEffect(() => {
     verifyUser().then((data) => {
-      setUser(data);
+      if (isMounted.current) {
+        setUser(data);
+      }
     });
   }, []);
 

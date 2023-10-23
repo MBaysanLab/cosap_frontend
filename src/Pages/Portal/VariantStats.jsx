@@ -22,7 +22,7 @@ function VariantStats(props) {
         <Typography fontSize={14} color="#6D6D6D">
           # of SNPs
         </Typography>
-        <Typography variant="h3" color="black">
+        <Typography variant="h5" color="black">
           {data.number_of_variants}
         </Typography>
       </Box>

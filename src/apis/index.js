@@ -10,3 +10,4 @@ export { default as registerWithEmail } from "./register";
 export { default as changePassword } from "./changePassword";
 export { controller as postFileController } from "./postFile";
 export { uploadProgressEvent as uploadProgressEvent } from "./postFile";
+export { default as getProjectFiles } from "./getProjectFiles";

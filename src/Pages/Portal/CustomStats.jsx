@@ -19,20 +19,22 @@ function CustomStats(props) {
   return (
     <Box
       sx={{
-        mb: { xs: 3, md: 1 },
-        p: 2,
+        p: 1,
         borderRadius: 3,
         background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
         display: "flex",
         justifyContent: "space-evenly",
+        alignItems: "center",
       }}
     >
-      <Box>
+      <Box
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
         <Typography fontSize={14} color="#6D6D6D">
           {props.title1}
         </Typography>
         <Typography
-          variant="h3"
+          variant="h5"
           sx={{
             float: "left",
           }}
@@ -51,7 +53,7 @@ function CustomStats(props) {
           {props.title2}
         </Typography>
         <Typography
-          variant="h3"
+          variant="h5"
           sx={{
             float: "right",
           }}

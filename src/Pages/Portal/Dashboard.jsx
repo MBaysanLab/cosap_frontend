@@ -23,7 +23,7 @@ function Dashboard() {
       <Grid item xs={12} md={5}>
         <Card raised sx={{ p: { xs: 1, md: 3 } }}>
           <Box sx={{ display: "flex", justifyContent: "center", pb: 2 }}>
-            <Typography variant="h5">Services</Typography>
+            <Typography variant="h5">Workflows</Typography>
           </Box>
           <Divider sx={{ mb: 3 }} />
           <Box>
