@@ -11,34 +11,38 @@ const downloadFile = async (decodedUrl, fileName) => {
     headers: {
       Authorization: `Token ${token}`,
     },
-  }).then((response) => {
-    if (!window.WritableStream) {
-      streamSaver.WritableStream = WritableStream;
-      window.WritableStream = WritableStream;
-    }
+  })
+    .then((response) => {
+      if (!window.WritableStream) {
+        streamSaver.WritableStream = WritableStream;
+        window.WritableStream = WritableStream;
+      }
 
-    const fileStream = streamSaver.createWriteStream(fileName);
-    const readableStream = response.body;
+      const fileStream = streamSaver.createWriteStream(fileName);
+      const readableStream = response.body;
 
-    // More optimized
-    if (readableStream.pipeTo) {
-      return readableStream.pipeTo(fileStream);
-    }
+      // More optimized
+      if (readableStream.pipeTo) {
+        return readableStream.pipeTo(fileStream);
+      }
 
-    window.writer = fileStream.getWriter();
+      window.writer = fileStream.getWriter();
 
-    const reader = readableStream.getReader();
-    const pump = () =>
-      reader
-        .read()
-        .then((res) =>
-          res.done
-            ? window.writer.close()
-            : window.writer.write(res.value).then(pump)
-        );
+      const reader = readableStream.getReader();
+      const pump = () =>
+        reader
+          .read()
+          .then((res) =>
+            res.done
+              ? window.writer.close()
+              : window.writer.write(res.value).then(pump)
+          );
 
-    pump();
-  });
+      pump();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export default downloadFile;

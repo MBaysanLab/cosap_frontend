@@ -2,18 +2,17 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import {
   ChonkyActions,
-  FileBrowser as FileBrowser,
+  FileBrowser as ChonkyFileBrowser,
   FileContextMenu,
   FileHelper,
   FileList,
   FileNavbar,
 } from "chonky";
-import getProjectFiles from "../../apis/getProjectFiles";
 import downloadFile from "../../apis/downloadFile";
 import { Base64 } from "js-base64";
 import { ThemeProvider } from "@material-ui/core/";
 
-function ProjectFileBrowser(props) {
+function FileBrowser(props) {
   const useFiles = (currentFolderId, fileMap) => {
     return React.useMemo(() => {
       if (!fileMap || !currentFolderId || !fileMap[currentFolderId]) return [];
@@ -78,14 +77,10 @@ function ProjectFileBrowser(props) {
   const handleFileAction = useFileActionHandler(setCurrentFolderId);
 
   React.useEffect(() => {
-    getProjectFiles(props.project_id).then((res) => {
-      setFileMap(res.data.file_map);
-      if (!currentFolderId || currentFolderId === "")
-        setCurrentFolderId(res.data.root_folder_id);
-      else if (!res.data.fileMap[currentFolderId])
-        setCurrentFolderId(res.data.root_folder_id);
-    });
-  }, []);
+    setFileMap(props.fileMap);
+    if (!currentFolderId || currentFolderId === "")
+      setCurrentFolderId(props.rootFolderId);
+  }, [props]);
 
   return (
     // The ThemeProvider is to fix jss collision between mui and chonky.
@@ -94,7 +89,7 @@ function ProjectFileBrowser(props) {
       <Box sx={{ height: { xs: "100px", md: "200px" }, width: "100%", mt: 1 }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
-            <FileBrowser
+            <ChonkyFileBrowser
               files={files}
               folderChain={folderChain}
               onFileAction={handleFileAction}
@@ -105,7 +100,7 @@ function ProjectFileBrowser(props) {
               <FileNavbar />
               <FileList />
               <FileContextMenu />
-            </FileBrowser>
+            </ChonkyFileBrowser>
           </Box>
         </Box>
       </Box>
@@ -113,4 +108,4 @@ function ProjectFileBrowser(props) {
   );
 }
 
-export default ProjectFileBrowser;
+export default FileBrowser;

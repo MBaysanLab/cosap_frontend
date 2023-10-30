@@ -1,36 +1,60 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
+import ReplayIcon from "@mui/icons-material/Replay";
+import Tooltip from "@mui/material/Tooltip";
 
 import { Complete, Failed, InProgress, Pending } from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
-
-const columns = [
-  { field: "name", headerName: "Project Name", flex: 1 },
-  { field: "created_at", headerName: "Time", flex: 0.4 },
-  {
-    field: "status",
-    headerName: "Status",
-    flex: 0.3,
-    align: "center",
-    renderCell: (params) => {
-      switch (params.value) {
-        case "completed":
-          return <Complete />;
-        case "in_progress":
-          return <InProgress />;
-        case "pending":
-          return <Pending />;
-        case "failed":
-          return <Failed />;
-      }
-    },
-  },
-  { field: "collaborators", headerName: "Collaborators", flex: 0.5 },
-];
+import postReRun from "../../apis/postReRun";
 
 function ProjectList(props) {
+  const columns = [
+    { field: "name", headerName: "Project Name", flex: 1 },
+    { field: "created_at", headerName: "Time", flex: 0.4 },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 0.3,
+      align: "center",
+      renderCell: (params) => {
+        switch (params.value) {
+          case "completed":
+            return <Complete />;
+          case "in_progress":
+            return <InProgress />;
+          case "pending":
+            return <Pending />;
+          case "failed":
+            return <Failed />;
+        }
+      },
+    },
+    { field: "collaborators", headerName: "Collaborators", flex: 0.5 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 75,
+      align: "center",
+      renderCell: (params) => (
+        <Tooltip title="Re-run">
+          <IconButton
+            aria-label="delete"
+            onClick={() => handleAction(params.row.id)}
+          >
+            <ReplayIcon />
+          </IconButton>
+        </Tooltip>
+      ),
+    },
+  ];
+
+  const handleAction = (id) => {
+    postReRun(id);
+  };
+
   const [projects, setProjects] = React.useState([]);
   const navigate = useNavigate();
   const handleOnClick = React.useCallback((params) => {
@@ -52,9 +76,13 @@ function ProjectList(props) {
     }
   };
   React.useEffect(() => {
-    getProjects().then((res) => {
-      handleProjectData(res.data);
-    });
+    getProjects()
+      .then((res) => {
+        handleProjectData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (

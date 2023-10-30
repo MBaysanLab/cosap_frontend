@@ -21,8 +21,12 @@ export async function logoutFn() {
 
 export async function verifyUser() {
   if (storage.getToken()) {
-    const response = await getUser();
-    return response.status === 200 ? response.data : null;
+    try {
+      const response = await getUser();
+      return response.status === 200 ? response.data : null;
+    } catch (error) {
+      storage.clearToken();
+    }
   }
   return null;
 }

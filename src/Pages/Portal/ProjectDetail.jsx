@@ -9,7 +9,8 @@ import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
 import getProjectDetail from "../../apis/getProjectDetail";
 import DetailTabs from "./DetailTabs";
-import ProjectFileBrowser from "./FileExplorer";
+import FileBrowser from "./FileBrowser";
+import getProjectFiles from "../../apis/getProjectFiles";
 
 // import storage from "../../utils/storage";
 
@@ -18,11 +19,14 @@ function ProjectDetail() {
   const [activeVariant, setActiveVariant] = React.useState(null);
   const [projectSummary, setProjectSummary] = React.useState({});
   const [bamFile, setBamFile] = React.useState(null);
+  const [projectFileMap, setProjectFileMap] = React.useState(null);
+  const [rootFolderId, setRootFolderId] = React.useState(null);
 
   const detailTabsRef = React.useRef(null);
 
   const { id } = useParams();
   React.useEffect(() => {
+    // Get metadata and summary
     getProjectDetail(id).then(
       (res) => (
         setMetadata(res.data.metadata),
@@ -30,6 +34,12 @@ function ProjectDetail() {
         setBamFile(res.data.bam_file)
       )
     );
+
+    // Get project files
+    getProjectFiles(id).then((res) => {
+      setProjectFileMap(res.data.file_map);
+      setRootFolderId(res.data.root_folder_id);
+    });
   }, []);
 
   const selectVariant = (variant) => {
@@ -72,7 +82,7 @@ function ProjectDetail() {
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6">Files</Typography>
         <Divider />
-        <ProjectFileBrowser project_id={id} />
+        <FileBrowser fileMap={projectFileMap} rootFolderId={rootFolderId} />
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6">Results</Typography>

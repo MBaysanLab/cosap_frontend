@@ -8,9 +8,10 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import WarningIcon from "@mui/icons-material/Warning";
 import { useNavigate, useSearchParams } from "react-router-dom";
-const FileUpload = React.lazy(() => import("./FileUpload.jsx"));
+const FileSelectUpload = React.lazy(() => import("./FileSelectUpload.jsx"));
 import AlgorithmSelector from "./AlgorithmSelector";
 import postProject from "../../apis/postProject.js";
+import getFiles from "../../apis/getFiles";
 
 // Predifened values for algorithms
 const mappers = ["BWA2", "BWA", "Bowtie2"];
@@ -43,9 +44,34 @@ function CreateProject(props) {
   const [numberOfAddedFiles, setNumberOfAddedFiles] = React.useState(0);
   const [FileUploadAlert, setFileUploadAlert] = React.useState(false);
   const [projectNameAlert, setProjectNameAlert] = React.useState(false);
+  const [selectedNormalFiles, setSelectedNormalFiles] = React.useState([]);
+  const [selectedTumorFiles, setSelectedTumorFiles] = React.useState([]);
+  const [selectedBedFiles, setSelectedBedFiles] = React.useState([]);
+
+  // States that stores previously uploaded files
+  const [previousNormalFiles, setPreviousNormalFiles] = React.useState({});
+  const [previousTumorFiles, setPreviousTumorFiles] = React.useState({});
+  const [previousBedFiles, setPreviousBedFiles] = React.useState({});
+
+  const [fileUploadCompleteCount, setFileUploadCompleteCount] =
+    React.useState(0);
+
   const navigate = useNavigate();
 
   const projectType = searchParams.get("type");
+
+  // Get previously uploaded files
+  React.useEffect(() => {
+    getFiles("sample_type", "normal").then((response) => {
+      setPreviousNormalFiles(response.data);
+    });
+    getFiles("sample_type", "tumor").then((response) => {
+      setPreviousTumorFiles(response.data);
+    });
+    getFiles("file_type", "bed").then((response) => {
+      setPreviousBedFiles(response.data);
+    });
+  }, []);
 
   // Set predifened values for algorithms
   const [inputs, setInputs] = React.useState({
@@ -71,39 +97,66 @@ function CreateProject(props) {
 
     // Check if any files are added
     if (numberOfAddedFiles < 1) {
-      setFileUploadAlert(true);
-      return;
+      if (selectedNormalFiles.length < 1 && selectedTumorFiles.length < 1) {
+        setFileUploadAlert(true);
+        return;
+      }
     }
 
     // Create form data
     const formData = new FormData();
 
-    // Process files
-    const tumorUploadPromise = tumorFileUploader.processFiles();
-    const normalUploadPromise = normalFileUploader.processFiles();
-    const bedUploadPromise = bedFileUploader.processFiles();
-
     // Wait for files to be uploaded
-    await tumorUploadPromise.then((files) => {
-      formData.append(
-        "tumor_files",
-        JSON.stringify(files.map((file) => file.serverId))
-      );
-    });
+    if (selectedTumorFiles.length > 0) {
+      formData.append("tumor_files", JSON.stringify(selectedTumorFiles));
+    } else {
+      // Tumor file uploader is not available for germline projects (GM)
+      if (tumorFileUploader) {
+        try {
+          const tumorFiles = await tumorFileUploader.processFiles();
+          formData.append(
+            "tumor_files",
+            JSON.stringify(tumorFiles.map((file) => file.serverId))
+          );
+          setFileUploadCompleteCount(fileUploadCompleteCount + 1);
+        } catch (error) {
+          console.error(error);
+          return;
+        }
+      }
+    }
 
-    await normalUploadPromise.then((files) => {
-      formData.append(
-        "normal_files",
-        JSON.stringify(files.map((file) => file.serverId))
-      );
-    });
+    if (selectedNormalFiles.length > 0) {
+      formData.append("normal_files", JSON.stringify(selectedNormalFiles));
+    } else {
+      try {
+        const normalFiles = await normalFileUploader.processFiles();
+        formData.append(
+          "normal_files",
+          JSON.stringify(normalFiles.map((file) => file.serverId))
+        );
+        setFileUploadCompleteCount(fileUploadCompleteCount + 1);
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    }
 
-    await bedUploadPromise.then((files) => {
-      formData.append(
-        "bed_files",
-        JSON.stringify(files.map((file) => file.serverId))
-      );
-    });
+    if (selectedBedFiles.length > 0) {
+      formData.append("bed_files", JSON.stringify(selectedBedFiles));
+    } else {
+      try {
+        const bedFiles = await bedFileUploader.processFiles();
+        formData.append(
+          "bed_files",
+          JSON.stringify(bedFiles.map((file) => file.serverId))
+        );
+        setFileUploadCompleteCount(fileUploadCompleteCount + 1);
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    }
 
     const algorithmDict = {};
     for (const key in inputs) {
@@ -117,12 +170,21 @@ function CreateProject(props) {
     }
     formData.append("algorithms", JSON.stringify(algorithmDict));
 
+    if (fileUploadCompleteCount == numberOfAddedFiles) {
+      console.error("File upload is not complete");
+      return;
+    }
+
     // Post project to backend and redirect to project page
-    postProject(formData).then((response) => {
-      if (response.status == "201") {
-        navigate("../");
-      }
-    });
+    postProject(formData)
+      .then((response) => {
+        if (response.status == "201") {
+          navigate("../");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleAddFile = () => {
@@ -175,14 +237,14 @@ function CreateProject(props) {
         ) : null}
         {FileUploadAlert ? (
           <Alert severity="error" sx={{ mt: 3 }}>
-            Please upload at least one sample.
+            Please upload or select at least one sample.
           </Alert>
         ) : null}
       </Box>
       <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}>
         <React.Suspense fallback={<div>Loading...</div>}>
           <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
-            <FileUpload
+            <FileSelectUpload
               refSetter={setNormalFileUploader}
               title="Normal Samples"
               allowMultiple={true}
@@ -190,6 +252,8 @@ function CreateProject(props) {
               onAddfile={handleAddFile}
               onRemoveFile={handleRemoveFile}
               maxFiles={2}
+              fileSetter={setSelectedNormalFiles}
+              previousFiles={previousNormalFiles}
             />
           </Box>
           {projectType === "SM" || projectType === "COMP" ? (
@@ -201,13 +265,15 @@ function CreateProject(props) {
                 ml: { xs: 0, md: 3 },
               }}
             >
-              <FileUpload
+              <FileSelectUpload
                 refSetter={setTumorFileUploader}
                 title="Tumor Samples"
                 allowMultiple={true}
                 sampleType="TUMOR"
                 onAddfile={handleAddFile}
                 onRemoveFile={handleRemoveFile}
+                fileSetter={setSelectedTumorFiles}
+                previousFiles={previousTumorFiles}
               />
             </Box>
           ) : null}
@@ -219,7 +285,7 @@ function CreateProject(props) {
               ml: { xs: 0, md: 3 },
             }}
           >
-            <FileUpload
+            <FileSelectUpload
               refSetter={setBedFileUploader}
               title="BED File"
               tooltip={
@@ -230,6 +296,8 @@ function CreateProject(props) {
               allowMultiple={false}
               onAddfile={handleAddFile}
               onRemoveFile={handleRemoveFile}
+              fileSetter={setSelectedBedFiles}
+              previousFiles={previousBedFiles}
             />
           </Box>
         </React.Suspense>
