@@ -21,8 +21,12 @@ function GenomeViewer(props) {
     return `${chrom}:${start}-${end}`;
   };
 
-  const bamUrl = Base64.encode("432_somatic_demo/calibrated_tumor_bwa2.bam");
-  const baiUrl = Base64.encode("432_somatic_demo/calibrated_tumor_bwa2.bai");
+  const bamUrl = Base64.encode(
+    "1_arif0241@hotmail.com/13_somatic_test/CALIBRATED_BAM/calibrated_NORMAL_BWA2.bam"
+  );
+  const baiUrl = Base64.encode(
+    "1_arif0241@hotmail.com/13_somatic_test/CALIBRATED_BAM/calibrated_NORMAL_BWA2.bai"
+  );
 
   const getTrack = () => {
     if (props.variant === null) {

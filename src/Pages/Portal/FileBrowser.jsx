@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import {
   ChonkyActions,
   FileBrowser as ChonkyFileBrowser,
+  ChonkyIconName,
+  defineFileAction,
   FileContextMenu,
   FileHelper,
   FileList,
@@ -13,6 +15,19 @@ import { Base64 } from "js-base64";
 import { ThemeProvider } from "@material-ui/core/";
 
 function FileBrowser(props) {
+  const openInDocViewer = defineFileAction({
+    id: "open-in-doc-viewer",
+    button: {
+      name: "Open in Document Viewer",
+      toolbar: true,
+      contextMenu: true,
+      icon: ChonkyIconName.pdf,
+    },
+    fileFilter: (file) => !FileHelper.isDirectory(file),
+    requiresSelection: true,
+    hotkeys: ["enter"],
+  });
+
   const useFiles = (currentFolderId, fileMap) => {
     return React.useMemo(() => {
       if (!fileMap || !currentFolderId || !fileMap[currentFolderId]) return [];
@@ -63,13 +78,26 @@ function FileBrowser(props) {
             const pathEncoded = Base64.encode(files[i].path);
             downloadFile(pathEncoded, files[i].name);
           }
+        } else if (data.id === openInDocViewer.id) {
+          const files = data.state.selectedFiles;
+          for (let i = 0; i < files.length; i++) {
+            props.modalFileNameSetter(files[i].name);
+            props.docViewModalOpenSetter(true);
+            const pathEncoded = Base64.encode(files[i].path);
+            props.docViewUriSetter(pathEncoded);
+          }
         }
       },
       [setCurrentFolderId]
     );
   };
 
-  const fileActions = [ChonkyActions.DownloadFiles];
+  const fileActions = [ChonkyActions.DownloadFiles, openInDocViewer];
+  const disabledFileActions = [
+    ChonkyActions.OpenSelection.id,
+    ChonkyActions.SelectAllFiles.id,
+    ChonkyActions.ClearSelection.id,
+  ];
   const [currentFolderId, setCurrentFolderId] = React.useState("");
   const [fileMap, setFileMap] = React.useState({});
   const files = useFiles(currentFolderId, fileMap);
@@ -86,7 +114,7 @@ function FileBrowser(props) {
     // The ThemeProvider is to fix jss collision between mui and chonky.
     // Its gonna give error but atleast doesnt mess up with the styling
     <ThemeProvider>
-      <Box sx={{ height: { xs: "100px", md: "200px" }, width: "100%", mt: 1 }}>
+      <Box sx={{ height: { xs: "100px", md: "250px" }, width: "100%", mt: 1 }}>
         <Box sx={{ display: "flex", height: "100%" }}>
           <Box sx={{ flexGrow: 1 }}>
             <ChonkyFileBrowser
@@ -96,6 +124,7 @@ function FileBrowser(props) {
               defaultFileViewActionId={ChonkyActions.EnableListView.id}
               disableDragAndDrop={true}
               fileActions={fileActions}
+              disableDefaultFileActions={disabledFileActions}
             >
               <FileNavbar />
               <FileList />

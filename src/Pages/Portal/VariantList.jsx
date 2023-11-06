@@ -29,9 +29,13 @@ function VariantList(props) {
   const [variants, setVariants] = React.useState([]);
   // const [selectedRows, setSelectedRows] = React.useState([]);
   React.useEffect(() => {
-    getVariants(props.project_id).then((res) => {
-      setVariants(res.data);
-    });
+    getVariants(props.project_id)
+      .then((res) => {
+        setVariants(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   // const handleButtonClick = () => {

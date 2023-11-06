@@ -16,7 +16,7 @@ import getFiles from "../../apis/getFiles";
 // Predifened values for algorithms
 const mappers = ["BWA2", "BWA", "Bowtie2"];
 const variantCallers = [
-  "Mutect2",
+  "Mutect",
   "Varscan2",
   "Strelka",
   "MuSe",

@@ -4,11 +4,13 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 import ReplayIcon from "@mui/icons-material/Replay";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 
 import { Complete, Failed, InProgress, Pending } from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
 import postReRun from "../../apis/postReRun";
+import postDeleteProject from "../../apis/postDeleteProject";
 
 function ProjectList(props) {
   const columns = [
@@ -39,20 +41,34 @@ function ProjectList(props) {
       width: 75,
       align: "center",
       renderCell: (params) => (
-        <Tooltip title="Re-run">
-          <IconButton
-            aria-label="delete"
-            onClick={() => handleAction(params.row.id)}
-          >
-            <ReplayIcon />
-          </IconButton>
-        </Tooltip>
+        <Box>
+          <Tooltip title="Re-run">
+            <IconButton
+              aria-label="delete"
+              onClick={() => handleRerun(params.row.id)}
+            >
+              <ReplayIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton
+              aria-label="delete"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
       ),
     },
   ];
 
-  const handleAction = (id) => {
+  const handleRerun = (id) => {
     postReRun(id);
+  };
+
+  const handleDelete = (id) => {
+    postDeleteProject(id);
   };
 
   const [projects, setProjects] = React.useState([]);

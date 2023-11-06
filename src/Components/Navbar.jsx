@@ -21,7 +21,10 @@ import { logoutFn, verifyUser } from "../lib/auth";
 import { GithubButton } from "../Components";
 import { deepOrange } from "@mui/material/colors";
 
-const pages = ["Home"];
+const pages = {
+  Home: "/",
+  Documentation: "https://docs.cosap.bio",
+};
 const settings = ["Change Password", "Logout"];
 
 function NavBar() {
@@ -106,7 +109,7 @@ function NavBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {Object.keys(pages).map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
@@ -114,12 +117,10 @@ function NavBar() {
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 0.2, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {Object.keys(pages).map((page) => (
               <Button
                 component={NavLink}
-                to={
-                  page == "Home" ? "/" : page.replace(/\s/g, "").toLowerCase()
-                }
+                to={pages[page]}
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{

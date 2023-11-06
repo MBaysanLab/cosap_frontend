@@ -11,6 +11,7 @@ import getProjectDetail from "../../apis/getProjectDetail";
 import DetailTabs from "./DetailTabs";
 import FileBrowser from "./FileBrowser";
 import getProjectFiles from "../../apis/getProjectFiles";
+import DocumentViewerModal from "./DocumentViewerModal";
 
 // import storage from "../../utils/storage";
 
@@ -21,25 +22,36 @@ function ProjectDetail() {
   const [bamFile, setBamFile] = React.useState(null);
   const [projectFileMap, setProjectFileMap] = React.useState(null);
   const [rootFolderId, setRootFolderId] = React.useState(null);
+  const [docViewerModalOpen, setDocViewerModalOpen] = React.useState(false);
+  const [docUri, setDocUri] = React.useState(null);
+  const [modalFileName, setModalFileName] = React.useState(null);
 
   const detailTabsRef = React.useRef(null);
 
   const { id } = useParams();
   React.useEffect(() => {
     // Get metadata and summary
-    getProjectDetail(id).then(
-      (res) => (
-        setMetadata(res.data.metadata),
-        setProjectSummary(res.data.summary),
-        setBamFile(res.data.bam_file)
+    getProjectDetail(id)
+      .then(
+        (res) => (
+          setMetadata(res.data.metadata),
+          setProjectSummary(res.data.summary),
+          setBamFile(res.data.bam_file)
+        )
       )
-    );
+      .catch((err) => {
+        console.log(err);
+      });
 
     // Get project files
-    getProjectFiles(id).then((res) => {
-      setProjectFileMap(res.data.file_map);
-      setRootFolderId(res.data.root_folder_id);
-    });
+    getProjectFiles(id)
+      .then((res) => {
+        setProjectFileMap(res.data.file_map);
+        setRootFolderId(res.data.root_folder_id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const selectVariant = (variant) => {
@@ -82,7 +94,19 @@ function ProjectDetail() {
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6">Files</Typography>
         <Divider />
-        <FileBrowser fileMap={projectFileMap} rootFolderId={rootFolderId} />
+        <FileBrowser
+          fileMap={projectFileMap}
+          rootFolderId={rootFolderId}
+          docViewModalOpenSetter={setDocViewerModalOpen}
+          docViewUriSetter={setDocUri}
+          modalFileNameSetter={setModalFileName}
+        />
+        <DocumentViewerModal
+          docUri={docUri}
+          open={docViewerModalOpen}
+          docViewModalOpenSetter={setDocViewerModalOpen}
+          fileName={modalFileName}
+        />
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6">Results</Typography>
