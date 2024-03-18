@@ -1,29 +1,98 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Grid,
+} from "@mui/material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
+import DetailTabls from "./DetailTabs";
 import getVariants from "../../apis/getVariants";
-// import getVariantReports from "../../apis/getVariantReports";
 
 const columns = [
   {
-    field: "classification",
-    headerName: "ACMG/AMP Classification",
+    field: "intervar_classification",
+    headerName: "ACMG Classification",
+    flex: 0.4,
+    renderCell: (params) => {
+      return <VariantSignificanceIcon classification={params.value} />;
+    },
+  },
+  {
+    field: "cancervar_classification",
+    headerName: "AMP Classification",
     flex: 0.4,
     renderCell: (params) => {
       return <VariantSignificanceIcon classification={params.value} />;
     },
   },
   { field: "gene_symbol", headerName: "Gene", flex: 0.2 },
+  { field: "location", headerName: "Position", flex: 0.3 },
   { field: "function", headerName: "Function", flex: 0.2 },
   {
     field: "clinvar_classification",
     headerName: "Clinvar Significance",
     flex: 0.4,
   },
-  { field: "location", headerName: "Position", flex: 0.3 },
 ];
+
+const VariantRow = (props) => {
+  console.log(props);
+  return (
+    <Accordion
+      elevation={3}
+      sx={{
+        borderRadius: "5px",
+        marginX: "5px",
+        marginTop: "10px",
+        width: "100%",
+        "&:before": {
+          display: "none",
+        },
+        "&.Mui-expanded": {
+          marginX: "5px",
+        },
+      }}
+    >
+      <AccordionSummary
+        expandIcon={<ArrowDropDownIcon />}
+        sx={{
+          minHeight: "70px",
+          padding: "0px",
+          "& .MuiAccordionSummary-content": {
+            margin: "0px",
+            height: "70px",
+          },
+        }}
+      >
+        <Grid container spacing={0} sx={{ height: "100%" }}>
+          <Grid item xs={1} sx={{ height: "100%" }}>
+            <VariantSignificanceIcon
+              classification={props.row.cancervar_classification}
+              type="amp"
+            />
+          </Grid>
+          <Grid item xs={1} sx={{ height: "100%" }}>
+            <VariantSignificanceIcon
+              classification={props.row.intervar_classification}
+              type="acmg"
+            />
+          </Grid>
+          <Grid item xs={2} sx={{ height: "100%" }}>
+            {props.row.gene_symbol || "N/A"}
+          </Grid>
+        </Grid>
+      </AccordionSummary>
+      <AccordionDetails>
+        <DetailTabls variant={props.row} />
+      </AccordionDetails>
+    </Accordion>
+  );
+};
 
 function VariantList(props) {
   const [variants, setVariants] = React.useState([]);
@@ -60,10 +129,13 @@ function VariantList(props) {
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
             // onSelectionModelChange={handleSelectionChange}
-            rowHeight={30}
-            checkboxSelection
+            headerHeight={0}
             columns={columns}
             rows={variants}
+            components={{
+              Row: VariantRow,
+              Header: () => null,
+            }}
             onRowClick={handleRowClick}
             disableSelectionOnClick
             initialState={{
@@ -73,20 +145,11 @@ function VariantList(props) {
             }}
             sx={{
               border: 0,
-              "& .MuiDataGrid-columnHeaderTitle": {
-                color: "black",
+              "& .MuiDataGrid-columnHeaders, & .MuiDataGrid-columnHeader": {
+                display: "none",
               },
-              "& .MuiDataGrid-cell": {
-                borderBottom: "none",
-              },
-              "& .MuiDataGrid-row": {
-                borderBottom: "1px solid #E0E0E0",
-              },
-              "& .MuiDataGrid-row.Mui-selected": {
-                backgroundColor: "#e4eced",
-              },
-              "& .MuiCheckbox-root.Mui-checked": {
-                color: "#3f51b5",
+              "& .MuiDataGrid-virtualScroller": {
+                marginTop: "0 !important",
               },
             }}
           />

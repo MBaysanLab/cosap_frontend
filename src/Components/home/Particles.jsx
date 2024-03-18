@@ -3,7 +3,7 @@ import { Particles } from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { loadCanvasMaskPlugin } from "tsparticles-plugin-canvas-mask";
 import * as React from "react";
-import "../assets/styles/styles.css";
+import "../../assets/styles/styles.css";
 
 const ParticlesComponent = () => {
   const particlesInit = useCallback(async (engine) => {

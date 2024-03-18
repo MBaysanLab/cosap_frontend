@@ -14,11 +14,16 @@ function GenomeViewer(props) {
       return;
     }
 
-    const { location } = props.variant;
-    const chrom = location.split(":")[0];
-    const start = parseInt(location.split(":")[1].split("-")[0]) - 30;
-    const end = parseInt(location.split(":")[1].split("-")[1]) + 30;
-    return `${chrom}:${start}-${end}`;
+    try {
+      const { location } = props.variant;
+      const chrom = location.split("_")[0];
+      const start = parseInt(location.split("_")[1]) - 30;
+      const end = parseInt(location.split("_")[1]) + 30;
+      return `${chrom}:${start}-${end}`;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   };
 
   const bamUrl = Base64.encode(

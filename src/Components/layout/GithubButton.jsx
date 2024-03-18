@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Typography } from "@mui/material";
-import { GITHUB_URL } from "../config";
-import GithubLogo from "../assets/images/github-mark.png";
+import { GITHUB_URL } from "../../config";
+import GithubLogo from "../../assets/images/github-mark.png";
 
 function GithubButton(props) {
   const handleClick = () => {

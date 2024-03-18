@@ -65,7 +65,7 @@ function PortalContent(props) {
         ref={tabsDivRef}
         sx={{
           height: isSmallScreen ? "100%" : "50vh",
-          width: { sm: "100%", md: "180px" },
+          width: { sm: "100%", md: "150px" },
           minWidth: "80px",
           backgroundImage:
             "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%);",
@@ -86,7 +86,7 @@ function PortalContent(props) {
           TabIndicatorProps={{
             style: {
               background: "#171A1E",
-              width: isMenuOpen ? 10 : 5,
+              width: isMenuOpen ? 8 : 5,
               transition: "all 0.1s ease",
             },
           }}

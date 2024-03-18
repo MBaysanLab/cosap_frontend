@@ -6,7 +6,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { API_URL } from "../../config";
 import storage from "../../utils/storage";
-import MultipleSelectChip from "../../Components/MultipleSelectChip";
+import MultipleSelectChip from "../../Components/projects/MultipleSelectChip";
 
 function FileSelectUpload(props) {
   const token = storage.getToken();

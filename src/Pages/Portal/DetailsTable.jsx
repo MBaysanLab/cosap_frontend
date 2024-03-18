@@ -1,5 +1,5 @@
 import React from "react";
-import TagList from "../../Components/Graph/Tag";
+import TagList from "../../Components/graph/Tag";
 
 function DetailsTable({ variantDetail: variant }) {
   if (Object.keys(variant).length === 0) {

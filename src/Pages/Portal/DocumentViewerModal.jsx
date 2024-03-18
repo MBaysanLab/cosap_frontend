@@ -1,32 +1,45 @@
 import React from "react";
 import { Backdrop, Fade, Modal } from "@material-ui/core";
 import { Box } from "@mui/material";
-// import { API_URL } from "../../config";
+import { API_URL } from "../../config";
 import storage from "../../utils/storage";
 
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
 export default function DocumentViewerModal(props) {
   const [open, setOpen] = React.useState(false);
+  const [fileUrl, setFileUrl] = React.useState(null);
+  const token = storage.getToken();
 
   React.useEffect(() => {
     setOpen(props.open);
+    // Fetch the file and create blob url
+    fetch(`${API_URL}file/${props.docUri}`, {
+      headers: {
+        authorization: `Token ${token}`,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        const url = URL.createObjectURL(blob);
+        setFileUrl(url);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [props.open]);
 
   const docs = [
     {
+      uri: fileUrl,
       fileName: props.fileName,
-      uri: require("../../assets/files/qualimapReport.pdf"),
+      fileType: "text/plain",
     },
   ];
 
   const handleClose = () => {
     setOpen(false);
     props.docViewModalOpenSetter(false);
-  };
-
-  const headers = {
-    Authorization: `Token ${storage.getToken()}`,
   };
 
   return (
@@ -55,11 +68,7 @@ export default function DocumentViewerModal(props) {
               height: "80%",
             }}
           >
-            <DocViewer
-              documents={docs}
-              pluginRenderers={DocViewerRenderers}
-              requestHeaders={headers}
-            />
+            <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} />
           </Box>
         </Fade>
       </Modal>

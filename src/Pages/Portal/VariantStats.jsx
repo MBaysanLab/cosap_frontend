@@ -11,9 +11,9 @@ function VariantStats(props) {
     <Box
       sx={{
         mb: { xs: 3, md: 1 },
-        p: 2,
-        borderRadius: 3,
-        background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
+        p: 1,
+        borderRadius: "4px",
+        background: "linear-gradient(45deg, #F2F2F2, #e7e7e7)",
         display: "flex",
         justifyContent: "space-evenly",
       }}
@@ -22,7 +22,7 @@ function VariantStats(props) {
         <Typography fontSize={14} color="#6D6D6D">
           # of SNPs
         </Typography>
-        <Typography variant="h5" color="black">
+        <Typography fontSize={16} color="black">
           {data.number_of_variants}
         </Typography>
       </Box>
@@ -48,7 +48,7 @@ function VariantStats(props) {
           }}
         >
           <Tooltip title="Significant Variants">
-            <Typography color="black">
+            <Typography color="black" fontSize={16}>
               {data.number_of_significant_variants}
             </Typography>
           </Tooltip>
@@ -62,7 +62,9 @@ function VariantStats(props) {
           }}
         >
           <Tooltip title="Uncertain Variants">
-            <Typography color="black">{data.number_of_vus}</Typography>
+            <Typography color="black" fontSize={16}>
+              {data.number_of_vus}
+            </Typography>
           </Tooltip>
         </Box>
       </Box>

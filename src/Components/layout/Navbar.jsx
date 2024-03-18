@@ -17,8 +17,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyIcon from "@mui/icons-material/Key";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { logoutFn, verifyUser } from "../lib/auth";
-import { GithubButton } from "../Components";
+import { logoutFn, verifyUser } from "../../lib/auth";
+import GithubButton from "./GithubButton";
 import { deepOrange } from "@mui/material/colors";
 
 const pages = {
@@ -146,8 +146,10 @@ function NavBar() {
               <Tooltip title="Open options">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar sx={{ bgcolor: deepOrange[400] }}>
-                    {user.first_name[0].toUpperCase() +
-                      user.last_name[0].toUpperCase()}
+                    {user.first_name
+                      ? user.first_name[0].toUpperCase() +
+                        user.last_name[0].toUpperCase()
+                      : user.email[0].toUpperCase()}
                   </Avatar>
                 </IconButton>
               </Tooltip>

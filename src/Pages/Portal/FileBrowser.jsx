@@ -82,9 +82,9 @@ function FileBrowser(props) {
           const files = data.state.selectedFiles;
           for (let i = 0; i < files.length; i++) {
             props.modalFileNameSetter(files[i].name);
-            props.docViewModalOpenSetter(true);
             const pathEncoded = Base64.encode(files[i].path);
             props.docViewUriSetter(pathEncoded);
+            props.docViewModalOpenSetter(true);
           }
         }
       },

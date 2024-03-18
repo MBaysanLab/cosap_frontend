@@ -53,24 +53,33 @@ function CreateProject(props) {
   const [previousTumorFiles, setPreviousTumorFiles] = React.useState({});
   const [previousBedFiles, setPreviousBedFiles] = React.useState({});
 
-  const [fileUploadCompleteCount, setFileUploadCompleteCount] =
-    React.useState(0);
-
   const navigate = useNavigate();
 
   const projectType = searchParams.get("type");
 
   // Get previously uploaded files
   React.useEffect(() => {
-    getFiles("sample_type", "normal").then((response) => {
-      setPreviousNormalFiles(response.data);
-    });
-    getFiles("sample_type", "tumor").then((response) => {
-      setPreviousTumorFiles(response.data);
-    });
-    getFiles("file_type", "bed").then((response) => {
-      setPreviousBedFiles(response.data);
-    });
+    getFiles("sample_type", "normal")
+      .then((response) => {
+        setPreviousNormalFiles(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    getFiles("sample_type", "tumor")
+      .then((response) => {
+        setPreviousTumorFiles(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    getFiles("file_type", "bed")
+      .then((response) => {
+        setPreviousBedFiles(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   // Set predifened values for algorithms
@@ -118,7 +127,6 @@ function CreateProject(props) {
             "tumor_files",
             JSON.stringify(tumorFiles.map((file) => file.serverId))
           );
-          setFileUploadCompleteCount(fileUploadCompleteCount + 1);
         } catch (error) {
           console.error(error);
           return;
@@ -135,7 +143,6 @@ function CreateProject(props) {
           "normal_files",
           JSON.stringify(normalFiles.map((file) => file.serverId))
         );
-        setFileUploadCompleteCount(fileUploadCompleteCount + 1);
       } catch (error) {
         console.error(error);
         return;
@@ -151,7 +158,6 @@ function CreateProject(props) {
           "bed_files",
           JSON.stringify(bedFiles.map((file) => file.serverId))
         );
-        setFileUploadCompleteCount(fileUploadCompleteCount + 1);
       } catch (error) {
         console.error(error);
         return;
@@ -169,11 +175,6 @@ function CreateProject(props) {
       }
     }
     formData.append("algorithms", JSON.stringify(algorithmDict));
-
-    if (fileUploadCompleteCount == numberOfAddedFiles) {
-      console.error("File upload is not complete");
-      return;
-    }
 
     // Post project to backend and redirect to project page
     postProject(formData)
@@ -298,6 +299,7 @@ function CreateProject(props) {
               onRemoveFile={handleRemoveFile}
               fileSetter={setSelectedBedFiles}
               previousFiles={previousBedFiles}
+              maxFiles={1}
             />
           </Box>
         </React.Suspense>

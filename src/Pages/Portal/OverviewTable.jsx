@@ -1,6 +1,6 @@
 import React from "react";
-import Depth from "../../Components/Graph/Depth";
-import AlleleFrequency from "../../Components/Graph/AlleleFrequency";
+import Depth from "../../Components/graph/Depth";
+import AlleleFrequency from "../../Components/graph/AlleleFrequency";
 import VariantDetails from "./VariantDetails";
 import { Box, Grid, Typography } from "@mui/material";
 import { Divider } from "@mui/material";
@@ -17,7 +17,7 @@ function OverviewTable(props) {
       container
       spacing={1}
       sx={{
-        background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
+        background: "linear-gradient(45deg, #F2F2F2, #e7e7e7)",
         borderRadius: 3,
       }}
     >

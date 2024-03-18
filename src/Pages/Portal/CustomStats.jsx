@@ -19,9 +19,9 @@ function CustomStats(props) {
   return (
     <Box
       sx={{
-        p: 1,
-        borderRadius: 3,
-        background: "linear-gradient(45deg, #F2F2F2, #D9D9D9)",
+        px: 1,
+        borderRadius: "4px",
+        background: "linear-gradient(45deg, #F2F2F2, #e7e7e7)",
         display: "flex",
         justifyContent: "space-evenly",
         alignItems: "center",
@@ -30,17 +30,17 @@ function CustomStats(props) {
       <Box
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
-        <Typography fontSize={14} color="#6D6D6D">
+        <Typography fontSize={13} color="#6D6D6D">
           {props.title1}
         </Typography>
         <Typography
-          variant="h5"
+          fontSize={16}
           sx={{
             float: "left",
           }}
           color={warn1 ? "#FF5656" : "black"}
         >
-          {data1 === "undefined" ? "-" : data1}
+          {data1 === null ? "-" : data1}
         </Typography>
       </Box>
       <Divider
@@ -49,17 +49,17 @@ function CustomStats(props) {
         sx={{ borderRightWidth: 1, background: "black", m: 1 }}
       />
       <Box>
-        <Typography fontSize={14} color="#6D6D6D">
+        <Typography fontSize={13} color="#6D6D6D">
           {props.title2}
         </Typography>
         <Typography
-          variant="h5"
+          fontSize={16}
           sx={{
             float: "right",
           }}
           color={warn2 ? "#FF5656" : "black"}
         >
-          {data2 === "undefined" ? "-" : data2}
+          {data2 === null ? "-" : data2}
         </Typography>
       </Box>
     </Box>

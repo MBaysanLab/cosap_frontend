@@ -18,10 +18,13 @@ function ProjectDetailHeaderItem(props) {
           pl: 1,
         }}
         color="#6D6D6D"
+        fontSize={"0.8rem"}
       >
         {props.title}:
       </Typography>
-      <Typography component={"span"}>{props.content}</Typography>
+      <Typography component={"span"} fontSize={"0.9rem"}>
+        {props.content}
+      </Typography>
     </Box>
   );
 }

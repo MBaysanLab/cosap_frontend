@@ -20,7 +20,7 @@ export function Complete() {
     >
       <CheckCircleOutlineOutlinedIcon htmlColor="green" />
       <Typography variant="body" sx={{ display: "inline", fontSize: 15 }}>
-        View Results
+        Completed
       </Typography>
     </Box>
   );

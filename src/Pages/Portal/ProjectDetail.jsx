@@ -77,19 +77,29 @@ function ProjectDetail() {
           }}
         >
           <CustomStats
-            data1={projectSummary.mapped_reads}
-            data2={projectSummary.mean_coverage}
+            data1={projectSummary ? projectSummary.mapped_reads : 0}
+            data2={projectSummary ? projectSummary.mean_coverage : 0}
             title1="Mapped Reads %"
             title2="Mean Coverage"
           />
           <CustomStats
-            data1={projectSummary.msi_score}
-            data2={projectSummary.cnv_count}
+            data1={projectSummary ? projectSummary.msi_score : 0}
+            data2={projectSummary ? projectSummary.cnv_count : 0}
             title1="MSI Score %"
             title2="# of CNV's"
           />
-          <VariantStats data={projectSummary} />
+          <VariantStats data={projectSummary ? projectSummary : {}} />
         </Box>
+      </Box>
+
+      <Box sx={{ mt: 1 }}>
+        <Typography variant="h6">Variants</Typography>
+        <Divider />
+        <ResultsTabs
+          project_id={id}
+          variant_selector_function={selectVariant}
+          scroll_ref={scrollToVariantDetail}
+        />
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6">Files</Typography>
@@ -106,15 +116,6 @@ function ProjectDetail() {
           open={docViewerModalOpen}
           docViewModalOpenSetter={setDocViewerModalOpen}
           fileName={modalFileName}
-        />
-      </Box>
-      <Box sx={{ mt: { xs: 1, md: 3 } }}>
-        <Typography variant="h6">Results</Typography>
-        <Divider />
-        <ResultsTabs
-          project_id={id}
-          variant_selector_function={selectVariant}
-          scroll_ref={scrollToVariantDetail}
         />
       </Box>
       <Box ref={detailTabsRef} sx={{ mt: { xs: 1, md: 3 } }}>

@@ -13,6 +13,7 @@ const downloadFile = async (decodedUrl, fileName) => {
     },
   })
     .then((response) => {
+      console.log(response);
       if (!window.WritableStream) {
         streamSaver.WritableStream = WritableStream;
         window.WritableStream = WritableStream;
