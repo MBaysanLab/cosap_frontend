@@ -86,11 +86,7 @@ function DetailTabs(props) {
           <DetailsTable variant={props.variant} />
         </TabPanel>
         <TabPanel value={activeMenu} index={2}>
-          <GenomeViewer
-            variant={props.variant}
-            bam_file={props.bam_file}
-            project_id={props.project_id}
-          />
+          <GenomeViewer variant={props.variant} bam_files={props.bam_files} />
         </TabPanel>
       </Box>
     </>

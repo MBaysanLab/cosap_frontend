@@ -14,6 +14,10 @@ import downloadFile from "../../apis/downloadFile";
 import { Base64 } from "js-base64";
 import { ThemeProvider } from "@material-ui/core/";
 
+function isVcfFile(file) {
+  return file.name.endsWith(".vcf") || file.name.endsWith(".vcf.gz");
+}
+
 function FileBrowser(props) {
   const openInDocViewer = defineFileAction({
     id: "open-in-doc-viewer",
@@ -26,6 +30,19 @@ function FileBrowser(props) {
     fileFilter: (file) => !FileHelper.isDirectory(file),
     requiresSelection: true,
     hotkeys: ["enter"],
+  });
+
+  const uplaodToFranklin = defineFileAction({
+    id: "upload-to-franklin",
+    button: {
+      name: "Upload to Franklin as a New Case",
+      toolbar: true,
+      contextMenu: true,
+      icon: ChonkyIconName.upload,
+    },
+    // Select only files with .vcf and vcf.gz extensions
+    fileFilter: (file) => isVcfFile(file),
+    requiresSelection: true,
   });
 
   const useFiles = (currentFolderId, fileMap) => {
@@ -86,13 +103,20 @@ function FileBrowser(props) {
             props.docViewUriSetter(pathEncoded);
             props.docViewModalOpenSetter(true);
           }
+        } else if (data.id === uplaodToFranklin.id) {
+          const files = data.state.selectedFiles;
+          for (let i = 0; i < files.length; i++) {
+            const pathEncoded = Base64.encode(files[i].path);
+            props.uploadToFranklinModalOpenSetter(true);
+            props.uploadToFranklinUriSetter(pathEncoded);
+          }
         }
       },
       [setCurrentFolderId]
     );
   };
 
-  const fileActions = [ChonkyActions.DownloadFiles, openInDocViewer];
+  const fileActions = [ChonkyActions.DownloadFiles, openInDocViewer, uplaodToFranklin];
   const disabledFileActions = [
     ChonkyActions.OpenSelection.id,
     ChonkyActions.SelectAllFiles.id,

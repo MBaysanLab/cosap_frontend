@@ -31,7 +31,7 @@ export function VariantSignificanceIcon(props) {
     } else if (props.type === "acmg") {
       // Intervar output is in the format "Pathogenic", no need to split the string
       setClassification(props.classification);
-      setSignificance("-");
+      setSignificance("");
     }
   });
 
@@ -59,10 +59,10 @@ export function VariantSignificanceIcon(props) {
         <Typography fontSize={"0.7rem"} color={"grey"}>
           {props.type.toUpperCase()}
         </Typography>
-        <Typography fontSize={"0.8rem"} color={"black"}>
+        <Typography fontSize={"0.8rem"} color={"black"} textAlign="center">
           {classification}
         </Typography>
-        <Typography fontSize={"0.7rem"} color={bgColor}>
+        <Typography fontSize={"0.7rem"} color={bgColor} textAlign="center">
           {significance}
         </Typography>
       </Box>

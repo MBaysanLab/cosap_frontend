@@ -28,14 +28,16 @@ function VarsomeButton(props) {
       sx={{
         marginTop: 1,
         marginBottom: 1,
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "#012A56",
+        "&:hover": {
+          backgroundColor: "#012A56",
+        },
       }}
       variant="outlined"
-      color="primary"
     >
       <Typography
         component="div"
-        color="black"
+        color="white"
         sx={{
           whiteSpace: "nowrap",
           fontSize: 12,
@@ -56,14 +58,17 @@ function FranklinButton(props) {
       sx={{
         marginTop: 1,
         marginBottom: 1,
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "#18244A",
+        "&:hover": {
+          backgroundColor: "#18244A",
+        },
       }}
       variant="outlined"
       color="primary"
     >
       <Typography
         component="div"
-        color="black"
+        color="white"
         sx={{
           whiteSpace: "nowrap",
           fontSize: 12,
@@ -139,10 +144,17 @@ function VariantDetails(props) {
             data={props.variant.clinvar}
             text_align="right"
           />
-          {/* Button to redirect Varsome variant page */}
-          <VarsomeButton onClick={handleVarsomeClick} />
-          {/* Button to redirect Franklin variant page */}
-          <FranklinButton onClick={handleFranklinClick} />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              flexDirection: "row",
+            }}
+          >
+            <VarsomeButton onClick={handleVarsomeClick} />
+            <Box sx={{ width: 10 }} />
+            <FranklinButton onClick={handleFranklinClick} />
+          </Box>
         </Box>
       </Grid>
     </Grid>

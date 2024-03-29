@@ -8,35 +8,61 @@ import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
 import getProjectDetail from "../../apis/getProjectDetail";
-import DetailTabs from "./DetailTabs";
 import FileBrowser from "./FileBrowser";
 import getProjectFiles from "../../apis/getProjectFiles";
 import DocumentViewerModal from "./DocumentViewerModal";
+import { extractAllFilesFromFileMap } from "../../utils/utils";
 
 // import storage from "../../utils/storage";
 
 function ProjectDetail() {
   const [projectMetadata, setMetadata] = React.useState({});
-  const [activeVariant, setActiveVariant] = React.useState(null);
   const [projectSummary, setProjectSummary] = React.useState({});
-  const [bamFile, setBamFile] = React.useState(null);
   const [projectFileMap, setProjectFileMap] = React.useState(null);
   const [rootFolderId, setRootFolderId] = React.useState(null);
   const [docViewerModalOpen, setDocViewerModalOpen] = React.useState(false);
   const [docUri, setDocUri] = React.useState(null);
   const [modalFileName, setModalFileName] = React.useState(null);
-
-  const detailTabsRef = React.useRef(null);
+  const [bamFiles, setBamFiles] = React.useState({});
 
   const { id } = useParams();
+
+  const extractBamFiles = (fileMap) => {
+    const bamFiles = {};
+    for (const file in fileMap) {
+      if (fileMap[file].name.endsWith(".bam")) {
+        bamFiles[fileMap[file].name] = {
+          bam: fileMap[file].path,
+        };
+      }
+    }
+
+    const fileMapValues = extractAllFilesFromFileMap(fileMap);
+    // Check if all bam files have a corresponding bai file filemap, if not remove the bam file since igv requires bam index
+    for (const bamFile in bamFiles) {
+      if (
+        fileMapValues.includes(bamFiles[bamFile].bam.replace(".bam", ".bai"))
+      ) {
+        bamFiles[bamFile]["bai"] = bamFiles[bamFile].bam.replace(
+          ".bam",
+          ".bai"
+        );
+      } else if (fileMapValues.includes(bamFiles[bamFile].bam + ".bai")) {
+        bamFiles[bamFile]["bai"] = bamFiles[bamFile].bam + ".bai";
+      } else {
+        delete bamFiles[bamFile];
+      }
+    }
+
+    return bamFiles;
+  };
+
   React.useEffect(() => {
     // Get metadata and summary
     getProjectDetail(id)
       .then(
         (res) => (
-          setMetadata(res.data.metadata),
-          setProjectSummary(res.data.summary),
-          setBamFile(res.data.bam_file)
+          setMetadata(res.data.metadata), setProjectSummary(res.data.summary)
         )
       )
       .catch((err) => {
@@ -54,13 +80,9 @@ function ProjectDetail() {
       });
   }, []);
 
-  const selectVariant = (variant) => {
-    setActiveVariant(variant);
-  };
-
-  const scrollToVariantDetail = () => {
-    detailTabsRef.current.scrollIntoView({ behavior: "smooth" });
-  };
+  React.useEffect(() => {
+    setBamFiles(extractBamFiles(projectFileMap));
+  }, [projectFileMap]);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -95,11 +117,7 @@ function ProjectDetail() {
       <Box sx={{ mt: 1 }}>
         <Typography variant="h6">Variants</Typography>
         <Divider />
-        <ResultsTabs
-          project_id={id}
-          variant_selector_function={selectVariant}
-          scroll_ref={scrollToVariantDetail}
-        />
+        <ResultsTabs project_id={id} bam_files={bamFiles} />
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6">Files</Typography>
@@ -116,13 +134,6 @@ function ProjectDetail() {
           open={docViewerModalOpen}
           docViewModalOpenSetter={setDocViewerModalOpen}
           fileName={modalFileName}
-        />
-      </Box>
-      <Box ref={detailTabsRef} sx={{ mt: { xs: 1, md: 3 } }}>
-        <DetailTabs
-          variant={activeVariant}
-          bam_file={bamFile}
-          project_id={id}
         />
       </Box>
       {/*  <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>  */}

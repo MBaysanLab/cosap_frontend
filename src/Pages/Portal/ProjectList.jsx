@@ -12,7 +12,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 
-import { Complete, Failed, InProgress, Pending } from "./StatusIcons";
+import { Complete, Failed, InProgress, Parsing, Pending } from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
 import postReRun from "../../apis/postReRun";
 import postDeleteProject from "../../apis/postDeleteProject";
@@ -20,6 +20,7 @@ import postDeleteProject from "../../apis/postDeleteProject";
 function ProjectList(props) {
   const columns = [
     { field: "name", headerName: "Project Name", flex: 1 },
+    { field: "project_type", headerName: "Type", flex: 0.3 },
     { field: "created_at", headerName: "Time", flex: 0.4 },
     {
       field: "status",
@@ -27,11 +28,13 @@ function ProjectList(props) {
       flex: 0.3,
       align: "center",
       renderCell: (params) => {
-        switch (params.value) {
+        switch (params.value.toLowerCase()) {
           case "completed":
             return <Complete />;
-          case "in_progress":
+          case "running":
             return <InProgress />;
+          case "parsing":
+            return <Parsing />;
           case "pending":
             return <Pending />;
           case "failed":
@@ -91,7 +94,7 @@ function ProjectList(props) {
       console.error(err);
     }
     // Force render the component
-    setProjects(projects);
+    setCounter(counter + 1);
   };
 
   const handleDelete = async (id) => {
@@ -105,10 +108,11 @@ function ProjectList(props) {
       console.error(err);
     }
     // Force render the component
-    setProjects(projects);
+    setCounter(counter + 1);
   };
 
   const [projects, setProjects] = React.useState([]);
+  const [counter, setCounter] = React.useState(0); // Used to force render the component
   const navigate = useNavigate();
 
   React.useEffect(() => {

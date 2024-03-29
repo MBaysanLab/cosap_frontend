@@ -1,17 +1,11 @@
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-} from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
-import DetailTabls from "./DetailTabs";
 import getVariants from "../../apis/getVariants";
+import VariantRow from "./ExpandableVariantRow";
+import { romanToInt } from "../../utils/utils";
 
 const columns = [
   {
@@ -29,6 +23,14 @@ const columns = [
     renderCell: (params) => {
       return <VariantSignificanceIcon classification={params.value} />;
     },
+
+    // The tier numbering is in roman numerals, so we need to convert it to a number
+    sortComparator: (v1, v2, cellParams1, cellParams2) => {
+      return (
+        romanToInt(v1.split("#")[1].split("_")[0]) -
+        romanToInt(v2.split("#")[1].split("_")[0])
+      );
+    },
   },
   { field: "gene_symbol", headerName: "Gene", flex: 0.2 },
   { field: "location", headerName: "Position", flex: 0.3 },
@@ -40,62 +42,9 @@ const columns = [
   },
 ];
 
-const VariantRow = (props) => {
-  console.log(props);
-  return (
-    <Accordion
-      elevation={3}
-      sx={{
-        borderRadius: "5px",
-        marginX: "5px",
-        marginTop: "10px",
-        width: "100%",
-        "&:before": {
-          display: "none",
-        },
-        "&.Mui-expanded": {
-          marginX: "5px",
-        },
-      }}
-    >
-      <AccordionSummary
-        expandIcon={<ArrowDropDownIcon />}
-        sx={{
-          minHeight: "70px",
-          padding: "0px",
-          "& .MuiAccordionSummary-content": {
-            margin: "0px",
-            height: "70px",
-          },
-        }}
-      >
-        <Grid container spacing={0} sx={{ height: "100%" }}>
-          <Grid item xs={1} sx={{ height: "100%" }}>
-            <VariantSignificanceIcon
-              classification={props.row.cancervar_classification}
-              type="amp"
-            />
-          </Grid>
-          <Grid item xs={1} sx={{ height: "100%" }}>
-            <VariantSignificanceIcon
-              classification={props.row.intervar_classification}
-              type="acmg"
-            />
-          </Grid>
-          <Grid item xs={2} sx={{ height: "100%" }}>
-            {props.row.gene_symbol || "N/A"}
-          </Grid>
-        </Grid>
-      </AccordionSummary>
-      <AccordionDetails>
-        <DetailTabls variant={props.row} />
-      </AccordionDetails>
-    </Accordion>
-  );
-};
-
 function VariantList(props) {
   const [variants, setVariants] = React.useState([]);
+  const apiRef = useGridApiRef();
   // const [selectedRows, setSelectedRows] = React.useState([]);
   React.useEffect(() => {
     getVariants(props.project_id)
@@ -107,40 +56,31 @@ function VariantList(props) {
       });
   }, []);
 
-  // const handleButtonClick = () => {
-  //   const payload = {
-  //     ids: selectedRows.map((index) => variants[index - 1].id),
-  //   };
-  //   getVariantReports(payload);
-  // };
-
-  // const handleSelectionChange = (selection) => {
-  //   setSelectedRows(selection);
-  // };
-
-  const handleRowClick = (params, event) => {
-    props.variant_selector_function(params.row);
-    props.scroll_ref();
-  };
-
   return (
-    <Box sx={{ height: { xs: "200px", md: "400px" }, width: "100%" }}>
+    <Box sx={{ height: "1000px", width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
             // onSelectionModelChange={handleSelectionChange}
-            headerHeight={0}
+            apiRef={apiRef}
             columns={columns}
             rows={variants}
             components={{
               Row: VariantRow,
               Header: () => null,
             }}
-            onRowClick={handleRowClick}
+            componentsProps={{
+              row: {
+                bam_files: props.bam_files,
+                apiRef: apiRef,
+              },
+            }}
             disableSelectionOnClick
             initialState={{
               sorting: {
-                sortModel: [{ field: "classification", sort: "asc" }],
+                sortModel: [
+                  { field: "cancervar_classification", sort: "desc" },
+                ],
               },
             }}
             sx={{

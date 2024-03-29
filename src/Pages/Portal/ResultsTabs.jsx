@@ -85,30 +85,17 @@ function ResultsTabs(props) {
         <TabPanel value={activeMenu} index={0}>
           <VariantList
             project_id={props.project_id}
-            variant_selector_function={props.variant_selector_function}
-            scroll_ref={props.scroll_ref}
+            bam_files={props.bam_files}
           />
         </TabPanel>
         <TabPanel value={activeMenu} index={1}>
-          <VariantList
-            project_id={props.project_id}
-            variant_selector_function={props.variant_selector_function}
-            scroll_ref={props.scroll_ref}
-          />
+          <VariantList project_id={props.project_id} />
         </TabPanel>
         <TabPanel value={activeMenu} index={2}>
-          <VariantList
-            project_id={props.project_id}
-            variant_selector_function={props.variant_selector_function}
-            scroll_ref={props.scroll_ref}
-          />
+          <VariantList project_id={props.project_id} />
         </TabPanel>
         <TabPanel value={activeMenu} index={3}>
-          <VariantList
-            project_id={props.project_id}
-            variant_selector_function={props.variant_selector_function}
-            scroll_ref={props.scroll_ref}
-          />
+          <VariantList project_id={props.project_id} />
         </TabPanel>
       </Box>
     </>

@@ -32,7 +32,7 @@ function OverviewTable(props) {
               }}
             >
               <Typography color="#6D6D6D">Variant Summary</Typography>
-              <Depth value={variant.depth ? variant.depth : null} />
+              <Depth value={variant.ad ? variant.ad : null} />
               <Divider
                 orientation="horizontal"
                 flexItem
@@ -62,7 +62,11 @@ function OverviewTable(props) {
             >
               <Typography color="#6D6D6D">Allele Frequencies</Typography>
               <AlleleFrequency
-                value={variant.user_af ? variant.user_af : null}
+                value={
+                  variant.user_case_frequency
+                    ? variant.user_case_frequency
+                    : null
+                }
                 title="User"
               />
               <Divider

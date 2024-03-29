@@ -8,7 +8,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Hidden from "@mui/material/Hidden";
 
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 const menuItems = {
   Dashboard: <LineStyleIcon />,
@@ -26,6 +26,7 @@ function PortalContent(props) {
   const handleChange = (event, newMenu) => {
     setMenu(newMenu);
   };
+  const location = useLocation();
 
   React.useEffect(() => {
     // Set isSmallScreen to true if screen width is less than 600px
@@ -45,19 +46,14 @@ function PortalContent(props) {
     }
 
     // On scroll make the side menu smaller
-    const handleScroll = (e) => {
-      const scrollTop = e.target.documentElement.scrollTop;
-      if (tabsDivRef.current === null) return;
-      if (scrollTop > 100) {
-        tabsDivRef.current.style.width = "5vw";
-        setMenuOpen(false);
-      } else {
-        tabsDivRef.current.style.width = "180px";
-        setMenuOpen(true);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-  }, []);
+    if (location.pathname === "/portal/projects") {
+      tabsDivRef.current.style.width = "180px";
+      setMenuOpen(true);
+    } else {
+      tabsDivRef.current.style.width = "5vw";
+      setMenuOpen(false);
+    }
+  }, [location]);
 
   return (
     <>
