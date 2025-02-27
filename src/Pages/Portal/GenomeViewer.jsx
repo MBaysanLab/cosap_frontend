@@ -95,7 +95,7 @@ function GenomeViewer(props) {
           <InputLabel>Bam File</InputLabel>
           <Select value={bam} label="Bam" onChange={handleBamChange}>
             {Object.entries(props.bam_files).map(([key, value]) => (
-              <MenuItem key={value.bam} value={value.bam}>
+              <MenuItem key={value} value={value}>
                 {key}
               </MenuItem>
             ))}

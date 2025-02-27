@@ -56,13 +56,13 @@ export function VariantSignificanceIcon(props) {
           marginLeft: "10px",
         }}
       >
-        <Typography fontSize={"0.7rem"} color={"grey"}>
+        <Typography fontSize={"0.6rem"} color={"grey"}>
           {props.type.toUpperCase()}
         </Typography>
-        <Typography fontSize={"0.8rem"} color={"black"} textAlign="center">
+        <Typography fontSize={"0.7rem"} color={"black"} textAlign="center">
           {classification}
         </Typography>
-        <Typography fontSize={"0.7rem"} color={bgColor} textAlign="center">
+        <Typography fontSize={"0.6rem"} color={bgColor} textAlign="center">
           {significance}
         </Typography>
       </Box>

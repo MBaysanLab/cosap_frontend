@@ -9,6 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 import WarningIcon from "@mui/icons-material/Warning";
 import { useNavigate, useSearchParams } from "react-router-dom";
 const FileSelectUpload = React.lazy(() => import("./FileSelectUpload.jsx"));
+const TrioUploader = React.lazy(() => import("./TrioUploader.jsx"));
 import AlgorithmSelector from "./AlgorithmSelector";
 import postProject from "../../apis/postProject.js";
 import getFiles from "../../apis/getFiles";
@@ -40,13 +41,23 @@ function CreateProject(props) {
   const [tumorFileUploader, setTumorFileUploader] = React.useState(null);
   const [normalFileUploader, setNormalFileUploader] = React.useState(null);
   const [bedFileUploader, setBedFileUploader] = React.useState(null);
+  const [fatherFileUploader, setFatherFileUploader] = React.useState(null);
+  const [motherFileUploader, setMotherFileUploader] = React.useState(null);
+  const [childFileUploader, setChildFileUploader] = React.useState(null);
   const [searchParams] = useSearchParams();
   const [numberOfAddedFiles, setNumberOfAddedFiles] = React.useState(0);
   const [FileUploadAlert, setFileUploadAlert] = React.useState(false);
   const [projectNameAlert, setProjectNameAlert] = React.useState(false);
+
+  // Standard file states
   const [selectedNormalFiles, setSelectedNormalFiles] = React.useState([]);
   const [selectedTumorFiles, setSelectedTumorFiles] = React.useState([]);
   const [selectedBedFiles, setSelectedBedFiles] = React.useState([]);
+
+  // Trio file states
+  const [selectedFatherFiles, setSelectedFatherFiles] = React.useState([]);
+  const [selectedMotherFiles, setSelectedMotherFiles] = React.useState([]);
+  const [selectedChildFiles, setSelectedChildFiles] = React.useState([]);
 
   // States that stores previously uploaded files
   const [previousNormalFiles, setPreviousNormalFiles] = React.useState({});
@@ -87,7 +98,7 @@ function CreateProject(props) {
     project_type: projectType,
     aligner: ["BWA2"],
     variantCaller: ["Mutect2"],
-    variantAnnotator: ["VEP"],
+    variantAnnotator: [],
   });
 
   const handleInput = (name, value) => {
@@ -104,23 +115,76 @@ function CreateProject(props) {
       return;
     }
 
-    // Check if any files are added
-    if (numberOfAddedFiles < 1) {
-      if (selectedNormalFiles.length < 1 && selectedTumorFiles.length < 1) {
-        setFileUploadAlert(true);
-        return;
-      }
-    }
-
     // Create form data
     const formData = new FormData();
 
-    // Wait for files to be uploaded
-    if (selectedTumorFiles.length > 0) {
-      formData.append("tumor_files", JSON.stringify(selectedTumorFiles));
+    if (projectType === "GERMLINE_TRIO") {
+      // Check if child sample is uploaded, which is required for trio analysis
+      if (selectedChildFiles.length < 1 && !childFileUploader) {
+        setFileUploadAlert(true);
+        return;
+      }
+
+      // Process trio files
+      if (selectedFatherFiles.length > 0) {
+        formData.append("father_files", JSON.stringify(selectedFatherFiles));
+      } else if (fatherFileUploader) {
+        try {
+          const fatherFiles = await fatherFileUploader.processFiles();
+          formData.append(
+            "father_files",
+            JSON.stringify(fatherFiles.map((file) => file.serverId))
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      if (selectedMotherFiles.length > 0) {
+        formData.append("mother_files", JSON.stringify(selectedMotherFiles));
+      } else if (motherFileUploader) {
+        try {
+          const motherFiles = await motherFileUploader.processFiles();
+          formData.append(
+            "mother_files",
+            JSON.stringify(motherFiles.map((file) => file.serverId))
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      if (selectedChildFiles.length > 0) {
+        formData.append("child_files", JSON.stringify(selectedChildFiles));
+      } else if (childFileUploader) {
+        try {
+          const childFiles = await childFileUploader.processFiles();
+          formData.append(
+            "child_files",
+            JSON.stringify(childFiles.map((file) => file.serverId))
+          );
+        } catch (error) {
+          console.error(error);
+          return; // Stop if child files couldn't be processed since they're required
+        }
+      } else {
+        setFileUploadAlert(true);
+        return;
+      }
     } else {
-      // Tumor file uploader is not available for germline projects (GM)
-      if (tumorFileUploader) {
+      // Regular project file logic
+      // Check if any files are added
+      if (numberOfAddedFiles < 1) {
+        if (selectedNormalFiles.length < 1 && selectedTumorFiles.length < 1) {
+          setFileUploadAlert(true);
+          return;
+        }
+      }
+
+      // Standard project files handling
+      if (selectedTumorFiles.length > 0) {
+        formData.append("tumor_files", JSON.stringify(selectedTumorFiles));
+      } else if (projectType !== "GM" && tumorFileUploader) {
         try {
           const tumorFiles = await tumorFileUploader.processFiles();
           formData.append(
@@ -129,29 +193,29 @@ function CreateProject(props) {
           );
         } catch (error) {
           console.error(error);
+        }
+      }
+
+      if (selectedNormalFiles.length > 0) {
+        formData.append("normal_files", JSON.stringify(selectedNormalFiles));
+      } else if (normalFileUploader) {
+        try {
+          const normalFiles = await normalFileUploader.processFiles();
+          formData.append(
+            "normal_files",
+            JSON.stringify(normalFiles.map((file) => file.serverId))
+          );
+        } catch (error) {
+          console.error(error);
           return;
         }
       }
     }
 
-    if (selectedNormalFiles.length > 0) {
-      formData.append("normal_files", JSON.stringify(selectedNormalFiles));
-    } else {
-      try {
-        const normalFiles = await normalFileUploader.processFiles();
-        formData.append(
-          "normal_files",
-          JSON.stringify(normalFiles.map((file) => file.serverId))
-        );
-      } catch (error) {
-        console.error(error);
-        return;
-      }
-    }
-
+    // Bed files are needed for all project types
     if (selectedBedFiles.length > 0) {
       formData.append("bed_files", JSON.stringify(selectedBedFiles));
-    } else {
+    } else if (bedFileUploader) {
       try {
         const bedFiles = await bedFileUploader.processFiles();
         formData.append(
@@ -160,7 +224,6 @@ function CreateProject(props) {
         );
       } catch (error) {
         console.error(error);
-        return;
       }
     }
 
@@ -227,83 +290,114 @@ function CreateProject(props) {
       </Box>
       <Box sx={{ mt: 3 }}>
         <Typography variant="h6" color="secondary">
-          Upload Sample Files
+          {projectType === "GERMLINE_TRIO"
+            ? "Family Samples"
+            : "Upload Sample Files"}
         </Typography>
-        {projectType !== "GM" ? (
+
+        {projectType === "GERMLINE_TRIO" && (
+          <Alert severity="info" sx={{ mt: 1 }}>
+            Upload or select samples for the family trio. Child sample is
+            required for analysis; parent samples are optional but recommended
+            for better variant interpretation.
+          </Alert>
+        )}
+
+        {projectType !== "GM" && projectType !== "GERMLINE_TRIO" ? (
           <Alert severity="info">
             Somatic variant calling can be made with tumor samples alone.
             However, suppying normal samples increases sensitivity and
             specificity.
           </Alert>
         ) : null}
+
         {FileUploadAlert ? (
           <Alert severity="error" sx={{ mt: 3 }}>
-            Please upload or select at least one sample.
+            {projectType === "GERMLINE_TRIO"
+              ? "Please upload or select a child sample for the trio analysis."
+              : "Please upload or select at least one sample."}
           </Alert>
         ) : null}
       </Box>
-      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}>
+
+      {projectType === "GERMLINE_TRIO" ? (
         <React.Suspense fallback={<div>Loading...</div>}>
-          <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
-            <FileSelectUpload
-              refSetter={setNormalFileUploader}
-              title="Normal Samples"
-              allowMultiple={true}
-              sampleType="NORMAL"
-              onAddfile={handleAddFile}
-              onRemoveFile={handleRemoveFile}
-              maxFiles={2}
-              fileSetter={setSelectedNormalFiles}
-              previousFiles={previousNormalFiles}
-            />
-          </Box>
-          {projectType === "SM" || projectType === "COMP" ? (
-            <Box
-              sx={{
-                width: { sm: "100%", md: "20vw" },
-                mt: 1,
-                mb: 2,
-                ml: { xs: 0, md: 3 },
-              }}
-            >
+          <TrioUploader
+            onAddFile={handleAddFile}
+            onRemoveFile={handleRemoveFile}
+            fatherFileUploader={setFatherFileUploader}
+            motherFileUploader={setMotherFileUploader}
+            childFileUploader={setChildFileUploader}
+            setSelectedFatherFiles={setSelectedFatherFiles}
+            setSelectedMotherFiles={setSelectedMotherFiles}
+            setSelectedChildFiles={setSelectedChildFiles}
+            previousFatherFiles={previousNormalFiles}
+            previousMotherFiles={previousNormalFiles}
+            previousChildFiles={previousNormalFiles}
+          />
+        </React.Suspense>
+      ) : (
+        // Standard uploaders - keeping them side by side
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: 3,
+          }}
+        >
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
               <FileSelectUpload
-                refSetter={setTumorFileUploader}
-                title="Tumor Samples"
+                refSetter={setNormalFileUploader}
+                title="Normal Samples"
                 allowMultiple={true}
-                sampleType="TUMOR"
+                sampleType="NORMAL"
                 onAddfile={handleAddFile}
                 onRemoveFile={handleRemoveFile}
-                fileSetter={setSelectedTumorFiles}
-                previousFiles={previousTumorFiles}
+                maxFiles={2}
+                fileSetter={setSelectedNormalFiles}
+                previousFiles={previousNormalFiles}
               />
             </Box>
-          ) : null}
-          <Box
-            sx={{
-              width: { sm: "100%", md: "20vw" },
-              mt: 1,
-              mb: 2,
-              ml: { xs: 0, md: 3 },
-            }}
-          >
-            <FileSelectUpload
-              refSetter={setBedFileUploader}
-              title="BED File"
-              tooltip={
-                <Tooltip title="BED file should be the same genome build as samples.">
-                  <WarningIcon sx={{ mr: 1 }} htmlColor="#BBB539" />
-                </Tooltip>
-              }
-              allowMultiple={false}
-              onAddfile={handleAddFile}
-              onRemoveFile={handleRemoveFile}
-              fileSetter={setSelectedBedFiles}
-              previousFiles={previousBedFiles}
-              maxFiles={1}
-            />
-          </Box>
-        </React.Suspense>
-      </Box>
+
+            {(projectType === "SOMATIC" || projectType === "COMP") && (
+              <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
+                <FileSelectUpload
+                  refSetter={setTumorFileUploader}
+                  title="Tumor Samples"
+                  allowMultiple={true}
+                  sampleType="TUMOR"
+                  onAddfile={handleAddFile}
+                  onRemoveFile={handleRemoveFile}
+                  fileSetter={setSelectedTumorFiles}
+                  previousFiles={previousTumorFiles}
+                />
+              </Box>
+            )}
+
+            {/* BED file uploader alongside other uploaders */}
+            <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
+              <FileSelectUpload
+                refSetter={setBedFileUploader}
+                title="BED File"
+                tooltip={
+                  <Tooltip title="BED file should be the same genome build as samples.">
+                    <WarningIcon sx={{ mr: 1 }} htmlColor="#BBB539" />
+                  </Tooltip>
+                }
+                allowMultiple={false}
+                onAddfile={handleAddFile}
+                onRemoveFile={handleRemoveFile}
+                fileSetter={setSelectedBedFiles}
+                previousFiles={previousBedFiles}
+                maxFiles={1}
+              />
+            </Box>
+          </React.Suspense>
+        </Box>
+      )}
+
+      {/* Algorithm selection - same for all project types that need it */}
       {projectType === "COMP" ? (
         <>
           <Box sx={{ mt: 3 }}>
@@ -375,4 +469,5 @@ function CreateProject(props) {
     </Box>
   );
 }
+
 export default CreateProject;

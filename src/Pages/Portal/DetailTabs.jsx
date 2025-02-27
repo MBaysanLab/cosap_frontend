@@ -6,10 +6,10 @@ import Tabs from "@mui/material/Tabs";
 import Hidden from "@mui/material/Hidden";
 import PropTypes from "prop-types";
 import OverviewTable from "./OverviewTable";
-import DetailsTable from "./DetailsTable";
+import GeneInfo from "./GeneInfo";
 import GenomeViewer from "./GenomeViewer";
 
-const menuItems = ["OVERVIEW", "DETAILS", "GENOME VIEWER"];
+const menuItems = ["OVERVIEW", "GENE INFO", "IGV"];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -73,7 +73,6 @@ function DetailTabs(props) {
                 },
               }}
               {...a11yProps(index)}
-              disabled={index === 1}
             />
           ))}
         </Tabs>
@@ -83,7 +82,7 @@ function DetailTabs(props) {
           <OverviewTable variant={props.variant} />
         </TabPanel>
         <TabPanel value={activeMenu} index={1}>
-          <DetailsTable variant={props.variant} />
+          <GeneInfo geneSymbol={props.variant.gene_symbol} />
         </TabPanel>
         <TabPanel value={activeMenu} index={2}>
           <GenomeViewer variant={props.variant} bam_files={props.bam_files} />

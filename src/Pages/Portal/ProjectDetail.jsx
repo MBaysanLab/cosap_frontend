@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import CustomStats from "./CustomStats";
-import VariantStats from "./VariantStats";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
 import getProjectDetail from "../../apis/getProjectDetail";
@@ -12,12 +10,11 @@ import FileBrowser from "./FileBrowser";
 import getProjectFiles from "../../apis/getProjectFiles";
 import DocumentViewerModal from "./DocumentViewerModal";
 import { extractAllFilesFromFileMap } from "../../utils/utils";
-
-// import storage from "../../utils/storage";
+import BamQcMetrics from "./BamQcMetrics";
 
 function ProjectDetail() {
   const [projectMetadata, setMetadata] = React.useState({});
-  const [projectSummary, setProjectSummary] = React.useState({});
+  const [projectQCSummary, setProjectQCSummary] = React.useState({});
   const [projectFileMap, setProjectFileMap] = React.useState(null);
   const [rootFolderId, setRootFolderId] = React.useState(null);
   const [docViewerModalOpen, setDocViewerModalOpen] = React.useState(false);
@@ -62,7 +59,8 @@ function ProjectDetail() {
     getProjectDetail(id)
       .then(
         (res) => (
-          setMetadata(res.data.metadata), setProjectSummary(res.data.summary)
+          setMetadata(res.data.metadata),
+          setProjectQCSummary(res.data.qc_summary)
         )
       )
       .catch((err) => {
@@ -87,37 +85,15 @@ function ProjectDetail() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <ProjectDetailHeader data={projectMetadata} />
-      <Box>
-        <Typography variant="h6">Summary</Typography>
-        <Divider />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            flexWrap: "wrap",
-            mt: 1,
-          }}
-        >
-          <CustomStats
-            data1={projectSummary ? projectSummary.mapped_reads : 0}
-            data2={projectSummary ? projectSummary.mean_coverage : 0}
-            title1="Mapped Reads %"
-            title2="Mean Coverage"
-          />
-          <CustomStats
-            data1={projectSummary ? projectSummary.msi_score : 0}
-            data2={projectSummary ? projectSummary.cnv_count : 0}
-            title1="MSI Score %"
-            title2="# of CNV's"
-          />
-          <VariantStats data={projectSummary ? projectSummary : {}} />
-        </Box>
-      </Box>
-
+      <BamQcMetrics qcSummary={projectQCSummary} />
       <Box sx={{ mt: 1 }}>
         <Typography variant="h6">Variants</Typography>
         <Divider />
-        <ResultsTabs project_id={id} bam_files={bamFiles} />
+        <ResultsTabs
+          project_id={id}
+          project_type={projectMetadata.project_type}
+          bam_files={bamFiles}
+        />
       </Box>
       <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6">Files</Typography>

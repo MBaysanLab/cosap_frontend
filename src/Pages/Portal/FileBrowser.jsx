@@ -116,7 +116,11 @@ function FileBrowser(props) {
     );
   };
 
-  const fileActions = [ChonkyActions.DownloadFiles, openInDocViewer, uplaodToFranklin];
+  const fileActions = [
+    ChonkyActions.DownloadFiles,
+    openInDocViewer,
+    uplaodToFranklin,
+  ];
   const disabledFileActions = [
     ChonkyActions.OpenSelection.id,
     ChonkyActions.SelectAllFiles.id,

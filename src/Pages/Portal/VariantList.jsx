@@ -1,11 +1,13 @@
 import * as React from "react";
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
+import FilterToolbar from "./VariantFilterToolbar";
 import getVariants from "../../apis/getVariants";
 import VariantRow from "./ExpandableVariantRow";
 import { romanToInt } from "../../utils/utils";
+import preLodaer from "../../assets/images/preloader.gif";
+import { useQuery } from "react-query";
 
 const columns = [
   {
@@ -23,8 +25,6 @@ const columns = [
     renderCell: (params) => {
       return <VariantSignificanceIcon classification={params.value} />;
     },
-
-    // The tier numbering is in roman numerals, so we need to convert it to a number
     sortComparator: (v1, v2, cellParams1, cellParams2) => {
       return (
         romanToInt(v1.split("#")[1].split("_")[0]) -
@@ -42,47 +42,156 @@ const columns = [
   },
 ];
 
+const filterModelBase = [
+  {
+    label: "ACMG",
+    type: "button",
+    filters: [
+      { label: "Pathogenic", value: "pathogenic", active: false },
+      { label: "Likely Pathogenic", value: "likely_pathogenic", active: false },
+      { label: "VUS", value: "uncertain_significance", active: false },
+    ],
+  },
+  {
+    label: "AMP",
+    type: "button",
+    filters: [
+      { label: "Tier I", value: "pathogenic", active: false },
+      { label: "Tier II", value: "likely_pathogenic", active: false },
+      { label: "VUS", value: "vus", active: false },
+    ],
+  },
+  {
+    label: "ClinVar",
+    type: "button",
+    filters: [
+      { label: "Pathogenic", value: "pathogenic", active: false },
+      {
+        label: "Likely Pathogenic",
+        value: "likely_pathogenic",
+        active: false,
+      },
+      { label: "VUS", value: "vus", active: false },
+    ],
+  },
+  {
+    label: "Consequence",
+    type: "button",
+    filters: [
+      { label: "Exonic", value: "exon", active: false },
+      { label: "Intronic", value: "intron", active: false },
+      { label: "Splicing", value: "splice", active: false },
+    ],
+  },
+  {
+    label: "Gene_Symbol",
+    type: "input",
+    filters: [{ label: "Symbol", value: "", active: false }],
+  },
+  {
+    label: "rsID",
+    type: "input",
+    filters: [{ label: "rsID", value: "", active: false }],
+  },
+];
+
 function VariantList(props) {
-  const [variants, setVariants] = React.useState([]);
+  const [page, setPage] = React.useState(0);
+  const [pageSize, setPageSize] = React.useState(25);
+  const [filterModel, setFilterModel] = React.useState(filterModelBase);
   const apiRef = useGridApiRef();
-  // const [selectedRows, setSelectedRows] = React.useState([]);
+
+  // Fetch variants with filters and pagination
+  const { isLoading, isError, data, error } = useQuery(
+    ["variants", page, pageSize, filterModel],
+    () => getVariants(props.project_id, page + 1, pageSize, filterModel),
+    {
+      keepPreviousData: true,
+    }
+  );
+  const [rowCountState, setRowCountState] = React.useState(data?.total || 0);
+
+  // Update row count when data changes
   React.useEffect(() => {
-    getVariants(props.project_id)
-      .then((res) => {
-        setVariants(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    setRowCountState((prevRowCountState) =>
+      data?.total !== undefined ? data?.total : prevRowCountState
+    );
+  }, [data?.total, setRowCountState]);
+
+  // Apply predefined filter
+  const handleFilterApply = (filterModel) => {
+    setFilterModel(filterModel);
+    setPage(0); // Reset to first page when applying filters
+  };
+
+  // Clear all filters
+  const handleClearFilters = () => {
+    setFilterModel(filterModelBase);
+    setPage(0); // Reset to first page when clearing filters
+  };
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "300px",
+        }}
+      >
+        <img src={preLodaer} alt="preloader" />
+      </Box>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "300px",
+        }}
+      >
+        <p>Error loading data: {error.message}</p>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ height: "1000px", width: "100%" }}>
-      <Box sx={{ display: "flex", height: "100%" }}>
+      <FilterToolbar
+        onFilterApply={handleFilterApply}
+        onClearFilters={handleClearFilters}
+        filterModel={filterModel}
+      />
+      <Box sx={{ display: "flex", height: "calc(100% - 60px)" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
-            // onSelectionModelChange={handleSelectionChange}
+            rowCount={rowCountState}
             apiRef={apiRef}
             columns={columns}
-            rows={variants}
+            pagination
+            paginationMode="server"
+            rows={data.snvs}
+            pageSize={pageSize}
+            onPageChange={(newPage) => setPage(newPage)}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            filterMode="server"
             components={{
               Row: VariantRow,
               Header: () => null,
             }}
             componentsProps={{
               row: {
+                project_type: props.project_type,
                 bam_files: props.bam_files,
                 apiRef: apiRef,
               },
             }}
             disableSelectionOnClick
-            initialState={{
-              sorting: {
-                sortModel: [
-                  { field: "cancervar_classification", sort: "desc" },
-                ],
-              },
-            }}
             sx={{
               border: 0,
               "& .MuiDataGrid-columnHeaders, & .MuiDataGrid-columnHeader": {
@@ -92,13 +201,12 @@ function VariantList(props) {
                 marginTop: "0 !important",
               },
             }}
+            disableVirtualization
           />
-          {/* <button onClick={handleButtonClick}>
-            Create Report With Selected Variants
-          </button> */}
         </Box>
       </Box>
     </Box>
   );
 }
+
 export default VariantList;

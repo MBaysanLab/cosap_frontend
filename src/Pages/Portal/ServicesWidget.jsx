@@ -7,18 +7,19 @@ function ServicesWidget(props) {
   return (
     <Box elevation={0} sx={{ display: "flex", flexDirection: "column" }}>
       <ServicesWidgetItem
-        name="Somatic Variant Analysis"
-        to="/portal/projects/create_project?type=SOMATIC"
-        description="SNVs, SVs, CNVs, MSI, Fusions and their annotations. Implements the GATK Best Practices pipeline."
-      />
-      <ServicesWidgetItem
-        name="Germline Variant Analysis"
+        name="Germline Analysis"
         to="/portal/projects/create_project?type=GERMLINE"
         description="SNVs, SVs and their annotations. Implements the GATK Best Practices pipeline."
       />
       <ServicesWidgetItem
-        name="Comparative Variant Analysis with Customizable Pipeline"
-        to="/portal/projects/create_project?type=COMP"
+        name="Germline Trio Analysis"
+        to="/portal/projects/create_project?type=GERMLINE_TRIO"
+        description="Compare germline variants between individuals."
+      />
+      <ServicesWidgetItem
+        name="Somatic Analysis"
+        to="/portal/projects/create_project?type=SOMATIC"
+        description="SNVs, SVs, CNVs, MSI, Fusions and their annotations. Implements the GATK Best Practices pipeline."
       />
     </Box>
   );

@@ -85,6 +85,7 @@ function ResultsTabs(props) {
         <TabPanel value={activeMenu} index={0}>
           <VariantList
             project_id={props.project_id}
+            project_type={props.project_type}
             bam_files={props.bam_files}
           />
         </TabPanel>

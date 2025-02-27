@@ -109,7 +109,7 @@ function PortalContent(props) {
       <Box
         sx={{
           flexGrow: 1,
-          p: { xs: "4px", sm: 1, md: 3 },
+          p: { xs: "4px", sm: 1, md: 1 },
         }}
       >
         <Outlet />

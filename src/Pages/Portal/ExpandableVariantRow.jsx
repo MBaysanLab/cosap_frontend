@@ -5,79 +5,80 @@ import {
   AccordionSummary,
   Box,
   Grid,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import DetailTabls from "./DetailTabs";
+import DetailTabs from "./DetailTabs";
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 
-// const CANCERVAR_CLINICAL_EVIDENCE_POS_MAP = {
-//   0: "Therapeutic: FDA approved or investigational with strong evidence",
-//   1: "Diagnostic: In Professional guideline or reported evidence with consensus",
-//   2: "Prognostic: In Professional guideline or reported evidence with consensus",
-//   3: "Mutation type: Activating, LOF (missense, nonsense, indel, splicing), CNVs, fusions",
-//   4: "Variant frequencies:Mostly mosaic",
-//   5: "Potential germline: Mostly nonmosaic",
-//   6: "Population databases: Absent or extremely low MAF",
-//   7: "Germline databases: may be present in HGMD/ClinVar",
-//   8: "Somatic databases: Most present in COSMIC, My Cancer Genome, TCGA",
-//   9: "Predictive from: SIFT, PolyPhen2,MutationTaster, CADD, MetaSVM,MetaLR,FATHMM,GERP++_RS, and mostly as",
-//   10: "Pathway: involve in Disease-associated pathways or pathogenic pathways",
-//   11: "Publications: Convincing evidence from Functional study, population study, other",
-// };
-
 export default function VariantRow(props) {
-  const handleClick = () => {
-    console.log(props.apiRef.current);
-  };
+  const data = props.row;
+  const projectType = props.project_type?.toLowerCase();
+  data.pedigree = {};
 
   return (
-    <Box onClick={handleClick}>
+    <Box>
       <Accordion
         elevation={3}
         sx={{
           width: props.containerWidth - 10,
           borderRadius: "5px",
-          marginX: "5px",
-          marginTop: "10px",
+          marginX: "3px",
+          marginTop: "3px",
           "&:before": {
             display: "none",
           },
           "&.Mui-expanded": {
-            marginX: "5px",
+            marginX: "3px",
           },
         }}
       >
         <AccordionSummary
           expandIcon={<ArrowDropDownIcon />}
+          onMouseDown={(event) => event.stopPropagation()}
           sx={{
-            minHeight: "80px",
+            minHeight: "50px",
             padding: "0px",
             "& .MuiAccordionSummary-content": {
               margin: "0px",
-              height: "80px",
+              height: "50px",
+              width: "100%",
             },
           }}
         >
-          <Grid container spacing={0} sx={{ display: "flex", height: "100%" }}>
-            <Grid item sx={{ height: "100%", flexGrow: 1, maxWidth: 80 }}>
-              <VariantSignificanceIcon
-                classification={props.row.cancervar_classification}
-                type="amp"
-              />
-            </Grid>
-            <Grid item sx={{ height: "100%", flexGrow: 1, maxWidth: 120 }}>
-              <VariantSignificanceIcon
-                classification={props.row.intervar_classification}
-                type="acmg"
-              />
-            </Grid>
+          <Grid
+            container
+            sx={{
+              display: "flex",
+              height: "100%",
+              flexWrap: "nowrap",
+            }}
+          >
+            {/* Classification Icon column */}
+            {projectType === "somatic" ? (
+              <Grid item sx={{ height: "100%", width: "80px", flexShrink: 0 }}>
+                <VariantSignificanceIcon
+                  classification={data.cancervar_classification}
+                  type="amp"
+                />
+              </Grid>
+            ) : (
+              <Grid item sx={{ height: "100%", width: "120px", flexShrink: 0 }}>
+                <VariantSignificanceIcon
+                  classification={data.intervar_classification}
+                  type="acmg"
+                />
+              </Grid>
+            )}
+
+            {/* Gene Symbol and HGVS column */}
             <Grid
               item
               sx={{
                 height: "100%",
-                flexGrow: 1,
-                maxWidth: 170,
+                width: "320px",
+                flexShrink: 0,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
               }}
@@ -97,16 +98,128 @@ export default function VariantRow(props) {
                     alignItems: "left",
                   }}
                 >
-                  <Typography fontSize={"1.2rem"}>
-                    {props.row.gene_symbol || "N/A"}
+                  <Typography fontSize={"0.8rem"}>
+                    {data.gene_symbol || "N/A"}
                   </Typography>
                   <Typography fontSize={"0.7rem"}>
-                    {props.row.variant_id || "N/A"}
+                    {data.hgvsg || "N/A"}
                   </Typography>
                 </Box>
               </Box>
             </Grid>
-            <Grid item sx={{ height: "100%", flexGrow: 1, maxWidth: 80 }}>
+
+            {/* Consequence column */}
+            <Grid item sx={{ height: "100%", width: "160px", flexShrink: 0 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography
+                    fontSize={"0.7rem"}
+                    color={"grey"}
+                    textAlign="center"
+                  >
+                    {data.coding_conseqence
+                      ? "Coding Consequence"
+                      : "Consequence"}
+                  </Typography>
+                  <Typography fontSize={"0.8rem"}>
+                    {data.coding_consequence || data.consequence || "N/A"}
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+
+            {/* Pedigree column */}
+            <Grid item sx={{ height: "100%", width: "160px", flexShrink: 0 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography
+                    fontSize={"0.7rem"}
+                    color={"grey"}
+                    textAlign="center"
+                  >
+                    Pedigree
+                  </Typography>
+                  <Tooltip
+                    title={
+                      <div>
+                        <div>Family ID: {data.pedigree.family_id || "N/A"}</div>
+                        <div>
+                          Affected Members:{" "}
+                          {data.pedigree.affected_members?.join(", ") || "N/A"}
+                        </div>
+                        <div>
+                          Inheritance Pattern:{" "}
+                          {data.pedigree.inheritance_pattern || "N/A"}
+                        </div>
+                      </div>
+                    }
+                    arrow
+                  >
+                    <Typography fontSize={"0.8rem"}>
+                      {data.pedigree.family_id || "N/A"}
+                    </Typography>
+                  </Tooltip>
+                </Box>
+              </Box>
+            </Grid>
+
+            {/* Depth column */}
+            <Grid item sx={{ height: "100%", width: "80px", flexShrink: 0 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography fontSize={"0.7rem"} color={"grey"}>
+                    Depth
+                  </Typography>
+                  <Typography fontSize={"0.8rem"}>
+                    {data.read_depth || "N/A"}
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+
+            {/* VAF column */}
+            <Grid item sx={{ height: "100%", width: "80px", flexShrink: 0 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -126,12 +239,14 @@ export default function VariantRow(props) {
                     VAF
                   </Typography>
                   <Typography fontSize={"0.8rem"}>
-                    {props.row.af || "N/A"}
+                    {data.af || "N/A"}
                   </Typography>
                 </Box>
               </Box>
             </Grid>
-            <Grid item sx={{ height: "100%", flexGrow: 1, maxWidth: 100 }}>
+
+            {/* gnomAD column */}
+            <Grid item sx={{ height: "100%", width: "130px", flexShrink: 0 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -153,15 +268,17 @@ export default function VariantRow(props) {
                     color={"grey"}
                     textAlign="center"
                   >
-                    User Case Freq
+                    gnomad Genomes AF
                   </Typography>
                   <Typography fontSize={"0.8rem"}>
-                    {props.row.user_case_frequency || "N/A"}
+                    {data.gnomadg_af || "N/A"}
                   </Typography>
                 </Box>
               </Box>
             </Grid>
-            <Grid item sx={{ height: "100%", flexGrow: 1, maxWidth: 150 }}>
+
+            {/* TGD column */}
+            <Grid item sx={{ height: "100%", width: "130px", flexShrink: 0 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -183,10 +300,10 @@ export default function VariantRow(props) {
                     color={"grey"}
                     textAlign="center"
                   >
-                    Coding Consequence
+                    Turkish Genome Database AF
                   </Typography>
                   <Typography fontSize={"0.8rem"}>
-                    {props.row.coding_consequence || "N/A"}
+                    {data.tgd_af || "N/A"}
                   </Typography>
                 </Box>
               </Box>
@@ -194,7 +311,7 @@ export default function VariantRow(props) {
           </Grid>
         </AccordionSummary>
         <AccordionDetails sx={{ overflow: "auto" }}>
-          <DetailTabls variant={props.row} bam_files={props.bam_files} />
+          <DetailTabs variant={props.row} bam_files={props.bam_files} />
         </AccordionDetails>
       </Accordion>
     </Box>

@@ -9,6 +9,7 @@ import { AuthLanding, Home, Portal, Register } from "./Pages";
 import PrivateRoutes from "./utils/privateRoutes";
 import { setChonkyDefaults } from "chonky";
 import { ChonkyIconFA } from "chonky-icon-fontawesome";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 // Sentry.init({
 //   dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -20,17 +21,21 @@ import { ChonkyIconFA } from "chonky-icon-fontawesome";
 //   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
 // });
 
+const queryClient = new QueryClient();
+
 ReactDOM.render(
-  <Router>
-    <Routes>
-      <Route index element={<Home />} />
-      <Route element={<PrivateRoutes />}>
-        <Route path="/portal/*" element={<Portal />} />
-      </Route>
-      <Route path="login" element={<AuthLanding />} />
-      <Route path="register" element={<Register />} />
-    </Routes>
-  </Router>,
+  <QueryClientProvider client={queryClient}>
+    <Router>
+      <Routes>
+        <Route index element={<Home />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/portal/*" element={<Portal />} />
+        </Route>
+        <Route path="login" element={<AuthLanding />} />
+        <Route path="register" element={<Register />} />
+      </Routes>
+    </Router>
+  </QueryClientProvider>,
   document.getElementById("root")
 );
 

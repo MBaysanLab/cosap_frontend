@@ -14,7 +14,17 @@ function DetailItem(props) {
       >
         {props.title}
       </Typography>
-      <Typography variant="subtitle1" component="div">
+      <Typography
+        variant="subtitle1"
+        component="div"
+        sx={{
+          width: "150px",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          textAlign: props.text_align,
+        }}
+      >
         {props.data ? props.data : "N/A"}
       </Typography>
     </>
@@ -83,22 +93,22 @@ function FranklinButton(props) {
 }
 
 function VariantDetails(props) {
-  const handleVarsomeClick = () => {
-    const chromosome = props.variant.location.split("_")[0];
-    const pos = props.variant.location.split("_")[1];
+  const variant = props.variantAnnotation.variant;
+  const chrom = variant.chrom;
+  const pos = variant.pos;
+  const ref = variant.ref;
+  const alt = variant.alt;
 
+  const handleVarsomeClick = () => {
     window.open(
-      `https://varsome.com/variant/hg38/${chromosome}:${pos}:${props.variant.ref}:${props.variant.alt}`,
+      `https://varsome.com/variant/hg38/${chrom}:${pos}:${ref}:${alt}`,
       "_blank"
     );
   };
 
   const handleFranklinClick = () => {
-    const chromosome = props.variant.location.split("_")[0];
-    const pos = props.variant.location.split("_")[1];
-
     window.open(
-      `https://franklin.genoox.com/clinical-db/variant/snp/${chromosome}-${pos}-${props.variant.ref}-${props.variant.alt}-hg38`,
+      `https://franklin.genoox.com/clinical-db/variant/snp/${chrom}-${pos}-${ref}-${alt}-hg38`,
       "_blank"
     );
   };
@@ -107,13 +117,10 @@ function VariantDetails(props) {
     <Grid container spacing={12}>
       <Grid item xs={12} md={6}>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <DetailItem title="Gene" data={props.variant.gene_symbol} />
-          <DetailItem
-            title="REF/ALT"
-            data={`${props.variant.ref}/${props.variant.alt}`}
-          />
-          <DetailItem title="HGVSC" data={props.variant.hgvsc} />
-          <DetailItem title="Feature" data={props.variant.feature} />
+          <DetailItem title="Gene" data={props.variantAnnotation.gene_symbol} />
+          <DetailItem title="REF/ALT" data={`${ref}/${alt}`} />
+          <DetailItem title="HGVSC" data={props.variantAnnotation.hgvsg} />
+          <DetailItem title="Feature" data={props.variantAnnotation.feature} />
         </Box>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -126,22 +133,22 @@ function VariantDetails(props) {
         >
           <DetailItem
             title="Consequence"
-            data={props.variant.consequence}
+            data={props.variantAnnotation.consequence}
             text_align="right"
           />
           <DetailItem
             title="rsID"
-            data={props.variant.rs_id}
+            data={props.variantAnnotation.rs_id}
             text_align="right"
           />
           <DetailItem
             title="Clinical Significance"
-            data={props.variant.clinical_significance}
+            data={props.variantAnnotation.clinical_significance}
             text_align="right"
           />
           <DetailItem
             title="Clinvar"
-            data={props.variant.clinvar}
+            data={props.variantAnnotation.clinvar}
             text_align="right"
           />
           <Box

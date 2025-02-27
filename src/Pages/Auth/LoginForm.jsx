@@ -52,7 +52,11 @@ const LoginForm = () => {
           setUser(true);
         })
         .catch((err) => {
-          setErrors({ password: "Invalid Username/Password" });
+          try {
+            setErrors({ password: err.response.data.error });
+          } catch {
+            setErrors({ password: "Unknown error" });
+          }
         });
     }
   }
