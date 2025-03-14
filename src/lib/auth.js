@@ -1,6 +1,6 @@
+import { faker } from "@faker-js/faker";
 import storage from "../utils/storage";
 import { getUser, loginWithEmail, registerWithEmail } from "../apis";
-import { faker } from "@faker-js/faker";
 
 export async function loginFn(data) {
   const response = await loginWithEmail(data);

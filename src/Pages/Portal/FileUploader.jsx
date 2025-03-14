@@ -6,12 +6,11 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { API_URL } from "../../config";
 import storage from "../../utils/storage";
-import MultipleSelectChip from "../../Components/projects/MultipleSelectChip";
 
-function FileSelectUpload(props) {
+function FileUploader(props) {
   const token = storage.getToken();
   return (
-    <Paper sx={{ p: 5 }}>
+    <Paper sx={{ p: 1 }}>
       <Box
         sx={{
           display: "flex",
@@ -23,30 +22,6 @@ function FileSelectUpload(props) {
           {props.title}
         </Typography>
         {props.tooltip}
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-          mt: 2,
-        }}
-      >
-        <Typography fontSize={13} align="center">
-          Select from Previously Uploaded Files
-        </Typography>
-        <MultipleSelectChip
-          title="Select Files"
-          fileSetter={props.fileSetter}
-          fileNames={props.previousFiles}
-        />
-      </Box>
-      <Box sx={{ mb: 2, mt: 2 }} align="center">
-        <Typography fontSize={13}>
-          Or Upload New Files from Your Computer
-        </Typography>
       </Box>
       <FilePond
         name="file"
@@ -89,4 +64,4 @@ function FileSelectUpload(props) {
     </Paper>
   );
 }
-export default FileSelectUpload;
+export default FileUploader;

@@ -9,10 +9,14 @@ export function VariantSignificanceIcon(props) {
 
   React.useEffect(() => {
     if (
-      props.classification.toLowerCase().includes("pathogenic") ||
+      props.classification.toLowerCase() === "pathogenic" ||
       props.classification.toLowerCase().includes("strong")
     ) {
       setbgColor("#ab0e0e");
+    } else if (
+      props.classification.toLowerCase().includes("likely pathogenic")
+    ) {
+      setbgColor("#eba721");
     } else if (props.classification.toLowerCase().includes("benign")) {
       setbgColor("#1AB29C");
     }

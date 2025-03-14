@@ -10,9 +10,9 @@ import {
   FileList,
   FileNavbar,
 } from "chonky";
-import downloadFile from "../../apis/downloadFile";
 import { Base64 } from "js-base64";
 import { ThemeProvider } from "@material-ui/core/";
+import downloadFile from "../../apis/downloadFile";
 
 function isVcfFile(file) {
   return file.name.endsWith(".vcf") || file.name.endsWith(".vcf.gz");

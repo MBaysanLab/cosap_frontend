@@ -20,7 +20,7 @@ function Footer() {
             <Grid item xs={12}>
               <center>
                 <Link href="/" variant="subtitle1" sx={{ color: "black" }}>
-                  CosapSEQ&copy; {year}
+                  Cosap&copy; {year}
                 </Link>
               </center>
             </Grid>

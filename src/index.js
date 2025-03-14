@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 // import * as Sentry from "@sentry/react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ChonkyIconFA } from "chonky-icon-fontawesome";
+import { setChonkyDefaults } from "chonky";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import "@fontsource/poppins/400.css";
 import { AuthLanding, Home, Portal, Register } from "./Pages";
 import PrivateRoutes from "./utils/privateRoutes";
-import { setChonkyDefaults } from "chonky";
-import { ChonkyIconFA } from "chonky-icon-fontawesome";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 // Sentry.init({
 //   dsn: process.env.REACT_APP_SENTRY_DSN,

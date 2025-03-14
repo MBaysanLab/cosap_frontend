@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
-function FeatureCard(props) {
+function FeatureCard({ header, children }) {
   return (
     <Card
       sx={{
@@ -11,7 +11,9 @@ function FeatureCard(props) {
         marginLeft: { xs: 1 },
         marginRight: { xs: 1 },
         borderRadius: 5,
-        backgroundImage: props.bgImage,
+        backgroundColor: "transparent",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        boxShadow: "none",
         justifyContent: "space-between",
       }}
     >
@@ -34,7 +36,7 @@ function FeatureCard(props) {
             fontSize: { xs: 25, md: "3em" },
           }}
         >
-          {props.header}
+          {header}
         </Typography>
         <Typography
           variant="h6"
@@ -43,7 +45,7 @@ function FeatureCard(props) {
             fontSize: { xs: 15, md: "1.2em" },
           }}
         >
-          {props.children}
+          {children}
         </Typography>
       </CardContent>
     </Card>

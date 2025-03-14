@@ -5,12 +5,12 @@ import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
-import getProjectDetail from "../../apis/getProjectDetail";
 import FileBrowser from "./FileBrowser";
-import getProjectFiles from "../../apis/getProjectFiles";
 import DocumentViewerModal from "./DocumentViewerModal";
-import { extractAllFilesFromFileMap } from "../../utils/utils";
 import BamQcMetrics from "./BamQcMetrics";
+import getProjectDetail from "../../apis/getProjectDetail";
+import getProjectFiles from "../../apis/getProjectFiles";
+import { extractAllFilesFromFileMap } from "../../utils/utils";
 
 function ProjectDetail() {
   const [projectMetadata, setMetadata] = React.useState({});

@@ -79,28 +79,25 @@ function PortalContent(props) {
           orientation={isSmallScreen ? "horizontal" : "vertical"}
           value={activeMenu}
           onChange={handleChange}
-          TabIndicatorProps={{
-            style: {
-              background: "#171A1E",
-              width: isMenuOpen ? 8 : 5,
-              transition: "all 0.1s ease",
-            },
-          }}
         >
           {Object.keys(menuItems).map((text, index) => (
             <Tab
               component={Link}
               to={text === "Dashboard" ? "/portal" : text.toLowerCase()}
               key={text}
-              icon={menuItems[text]}
-              label={<Hidden smDown>{isMenuOpen ? text : null}</Hidden>}
+              icon={
+                <Hidden smDown>{isMenuOpen ? menuItems[text] : null}</Hidden>
+              }
+              label={text}
               iconPosition="start"
               sx={{
+                pr: 3,
                 color: "white",
                 "&.Mui-selected": {
                   background: "white",
                   color: "#171A1E",
                 },
+                fontSize: isMenuOpen ? "1rem" : "0.7rem",
               }}
             />
           ))}

@@ -8,11 +8,11 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import WarningIcon from "@mui/icons-material/Warning";
 import { useNavigate, useSearchParams } from "react-router-dom";
-const FileSelectUpload = React.lazy(() => import("./FileSelectUpload.jsx"));
+const FileUploader = React.lazy(() => import("./FileUploader.jsx"));
 const TrioUploader = React.lazy(() => import("./TrioUploader.jsx"));
 import AlgorithmSelector from "./AlgorithmSelector";
+import postSample from "../../apis/postSample";
 import postProject from "../../apis/postProject.js";
-import getFiles from "../../apis/getFiles";
 
 // Predifened values for algorithms
 const mappers = ["BWA2", "BWA", "Bowtie2"];
@@ -38,66 +38,28 @@ const variantAnnotators = [
 const algorithmKeys = ["aligner", "variantCaller", "variantAnnotator"];
 
 function CreateProject(props) {
+  // File uploaders
   const [tumorFileUploader, setTumorFileUploader] = React.useState(null);
   const [normalFileUploader, setNormalFileUploader] = React.useState(null);
   const [bedFileUploader, setBedFileUploader] = React.useState(null);
   const [fatherFileUploader, setFatherFileUploader] = React.useState(null);
   const [motherFileUploader, setMotherFileUploader] = React.useState(null);
   const [childFileUploader, setChildFileUploader] = React.useState(null);
-  const [searchParams] = useSearchParams();
+
   const [numberOfAddedFiles, setNumberOfAddedFiles] = React.useState(0);
   const [FileUploadAlert, setFileUploadAlert] = React.useState(false);
   const [projectNameAlert, setProjectNameAlert] = React.useState(false);
 
-  // Standard file states
-  const [selectedNormalFiles, setSelectedNormalFiles] = React.useState([]);
-  const [selectedTumorFiles, setSelectedTumorFiles] = React.useState([]);
-  const [selectedBedFiles, setSelectedBedFiles] = React.useState([]);
-
-  // Trio file states
-  const [selectedFatherFiles, setSelectedFatherFiles] = React.useState([]);
-  const [selectedMotherFiles, setSelectedMotherFiles] = React.useState([]);
-  const [selectedChildFiles, setSelectedChildFiles] = React.useState([]);
-
-  // States that stores previously uploaded files
-  const [previousNormalFiles, setPreviousNormalFiles] = React.useState({});
-  const [previousTumorFiles, setPreviousTumorFiles] = React.useState({});
-  const [previousBedFiles, setPreviousBedFiles] = React.useState({});
-
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const projectType = searchParams.get("type");
 
-  // Get previously uploaded files
-  React.useEffect(() => {
-    getFiles("sample_type", "normal")
-      .then((response) => {
-        setPreviousNormalFiles(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    getFiles("sample_type", "tumor")
-      .then((response) => {
-        setPreviousTumorFiles(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    getFiles("file_type", "bed")
-      .then((response) => {
-        setPreviousBedFiles(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   // Set predifened values for algorithms
   const [inputs, setInputs] = React.useState({
     project_type: projectType,
-    aligner: ["BWA2"],
-    variantCaller: ["Mutect2"],
+    aligner: [],
+    variantCaller: [],
     variantAnnotator: [],
   });
 
@@ -120,49 +82,46 @@ function CreateProject(props) {
 
     if (projectType === "GERMLINE_TRIO") {
       // Check if child sample is uploaded, which is required for trio analysis
-      if (selectedChildFiles.length < 1 && !childFileUploader) {
+      if (childFileUploader.getFiles().length < 1) {
         setFileUploadAlert(true);
         return;
       }
 
       // Process trio files
-      if (selectedFatherFiles.length > 0) {
-        formData.append("father_files", JSON.stringify(selectedFatherFiles));
-      } else if (fatherFileUploader) {
+      if (fatherFileUploader) {
         try {
           const fatherFiles = await fatherFileUploader.processFiles();
-          formData.append(
-            "father_files",
-            JSON.stringify(fatherFiles.map((file) => file.serverId))
-          );
+          const fatherSample = await postSample({
+            file_ids: fatherFiles.map((file) => file.serverId),
+            sample_type: "NORMAL",
+          });
+          formData.append("father_sample_id", fatherSample.data);
         } catch (error) {
           console.error(error);
         }
       }
 
-      if (selectedMotherFiles.length > 0) {
-        formData.append("mother_files", JSON.stringify(selectedMotherFiles));
-      } else if (motherFileUploader) {
+      if (motherFileUploader) {
         try {
           const motherFiles = await motherFileUploader.processFiles();
-          formData.append(
-            "mother_files",
-            JSON.stringify(motherFiles.map((file) => file.serverId))
-          );
+          const motherSample = await postSample({
+            file_ids: motherFiles.map((file) => file.serverId),
+            sample_type: "NORMAL",
+          });
+          formData.append("mother_sample_id", motherSample.data);
         } catch (error) {
           console.error(error);
         }
       }
 
-      if (selectedChildFiles.length > 0) {
-        formData.append("child_files", JSON.stringify(selectedChildFiles));
-      } else if (childFileUploader) {
+      if (childFileUploader) {
         try {
           const childFiles = await childFileUploader.processFiles();
-          formData.append(
-            "child_files",
-            JSON.stringify(childFiles.map((file) => file.serverId))
-          );
+          const childSample = await postSample({
+            file_ids: childFiles.map((file) => file.serverId),
+            sample_type: "NORMAL",
+          });
+          formData.append("child_sample_id", childSample.data);
         } catch (error) {
           console.error(error);
           return; // Stop if child files couldn't be processed since they're required
@@ -175,36 +134,32 @@ function CreateProject(props) {
       // Regular project file logic
       // Check if any files are added
       if (numberOfAddedFiles < 1) {
-        if (selectedNormalFiles.length < 1 && selectedTumorFiles.length < 1) {
-          setFileUploadAlert(true);
-          return;
-        }
+        setFileUploadAlert(true);
+        return;
       }
 
       // Standard project files handling
-      if (selectedTumorFiles.length > 0) {
-        formData.append("tumor_files", JSON.stringify(selectedTumorFiles));
-      } else if (projectType !== "GM" && tumorFileUploader) {
+      if (projectType !== "GM" && tumorFileUploader) {
         try {
           const tumorFiles = await tumorFileUploader.processFiles();
-          formData.append(
-            "tumor_files",
-            JSON.stringify(tumorFiles.map((file) => file.serverId))
-          );
+          const tumorSample = await postSample({
+            file_ids: tumorFiles.map((file) => file.serverId),
+            sample_type: "TUMOR",
+          });
+          formData.append("tumor_sample_id", tumorSample.data);
         } catch (error) {
           console.error(error);
         }
       }
 
-      if (selectedNormalFiles.length > 0) {
-        formData.append("normal_files", JSON.stringify(selectedNormalFiles));
-      } else if (normalFileUploader) {
+      if (normalFileUploader) {
         try {
           const normalFiles = await normalFileUploader.processFiles();
-          formData.append(
-            "normal_files",
-            JSON.stringify(normalFiles.map((file) => file.serverId))
-          );
+          const normalSample = await postSample({
+            file_ids: normalFiles.map((file) => file.serverId),
+            sample_type: "NORMAL",
+          });
+          formData.append("normal_sample_id", normalSample.data);
         } catch (error) {
           console.error(error);
           return;
@@ -213,14 +168,12 @@ function CreateProject(props) {
     }
 
     // Bed files are needed for all project types
-    if (selectedBedFiles.length > 0) {
-      formData.append("bed_files", JSON.stringify(selectedBedFiles));
-    } else if (bedFileUploader) {
+    if (bedFileUploader) {
       try {
-        const bedFiles = await bedFileUploader.processFiles();
+        const bedFile = await bedFileUploader.processFiles();
         formData.append(
-          "bed_files",
-          JSON.stringify(bedFiles.map((file) => file.serverId))
+          "bed_file_id",
+          bedFile.map((file) => file.serverId)
         );
       } catch (error) {
         console.error(error);
@@ -295,14 +248,6 @@ function CreateProject(props) {
             : "Upload Sample Files"}
         </Typography>
 
-        {projectType === "GERMLINE_TRIO" && (
-          <Alert severity="info" sx={{ mt: 1 }}>
-            Upload or select samples for the family trio. Child sample is
-            required for analysis; parent samples are optional but recommended
-            for better variant interpretation.
-          </Alert>
-        )}
-
         {projectType !== "GM" && projectType !== "GERMLINE_TRIO" ? (
           <Alert severity="info">
             Somatic variant calling can be made with tumor samples alone.
@@ -328,12 +273,6 @@ function CreateProject(props) {
             fatherFileUploader={setFatherFileUploader}
             motherFileUploader={setMotherFileUploader}
             childFileUploader={setChildFileUploader}
-            setSelectedFatherFiles={setSelectedFatherFiles}
-            setSelectedMotherFiles={setSelectedMotherFiles}
-            setSelectedChildFiles={setSelectedChildFiles}
-            previousFatherFiles={previousNormalFiles}
-            previousMotherFiles={previousNormalFiles}
-            previousChildFiles={previousNormalFiles}
           />
         </React.Suspense>
       ) : (
@@ -347,7 +286,7 @@ function CreateProject(props) {
         >
           <React.Suspense fallback={<div>Loading...</div>}>
             <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
-              <FileSelectUpload
+              <FileUploader
                 refSetter={setNormalFileUploader}
                 title="Normal Samples"
                 allowMultiple={true}
@@ -355,29 +294,26 @@ function CreateProject(props) {
                 onAddfile={handleAddFile}
                 onRemoveFile={handleRemoveFile}
                 maxFiles={2}
-                fileSetter={setSelectedNormalFiles}
-                previousFiles={previousNormalFiles}
               />
             </Box>
 
             {(projectType === "SOMATIC" || projectType === "COMP") && (
               <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
-                <FileSelectUpload
+                <FileUploader
                   refSetter={setTumorFileUploader}
                   title="Tumor Samples"
                   allowMultiple={true}
                   sampleType="TUMOR"
                   onAddfile={handleAddFile}
                   onRemoveFile={handleRemoveFile}
-                  fileSetter={setSelectedTumorFiles}
-                  previousFiles={previousTumorFiles}
+                  maxFiles={2}
                 />
               </Box>
             )}
 
             {/* BED file uploader alongside other uploaders */}
             <Box sx={{ width: { sm: "100%", md: "20vw" }, mt: 1, mb: 2 }}>
-              <FileSelectUpload
+              <FileUploader
                 refSetter={setBedFileUploader}
                 title="BED File"
                 tooltip={
@@ -388,8 +324,6 @@ function CreateProject(props) {
                 allowMultiple={false}
                 onAddfile={handleAddFile}
                 onRemoveFile={handleRemoveFile}
-                fileSetter={setSelectedBedFiles}
-                previousFiles={previousBedFiles}
                 maxFiles={1}
               />
             </Box>

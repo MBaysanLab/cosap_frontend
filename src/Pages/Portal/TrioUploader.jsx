@@ -11,7 +11,7 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
 
-const FileSelectUpload = React.lazy(() => import("./FileSelectUpload.jsx"));
+const FileUploader = React.lazy(() => import("./FileUploader.jsx"));
 
 function TrioUploader({
   onAddFile,
@@ -65,18 +65,15 @@ function TrioUploader({
             </Box>
             <Divider sx={{ mb: 2 }} />
             <React.Suspense fallback={<div>Loading...</div>}>
-              <FileSelectUpload
+              <FileUploader
                 refSetter={childFileUploader}
-                title="Child's Samples"
                 allowMultiple={false}
                 sampleType="NORMAL"
                 onAddfile={onAddFile}
                 onRemoveFile={onRemoveFile}
-                maxFiles={1}
+                maxFiles={2}
                 fileSetter={setSelectedChildFiles}
                 previousFiles={previousChildFiles}
-                compact={true}
-                required={true}
               />
             </React.Suspense>
           </Paper>
@@ -90,7 +87,6 @@ function TrioUploader({
           flexDirection: isMobile ? "column" : "row",
           justifyContent: "center",
           gap: 4,
-          mb: 4,
         }}
       >
         {/* Father uploader */}
@@ -102,7 +98,6 @@ function TrioUploader({
               borderRadius: 2,
               border: "1px solid #e0e0e0",
               borderTop: "5px solid #428AAE",
-              height: "100%",
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
@@ -113,17 +108,13 @@ function TrioUploader({
             </Box>
             <Divider sx={{ mb: 2 }} />
             <React.Suspense fallback={<div>Loading...</div>}>
-              <FileSelectUpload
+              <FileUploader
                 refSetter={fatherFileUploader}
-                title="Father's Samples"
                 allowMultiple={false}
                 sampleType="NORMAL"
                 onAddfile={onAddFile}
                 onRemoveFile={onRemoveFile}
-                maxFiles={1}
-                fileSetter={setSelectedFatherFiles}
-                previousFiles={previousFatherFiles}
-                compact={true}
+                maxFiles={2}
               />
             </React.Suspense>
           </Paper>
@@ -138,7 +129,6 @@ function TrioUploader({
               borderRadius: 2,
               border: "1px solid #e0e0e0",
               borderTop: "5px solid #FF69B4",
-              height: "100%",
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
@@ -149,17 +139,13 @@ function TrioUploader({
             </Box>
             <Divider sx={{ mb: 2 }} />
             <React.Suspense fallback={<div>Loading...</div>}>
-              <FileSelectUpload
+              <FileUploader
                 refSetter={motherFileUploader}
-                title="Mother's Samples"
                 allowMultiple={false}
                 sampleType="NORMAL"
                 onAddfile={onAddFile}
                 onRemoveFile={onRemoveFile}
-                maxFiles={1}
-                fileSetter={setSelectedMotherFiles}
-                previousFiles={previousMotherFiles}
-                compact={true}
+                maxFiles={2}
               />
             </React.Suspense>
           </Paper>

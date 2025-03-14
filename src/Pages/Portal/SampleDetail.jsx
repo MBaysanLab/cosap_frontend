@@ -15,10 +15,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import getSampleDetail from "../../apis/getSampleDetail";
 import DownloadIcon from "@mui/icons-material/Download";
 import ScienceIcon from "@mui/icons-material/Science";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import getSampleDetail from "../../apis/getSampleDetail";
 
 function SampleDetail() {
   const [sample, setSample] = React.useState(null);

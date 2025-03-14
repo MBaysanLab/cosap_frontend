@@ -17,9 +17,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyIcon from "@mui/icons-material/Key";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { logoutFn, verifyUser } from "../../lib/auth";
-import GithubButton from "./GithubButton";
 import { deepOrange } from "@mui/material/colors";
+import GithubButton from "./GithubButton";
+import { logoutFn, verifyUser } from "../../lib/auth";
 
 const pages = {
   Home: "/",

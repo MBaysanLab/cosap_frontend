@@ -12,10 +12,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import postSample from "../../apis/postSample";
 import { useNavigate } from "react-router-dom";
+import postSample from "../../apis/postSample";
 
-const FileSelectUpload = React.lazy(() => import("./FileSelectUpload"));
+const FileSelectUpload = React.lazy(() => import("./FileUploader"));
 
 function SampleUpload() {
   const [fileUploader, setFileUploader] = React.useState(null);

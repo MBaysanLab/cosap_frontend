@@ -15,7 +15,6 @@ import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 export default function VariantRow(props) {
   const data = props.row;
   const projectType = props.project_type?.toLowerCase();
-  data.pedigree = {};
 
   return (
     <Box>
@@ -165,26 +164,18 @@ export default function VariantRow(props) {
                     color={"grey"}
                     textAlign="center"
                   >
-                    Pedigree
+                    Affected Family Members
                   </Typography>
                   <Tooltip
                     title={
                       <div>
                         <div>Family ID: {data.pedigree.family_id || "N/A"}</div>
-                        <div>
-                          Affected Members:{" "}
-                          {data.pedigree.affected_members?.join(", ") || "N/A"}
-                        </div>
-                        <div>
-                          Inheritance Pattern:{" "}
-                          {data.pedigree.inheritance_pattern || "N/A"}
-                        </div>
                       </div>
                     }
                     arrow
                   >
                     <Typography fontSize={"0.8rem"}>
-                      {data.pedigree.family_id || "N/A"}
+                      {data.pedigree.affected_members?.join(", ") || "N/A"}
                     </Typography>
                   </Tooltip>
                 </Box>
@@ -212,7 +203,7 @@ export default function VariantRow(props) {
                     Depth
                   </Typography>
                   <Typography fontSize={"0.8rem"}>
-                    {data.read_depth || "N/A"}
+                    {data.sample_specific.read_depth || "N/A"}
                   </Typography>
                 </Box>
               </Box>
@@ -239,7 +230,7 @@ export default function VariantRow(props) {
                     VAF
                   </Typography>
                   <Typography fontSize={"0.8rem"}>
-                    {data.af || "N/A"}
+                    {data.sample_specific.allele_frequency || "N/A"}
                   </Typography>
                 </Box>
               </Box>

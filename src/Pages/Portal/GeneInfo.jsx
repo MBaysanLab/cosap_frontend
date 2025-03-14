@@ -91,6 +91,7 @@ function GeneInfo(props) {
         }
 
         const data = await response.json();
+        console.log(data.hits[0]);
 
         if (data.hits && data.hits.length > 0) {
           setGeneData(data.hits[0]);
@@ -180,6 +181,13 @@ function GeneInfo(props) {
 
   // Get aliases
   const aliases = geneData.alias || [];
+
+  // Add this helper function in your component
+  const formatFieldData = (data, limit = 3) => {
+    if (!data) return "";
+    if (Array.isArray(data)) return data.slice(0, limit).join(", ");
+    return data;
+  };
 
   return (
     <Grid
@@ -648,24 +656,24 @@ function GeneInfo(props) {
                 </Box>
               )}
 
-            {geneData.pdb && geneData.pdb.length > 0 && (
+            {geneData.pdb && (
               <Box sx={dataRowStyle}>
                 <Typography variant="body2" color="#555555" fontWeight="medium">
                   PDB:
                 </Typography>
                 <Typography variant="body2" color="#111111" fontWeight="bold">
-                  {geneData.pdb.slice(0, 3).join(", ")}
+                  {formatFieldData(geneData.pdb)}
                 </Typography>
               </Box>
             )}
 
-            {geneData.pfam && geneData.pfam.length > 0 && (
+            {geneData.pfam && (
               <Box sx={dataRowStyle}>
                 <Typography variant="body2" color="#555555" fontWeight="medium">
                   Pfam:
                 </Typography>
                 <Typography variant="body2" color="#111111" fontWeight="bold">
-                  {geneData.pfam.slice(0, 3).join(", ")}
+                  {formatFieldData(geneData.pfam)}
                 </Typography>
               </Box>
             )}

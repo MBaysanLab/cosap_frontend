@@ -1,13 +1,15 @@
 import * as React from "react";
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import { useQuery } from "react-query";
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 import FilterToolbar from "./VariantFilterToolbar";
-import getVariants from "../../apis/getVariants";
 import VariantRow from "./ExpandableVariantRow";
+import getVariants from "../../apis/getVariants";
 import { romanToInt } from "../../utils/utils";
 import preLodaer from "../../assets/images/preloader.gif";
-import { useQuery } from "react-query";
+import Typography from "@mui/material/Typography";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 const columns = [
   {
@@ -95,6 +97,28 @@ const filterModelBase = [
   },
 ];
 
+function NoRowsOverlay() {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+      }}
+    >
+      <SearchOffIcon sx={{ fontSize: 60, color: "text.secondary", mb: 1 }} />
+      <Typography variant="h6" color="text.secondary">
+        No variants found
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        Try adjusting your filters or search criteria
+      </Typography>
+    </Box>
+  );
+}
+
 function VariantList(props) {
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(25);
@@ -161,7 +185,12 @@ function VariantList(props) {
   }
 
   return (
-    <Box sx={{ height: "1000px", width: "100%" }}>
+    <Box
+      sx={{
+        height: data.snvs && data.snvs.length === 0 ? "300px" : "1000px",
+        width: "100%",
+      }}
+    >
       <FilterToolbar
         onFilterApply={handleFilterApply}
         onClearFilters={handleClearFilters}
@@ -183,6 +212,7 @@ function VariantList(props) {
             components={{
               Row: VariantRow,
               Header: () => null,
+              NoRowsOverlay: NoRowsOverlay,
             }}
             componentsProps={{
               row: {

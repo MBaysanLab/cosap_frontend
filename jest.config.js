@@ -1,7 +1,7 @@
 module.exports = {
-  testEnvironment: 'node',
-  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  testEnvironment: "node",
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
   collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov'],
+  coverageDirectory: "coverage",
+  coverageReporters: ["text", "lcov"],
 };

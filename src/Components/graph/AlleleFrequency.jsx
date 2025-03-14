@@ -1,6 +1,6 @@
-import Speedometer from "./Speedometer";
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import Speedometer from "./Speedometer";
 
 function AlleleFrequency(props) {
   return (

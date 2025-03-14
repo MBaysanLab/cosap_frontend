@@ -7,8 +7,8 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
 import { NavLink } from "react-router-dom";
+import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
 import { demoLogin, verifyUser } from "../../lib/auth";
 
 export function useIsMounted() {

@@ -2,7 +2,7 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReplayIcon from "@mui/icons-material/Replay";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PageviewIcon from "@mui/icons-material/Pageview";
@@ -10,7 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { Complete, Failed, InProgress, Parsing, Pending } from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
@@ -18,6 +18,11 @@ import postReRun from "../../apis/postReRun";
 import postDeleteProject from "../../apis/postDeleteProject";
 
 function ProjectList(props) {
+  const [projects, setProjects] = React.useState([]);
+  const [counter, setCounter] = React.useState(0); // Used to force render the component
+  const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
+
   const columns = [
     { field: "name", headerName: "Project Name", flex: 1 },
     { field: "project_type", headerName: "Type", flex: 0.3 },
@@ -39,6 +44,8 @@ function ProjectList(props) {
             return <Pending />;
           case "failed":
             return <Failed />;
+          default:
+            return params.value;
         }
       },
     },
@@ -54,14 +61,16 @@ function ProjectList(props) {
             <IconButton
               aria-label="view_results"
               onClick={() => handleOnViewResultsClick(params)}
+              disabled={loading}
             >
               <PageviewIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Re-run">
             <IconButton
-              aria-label="delete"
+              aria-label="rerun"
               onClick={() => handleRerun(params.row.id)}
+              disabled={loading}
             >
               <ReplayIcon />
             </IconButton>
@@ -70,6 +79,7 @@ function ProjectList(props) {
             <IconButton
               aria-label="delete"
               onClick={() => handleDelete(params.row.id)}
+              disabled={loading}
             >
               <DeleteIcon />
             </IconButton>
@@ -80,43 +90,46 @@ function ProjectList(props) {
   ];
 
   const handleOnViewResultsClick = (params) => {
-    if (params.row.status === "completed") {
+    if (params.row.status.toLowerCase() === "completed") {
       const rowId = params.row.id;
       navigate(`./${rowId}`);
     }
   };
 
   const handleRerun = async (id) => {
+    setLoading(true);
     try {
       await postReRun(id);
-      setProjects(projects);
+      // Increment counter to trigger re-fetch
+      setCounter((prevCounter) => prevCounter + 1);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
-    // Force render the component
-    setCounter(counter + 1);
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this project?")) {
       return;
     }
+
+    setLoading(true);
     try {
       await postDeleteProject(id);
-      setProjects(projects);
+      // Increment counter to trigger re-fetch
+      setCounter((prevCounter) => prevCounter + 1);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
-    // Force render the component
-    setCounter(counter + 1);
   };
 
-  const [projects, setProjects] = React.useState([]);
-  const [counter, setCounter] = React.useState(0); // Used to force render the component
-  const navigate = useNavigate();
-
+  // Fetch projects when component mounts or counter changes
   React.useEffect(() => {
     const fetchProjects = async () => {
+      setLoading(true);
       try {
         const res = await getProjects();
         const data = res.data.map((item) => ({
@@ -127,10 +140,32 @@ function ProjectList(props) {
         setProjects(data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProjects();
-  }, []);
+  }, [counter]); // Add counter as dependency to re-fetch when it changes
+
+  // Custom "no rows" overlay
+  const NoRowsOverlay = () => (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+      }}
+    >
+      <Typography variant="h6" color="text.secondary">
+        No projects found
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+        Create a new project to get started
+      </Typography>
+    </Box>
+  );
 
   return (
     <Box sx={{ height: { xs: "200px", md: "500px" }, width: "100%" }}>
@@ -145,6 +180,7 @@ function ProjectList(props) {
           size="small"
           startIcon={<AddIcon />}
           color="button"
+          disabled={loading}
         >
           Create New Project
         </Button>
@@ -152,7 +188,11 @@ function ProjectList(props) {
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
-            noRowsOverlay={<div>No projects found</div>}
+            components={{
+              NoRowsOverlay: NoRowsOverlay,
+              LoadingOverlay: CircularProgress,
+            }}
+            loading={loading}
             columns={columns}
             rows={projects}
             hideFooter
