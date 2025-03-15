@@ -8,11 +8,11 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import WarningIcon from "@mui/icons-material/Warning";
 import { useNavigate, useSearchParams } from "react-router-dom";
-const FileUploader = React.lazy(() => import("./FileUploader.jsx"));
-const TrioUploader = React.lazy(() => import("./TrioUploader.jsx"));
 import AlgorithmSelector from "./AlgorithmSelector";
 import postSample from "../../apis/postSample";
 import postProject from "../../apis/postProject.js";
+const FileUploader = React.lazy(() => import("./FileUploader.jsx"));
+const TrioUploader = React.lazy(() => import("./TrioUploader.jsx"));
 
 // Predifened values for algorithms
 const mappers = ["BWA2", "BWA", "Bowtie2"];

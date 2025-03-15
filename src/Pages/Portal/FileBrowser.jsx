@@ -11,7 +11,6 @@ import {
   FileNavbar,
 } from "chonky";
 import { Base64 } from "js-base64";
-import { ThemeProvider } from "@material-ui/core/";
 import downloadFile from "../../apis/downloadFile";
 
 function isVcfFile(file) {
@@ -141,27 +140,25 @@ function FileBrowser(props) {
   return (
     // The ThemeProvider is to fix jss collision between mui and chonky.
     // Its gonna give error but atleast doesnt mess up with the styling
-    <ThemeProvider>
-      <Box sx={{ height: { xs: "100px", md: "250px" }, width: "100%", mt: 1 }}>
-        <Box sx={{ display: "flex", height: "100%" }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <ChonkyFileBrowser
-              files={files}
-              folderChain={folderChain}
-              onFileAction={handleFileAction}
-              defaultFileViewActionId={ChonkyActions.EnableListView.id}
-              disableDragAndDrop={true}
-              fileActions={fileActions}
-              disableDefaultFileActions={disabledFileActions}
-            >
-              <FileNavbar />
-              <FileList />
-              <FileContextMenu />
-            </ChonkyFileBrowser>
-          </Box>
+    <Box sx={{ height: { xs: "100px", md: "250px" }, width: "100%", mt: 1 }}>
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <ChonkyFileBrowser
+            files={files}
+            folderChain={folderChain}
+            onFileAction={handleFileAction}
+            defaultFileViewActionId={ChonkyActions.EnableListView.id}
+            disableDragAndDrop={true}
+            fileActions={fileActions}
+            disableDefaultFileActions={disabledFileActions}
+          >
+            <FileNavbar />
+            <FileList />
+            <FileContextMenu />
+          </ChonkyFileBrowser>
         </Box>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }
 

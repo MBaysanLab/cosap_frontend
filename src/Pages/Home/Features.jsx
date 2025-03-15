@@ -5,9 +5,9 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import { Stack, useMediaQuery, useTheme } from "@mui/material";
 import FeatureCard from "./FeatureCard";
 import featuresBg from "../../assets/images/featuresbg.png";
-import { Stack, useMediaQuery, useTheme } from "@mui/material";
 
 function Features() {
   const theme = useTheme();

@@ -1,15 +1,15 @@
 import * as React from "react";
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
+import Typography from "@mui/material/Typography";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
 import { VariantSignificanceIcon } from "./VariantSignificanceIcon";
 import FilterToolbar from "./VariantFilterToolbar";
 import VariantRow from "./ExpandableVariantRow";
 import getVariants from "../../apis/getVariants";
 import { romanToInt } from "../../utils/utils";
 import preLodaer from "../../assets/images/preloader.gif";
-import Typography from "@mui/material/Typography";
-import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 const columns = [
   {
@@ -125,14 +125,14 @@ function VariantList(props) {
   const [filterModel, setFilterModel] = React.useState(filterModelBase);
   const apiRef = useGridApiRef();
 
-  // Fetch variants with filters and pagination
-  const { isLoading, isError, data, error } = useQuery(
-    ["variants", page, pageSize, filterModel],
-    () => getVariants(props.project_id, page + 1, pageSize, filterModel),
-    {
-      keepPreviousData: true,
-    }
-  );
+  // Update to use object notation instead of array notation
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ["variants", page, pageSize, filterModel],
+    queryFn: () =>
+      getVariants(props.project_id, page + 1, pageSize, filterModel),
+    keepPreviousData: true,
+  });
+
   const [rowCountState, setRowCountState] = React.useState(data?.total || 0);
 
   // Update row count when data changes

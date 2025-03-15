@@ -1,8 +1,8 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 // import * as Sentry from "@sentry/react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ChonkyIconFA } from "chonky-icon-fontawesome";
 import { setChonkyDefaults } from "chonky";
 import reportWebVitals from "./reportWebVitals";
@@ -23,7 +23,8 @@ import PrivateRoutes from "./utils/privateRoutes";
 
 const queryClient = new QueryClient();
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <QueryClientProvider client={queryClient}>
     <Router>
       <Routes>
@@ -35,8 +36,7 @@ ReactDOM.render(
         <Route path="register" element={<Register />} />
       </Routes>
     </Router>
-  </QueryClientProvider>,
-  document.getElementById("root")
+  </QueryClientProvider>
 );
 
 setChonkyDefaults({ iconComponent: ChonkyIconFA });

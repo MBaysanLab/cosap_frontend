@@ -1,6 +1,5 @@
 import React from "react";
-import { Backdrop, Fade, Modal } from "@material-ui/core";
-import { Box } from "@mui/material";
+import { Backdrop, Box, Fade, Modal } from "@mui/material";
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 import { API_URL } from "../../config";
 import storage from "../../utils/storage";
