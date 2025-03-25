@@ -19,7 +19,7 @@ function FeatureCard({ header, children }) {
     >
       <CardContent
         sx={{
-          minHeight: { xs: "200px", md: "350px" },
+          minHeight: { xs: "200px", md: "250px" },
           minWidth: { xs: "250px" },
           display: "flex",
           flexDirection: "column",

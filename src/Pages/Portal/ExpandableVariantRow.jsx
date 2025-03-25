@@ -164,18 +164,37 @@ export default function VariantRow(props) {
                     color={"grey"}
                     textAlign="center"
                   >
-                    Affected Family Members
+                    Family Occurrence
                   </Typography>
                   <Tooltip
                     title={
                       <div>
-                        <div>Family ID: {data.pedigree.family_id || "N/A"}</div>
+                        {Object.entries(data.pedigree)
+                          .filter(
+                            ([key]) =>
+                              key !== "family_id" && key !== "affected_members"
+                          )
+                          .map(([member, memberData]) => (
+                            <div key={member}>
+                              {member}: {memberData.genotype || "N/A"} (Depth:{" "}
+                              {memberData.read_depth || "N/A"})
+                            </div>
+                          ))}
                       </div>
                     }
                     arrow
                   >
                     <Typography fontSize={"0.8rem"}>
-                      {data.pedigree.affected_members?.join(", ") || "N/A"}
+                      {Object.entries(data.pedigree)
+                        .filter(
+                          ([key]) =>
+                            key !== "family_id" && key !== "affected_members"
+                        )
+                        .map(
+                          ([member, memberData]) =>
+                            `${memberData.genotype || "N/A"}`
+                        )
+                        .join(" | ") || "N/A"}
                     </Typography>
                   </Tooltip>
                 </Box>
