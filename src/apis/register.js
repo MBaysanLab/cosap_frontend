@@ -6,6 +6,7 @@ const registerWithEmail = (registerData) => {
     last_name: registerData.last_name,
     email: registerData.email,
     password: registerData.password,
+    is_guest: registerData.is_guest,
   });
 };
 

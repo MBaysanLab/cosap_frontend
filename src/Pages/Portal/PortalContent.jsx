@@ -6,8 +6,7 @@ import LineStyleIcon from "@mui/icons-material/LineStyle";
 import ScatterPlotIcon from "@mui/icons-material/ScatterPlot";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import Hidden from "@mui/material/Hidden";
-
+// Removed Hidden import as it's deprecated
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 const menuItems = {
@@ -86,7 +85,14 @@ function PortalContent(props) {
               to={text === "Dashboard" ? "/portal" : text.toLowerCase()}
               key={text}
               icon={
-                <Hidden smDown>{isMenuOpen ? menuItems[text] : null}</Hidden>
+                // Replaced Hidden with conditional rendering and sx prop
+                isMenuOpen ? (
+                  <Box
+                    sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+                  >
+                    {menuItems[text]}
+                  </Box>
+                ) : null
               }
               label={text}
               iconPosition="start"

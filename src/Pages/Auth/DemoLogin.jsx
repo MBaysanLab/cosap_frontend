@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
+import { ReactComponent as BannerSVG } from "../../assets/images/cosap_logo.svg";
 import { demoLogin, verifyUser } from "../../lib/auth";
 
 export function useIsMounted() {

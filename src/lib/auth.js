@@ -37,6 +37,7 @@ export async function demoLogin() {
     password: faker.internet.password(),
     first_name: "Guest",
     last_name: "User",
+    is_guest: true,
   });
   storage.setToken(response.data.token);
   return response;

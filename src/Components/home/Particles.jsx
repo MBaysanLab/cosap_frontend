@@ -4,6 +4,7 @@ import { loadFull } from "tsparticles";
 import { loadCanvasMaskPlugin } from "tsparticles-plugin-canvas-mask";
 import * as React from "react";
 import "../../assets/styles/styles.css";
+import bannerImage from "../../assets/images/cosap_logo.png"; // Import the local image
 
 const ParticlesComponent = () => {
   const particlesInit = useCallback(async (engine) => {
@@ -69,7 +70,7 @@ const ParticlesComponent = () => {
             filter: "pixelFilter",
           },
           image: {
-            src: "https://raw.githubusercontent.com/MBaysanLab/cosap_frontend/develop/src/assets/images/banner.png",
+            src: bannerImage, // Use the imported image
           },
         },
       }}

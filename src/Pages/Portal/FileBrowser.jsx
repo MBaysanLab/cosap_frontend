@@ -12,7 +12,7 @@ import {
 } from "chonky";
 import { Base64 } from "js-base64";
 import downloadFile from "../../apis/downloadFile";
-import { ThemeProvider } from "@emotion/react";
+import { ThemeProvider } from "@mui/material";
 
 function isVcfFile(file) {
   return file.name.endsWith(".vcf") || file.name.endsWith(".vcf.gz");

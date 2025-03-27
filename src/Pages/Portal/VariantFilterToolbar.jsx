@@ -9,8 +9,6 @@ import {
 } from "@mui/material";
 
 function FilterToolbar({ onFilterApply, onClearFilters, filterModel }) {
-  // Handle gene symbol filter change
-
   return (
     <Box sx={{ mb: 2, width: "85vw" }}>
       <Stack direction="row" spacing={2} alignItems="flex-start">

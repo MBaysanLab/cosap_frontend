@@ -5,8 +5,8 @@ import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import ProjectDetailHeader from "./ProjectDetailHeader";
 import ResultsTabs from "./ResultsTabs";
-import FileBrowser from "./FileBrowser";
-import DocumentViewerModal from "./DocumentViewerModal";
+// import FileBrowser from "./FileBrowser";
+// import DocumentViewerModal from "./DocumentViewerModal";
 import BamQcMetrics from "./BamQcMetrics";
 import getProjectDetail from "../../apis/getProjectDetail";
 import getProjectFiles from "../../apis/getProjectFiles";
@@ -16,11 +16,11 @@ function ProjectDetail() {
   const [projectMetadata, setMetadata] = React.useState({});
   const [projectQCSummary, setProjectQCSummary] = React.useState({});
   const [projectFileMap, setProjectFileMap] = React.useState(null);
-  const [rootFolderId, setRootFolderId] = React.useState(null);
-  const [docViewerModalOpen, setDocViewerModalOpen] = React.useState(false);
-  const [docUri, setDocUri] = React.useState(null);
-  const [modalFileName, setModalFileName] = React.useState(null);
   const [bamFiles, setBamFiles] = React.useState({});
+  // const [rootFolderId, setRootFolderId] = React.useState(null);
+  // const [docViewerModalOpen, setDocViewerModalOpen] = React.useState(false);
+  // const [docUri, setDocUri] = React.useState(null);
+  // const [modalFileName, setModalFileName] = React.useState(null);
 
   const { id } = useParams();
 
@@ -71,7 +71,7 @@ function ProjectDetail() {
     getProjectFiles(id)
       .then((res) => {
         setProjectFileMap(res.data.file_map);
-        setRootFolderId(res.data.root_folder_id);
+        // setRootFolderId(res.data.root_folder_id);
       })
       .catch((err) => {
         console.log(err);
@@ -95,7 +95,7 @@ function ProjectDetail() {
           bam_files={bamFiles}
         />
       </Box>
-      <Box sx={{ mt: { xs: 1, md: 3 } }}>
+      {/* <Box sx={{ mt: { xs: 1, md: 3 } }}>
         <Typography variant="h6">Files</Typography>
         <Divider />
         <FileBrowser
@@ -111,7 +111,7 @@ function ProjectDetail() {
           docViewModalOpenSetter={setDocViewerModalOpen}
           fileName={modalFileName}
         />
-      </Box>
+      </Box> */}
       {/*  <Box id="igv-div" sx={{ mt: { xs: 1, md: 3 } }}></Box>  */}
     </Box>
   );

@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
 import Layout from "../../Layout/Layout";
-import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
+import { ReactComponent as BannerSVG } from "../../assets/images/cosap_logo.svg";
 
 function Register() {
   return (

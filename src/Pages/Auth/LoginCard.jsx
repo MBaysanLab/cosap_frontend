@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import LoginForm from "./LoginForm";
-import { ReactComponent as BannerSVG } from "../../assets/images/banner.svg";
+import { ReactComponent as BannerSVG } from "../../assets/images/cosap_logo.svg";
 
 function LoginCard() {
   return (
