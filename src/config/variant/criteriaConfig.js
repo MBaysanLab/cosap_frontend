@@ -1,0 +1,38 @@
+/**
+ * ACMG criteria descriptions
+ */
+export const CRITERIA_DESCRIPTIONS = {
+  PVS1: "Null variant in a gene where LOF is a known mechanism of disease",
+  PS1: "Same amino acid change as a previously established pathogenic variant",
+  PS2: "De novo variant (paternity and maternity confirmed)",
+  PS3: "Well-established functional studies show a deleterious effect",
+  PS4: "Variant prevalence in affected individuals significantly higher than in controls",
+  PS5: "Novel missense change at amino acid where a different pathogenic missense change has been seen",
+  PM1: "Located in a mutational hot spot or critical functional domain",
+  PM2: "Absent from controls in population databases",
+  PM3: "For recessive disorders, detected in trans with a pathogenic variant",
+  PM4: "Protein length changes due to in-frame deletions/insertions or stop-loss variants",
+  PM5: "Novel missense change at amino acid where a different pathogenic missense change has been seen",
+  PM6: "Assumed de novo without confirmation of paternity and maternity",
+  PM7: "Peptide-binding region variant not located in a known critical domain",
+  PP1: "Cosegregation with disease in multiple affected family members",
+  PP2: "Missense variant in a gene that has a low rate of benign missense variation",
+  PP3: "Multiple computational evidence supports a deleterious effect",
+  PP4: "Patient's phenotype/family history specific for gene with narrow spectrum of conditions",
+  PP5: "Reputable source reports variant as pathogenic but evidence unavailable",
+  PP6: "In-silico predictions of pathogenicity",
+  BA1: "Allele frequency is > 5% in population databases",
+  BS1: "Allele frequency is greater than expected for disorder",
+  BS2: "Observed in healthy adult individuals for a recessive or early-onset dominant disorder",
+  BS3: "Well-established functional studies show no deleterious effect",
+  BS4: "Lack of segregation in affected members of a family",
+  BS5: "Found in a case with an alternate molecular basis for disease",
+  BP1: "Missense variant in a gene for which primarily truncating variants are known to cause disease",
+  BP2: "Observed in trans with a pathogenic variant for dominant or in cis with a pathogenic variant",
+  BP3: "In-frame deletions/insertions in a repetitive region without a known function",
+  BP4: "Multiple computational evidence supports a benign effect",
+  BP5: "Variant found in a case with an alternate molecular basis for disease",
+  BP6: "Reputable source reports variant as benign but evidence unavailable",
+  BP7: "A synonymous variant for which algorithms predict no impact on splicing",
+  BP8: "Variant with no segregation in family members, or affected individuals"
+};
