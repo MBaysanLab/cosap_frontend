@@ -187,7 +187,7 @@ function VariantList(props) {
   return (
     <Box
       sx={{
-        height: data.snvs && data.snvs.length === 0 ? "300px" : "1000px",
+        height: data.snvs && data.total === 0 ? "300px" : "1000px",
         width: "100%",
       }}
     >

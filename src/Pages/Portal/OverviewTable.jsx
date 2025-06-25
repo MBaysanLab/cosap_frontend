@@ -1,12 +1,168 @@
 import React from "react";
 import { Box, Divider, Grid, Link, Tooltip, Typography } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function OverviewTable(props) {
   const [variant, setVariant] = React.useState(null);
+  const [isEditingIntervar, setIsEditingIntervar] = React.useState(false);
+  const [editedEvidence, setEditedEvidence] = React.useState(null);
+  // Add state to track manual classification override
+  const [manualClassification, setManualClassification] = React.useState(null);
 
   React.useEffect(() => {
     setVariant(props.variant);
+    // Reset edited evidence when variant changes
+    setEditedEvidence(null);
+    setIsEditingIntervar(false);
   }, [props.variant]);
+
+  const handleEditIntervar = () => {
+    // Initialize edited evidence based on current evidence
+    const currentEvidence = parseInterVarEvidence(variant.evidence_intervar);
+    setEditedEvidence(currentEvidence ? { ...currentEvidence } : {});
+    // Set manual classification to current classification as starting point
+    setManualClassification(variant.intervar_classification);
+    setIsEditingIntervar(true);
+  };
+
+  // Function to show notifications using react-toastify
+  const showNotification = (message, type = "info") => {
+    const toastOptions = {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    };
+
+    switch (type) {
+      case "success":
+        toast.success(message, toastOptions);
+        break;
+      case "error":
+        toast.error(message, toastOptions);
+        break;
+      case "warning":
+        toast.warning(message, toastOptions);
+        break;
+      case "info":
+      default:
+        toast.info(message, toastOptions);
+    }
+  };
+
+  const handleSaveIntervar = () => {
+    // Build new evidence string from editedEvidence
+    const newEvidenceString = buildInterVarEvidenceString(editedEvidence);
+
+    const previousClassification = variant.intervar_classification;
+    // Use manual classification if provided, otherwise use ACMG rules
+    const newClassification =
+      manualClassification || classifyACMG(editedEvidence);
+
+    // Update variant with new evidence and classification
+    const updatedVariant = {
+      ...variant,
+      evidence_intervar: newEvidenceString,
+      intervar_classification: newClassification,
+      // Optional: add a flag to indicate manual classification was used
+      classification_method: manualClassification ? "manual" : "automated",
+    };
+
+    setVariant(updatedVariant);
+    setIsEditingIntervar(false);
+    setManualClassification(null); // Reset manual classification
+
+    // If classification changed, show a notification
+    if (previousClassification !== newClassification) {
+      showNotification(
+        `Classification updated: ${previousClassification} → ${newClassification}`,
+        "success"
+      );
+    } else {
+      showNotification("Evidence criteria updated", "info");
+    }
+
+    // If you have a callback to notify parent components of changes
+    if (props.onVariantUpdate) {
+      props.onVariantUpdate(updatedVariant);
+    }
+
+    console.log(
+      `Variant classification updated from ${variant.intervar_classification} to ${newClassification}`
+    );
+  };
+
+  const handleCancelIntervar = () => {
+    setIsEditingIntervar(false);
+    setEditedEvidence(null);
+    setManualClassification(null);
+  };
+
+  const toggleCriterion = (criterion) => {
+    if (!isEditingIntervar) return;
+
+    setEditedEvidence((prev) => {
+      const newEvidence = { ...prev };
+      // Toggle: if present, remove it; if not present, add it with value 1
+      if (newEvidence[criterion] === 1) {
+        delete newEvidence[criterion];
+      } else {
+        newEvidence[criterion] = 1;
+      }
+      return newEvidence;
+    });
+  };
+
+  // Function to build the evidence string from object representation
+  const buildInterVarEvidenceString = (evidenceObj) => {
+    if (!evidenceObj) return "";
+
+    // Initialize arrays for each category
+    const ps = Array(5).fill(0);
+    const pm = Array(7).fill(0);
+    const pp = Array(6).fill(0);
+    const bs = Array(5).fill(0);
+    const bp = Array(8).fill(0);
+
+    // Fill arrays based on evidence object
+    Object.keys(evidenceObj).forEach((key) => {
+      if (key === "PVS1" || key === "BA1") {
+        // These are handled separately
+      } else if (key.startsWith("PS")) {
+        const index = parseInt(key.substring(2)) - 1;
+        if (index >= 0 && index < ps.length) ps[index] = 1;
+      } else if (key.startsWith("PM")) {
+        const index = parseInt(key.substring(2)) - 1;
+        if (index >= 0 && index < pm.length) pm[index] = 1;
+      } else if (key.startsWith("PP")) {
+        const index = parseInt(key.substring(2)) - 1;
+        if (index >= 0 && index < pp.length) pp[index] = 1;
+      } else if (key.startsWith("BS")) {
+        const index = parseInt(key.substring(2)) - 1;
+        if (index >= 0 && index < bs.length) bs[index] = 1;
+      } else if (key.startsWith("BP")) {
+        const index = parseInt(key.substring(2)) - 1;
+        if (index >= 0 && index < bp.length) bp[index] = 1;
+      }
+    });
+
+    // Construct the evidence string
+    const parts = [];
+    if ("PVS1" in evidenceObj) parts.push(`PVS1=${evidenceObj.PVS1}`);
+    if ("BA1" in evidenceObj) parts.push(`BA1=${evidenceObj.BA1}`);
+
+    parts.push(`PS=[${ps.join(",")}]`);
+    parts.push(`PM=[${pm.join(",")}]`);
+    parts.push(`PP=[${pp.join(",")}]`);
+    parts.push(`BS=[${bs.join(",")}]`);
+    parts.push(`BP=[${bp.join(",")}]`);
+
+    return parts.join(" ");
+  };
 
   // Color palette for different card types
   const cardColors = {
@@ -187,6 +343,120 @@ function OverviewTable(props) {
     BP6: "Reputable source reports variant as benign",
     BP7: "Synonymous variant with no predicted splice impact",
     BP8: "Other supporting benign criterion",
+  };
+
+  /**
+   * Classifies a variant according to ACMG/AMP guidelines based on evidence criteria
+   * @param {Object} evidenceObj - Object containing the evidence criteria
+   * @return {string} - Classification result (Pathogenic, Likely pathogenic, etc.)
+   */
+  const classifyACMG = (evidenceObj) => {
+    if (!evidenceObj) return "Uncertain significance";
+
+    // Count criteria by category
+    const counts = {
+      pvs: 0, // Very Strong pathogenic
+      ps: 0, // Strong pathogenic
+      pm: 0, // Moderate pathogenic
+      pp: 0, // Supporting pathogenic
+      ba: 0, // Stand-alone benign
+      bs: 0, // Strong benign
+      bp: 0, // Supporting benign
+    };
+
+    // Tally the evidence
+    Object.keys(evidenceObj).forEach((key) => {
+      if (key === "PVS1" && evidenceObj[key] === 1) counts.pvs += 1;
+      else if (key === "BA1" && evidenceObj[key] === 1) counts.ba += 1;
+      else if (key.startsWith("PS") && evidenceObj[key] === 1) counts.ps += 1;
+      else if (key.startsWith("PM") && evidenceObj[key] === 1) counts.pm += 1;
+      else if (key.startsWith("PP") && evidenceObj[key] === 1) counts.pp += 1;
+      else if (key.startsWith("BS") && evidenceObj[key] === 1) counts.bs += 1;
+      else if (key.startsWith("BP") && evidenceObj[key] === 1) counts.bp += 1;
+    });
+
+    // Implement ACMG classification rules
+
+    // Pathogenic rules
+    if (
+      (counts.pvs >= 1 && counts.ps >= 1) || // 1 PVS + 1 PS
+      (counts.pvs >= 1 && counts.pm >= 2) || // 1 PVS + 2 PM
+      (counts.pvs >= 1 && counts.pm >= 1 && counts.pp >= 1) || // 1 PVS + 1 PM + 1 PP
+      (counts.pvs >= 1 && counts.pp >= 2) || // 1 PVS + 2 PP
+      counts.ps >= 2 || // 2 PS
+      (counts.ps >= 1 && counts.pm >= 3) || // 1 PS + 3 PM
+      (counts.ps >= 1 && counts.pm >= 2 && counts.pp >= 2) || // 1 PS + 2 PM + 2 PP
+      (counts.ps >= 1 && counts.pm >= 1 && counts.pp >= 4) // 1 PS + 1 PM + 4 PP
+    ) {
+      return "Pathogenic";
+    }
+
+    // Likely pathogenic rules
+    if (
+      (counts.pvs >= 1 && counts.pm >= 1) || // 1 PVS + 1 PM
+      (counts.pvs >= 1 && counts.pp >= 1) || // 1 PVS + 1 PP
+      (counts.ps >= 1 && counts.pm >= 1) || // 1 PS + 1-2 PM
+      (counts.ps >= 1 && counts.pp >= 2) || // 1 PS + ≥2 PP
+      counts.pm >= 3 || // ≥3 PM
+      (counts.pm >= 2 && counts.pp >= 2) || // 2 PM + ≥2 PP
+      (counts.pm >= 1 && counts.pp >= 4) // 1 PM + ≥4 PP
+    ) {
+      return "Likely pathogenic";
+    }
+
+    // Benign rules
+    if (
+      counts.ba >= 1 || // 1 Stand-alone
+      counts.bs >= 2 // ≥2 Strong
+    ) {
+      return "Benign";
+    }
+
+    // Likely benign rules
+    if (
+      (counts.bs >= 1 && counts.bp >= 1) || // 1 Strong + 1 supporting
+      counts.bp >= 2 // ≥2 Supporting
+    ) {
+      return "Likely benign";
+    }
+
+    // If we have strong/moderate evidence in both directions, call it uncertain
+    if ((counts.ps > 0 || counts.pm > 0) && counts.bs > 0) {
+      return "Uncertain significance";
+    }
+
+    // Default
+    return "Uncertain significance";
+  };
+
+  // Add this function near your other utility functions
+  const evidenceCounts = (evidenceObj) => {
+    if (!evidenceObj)
+      return { pvs: 0, ps: 0, pm: 0, pp: 0, ba: 0, bs: 0, bp: 0 };
+
+    // Count criteria by category
+    const counts = {
+      pvs: 0, // Very Strong pathogenic
+      ps: 0, // Strong pathogenic
+      pm: 0, // Moderate pathogenic
+      pp: 0, // Supporting pathogenic
+      ba: 0, // Stand-alone benign
+      bs: 0, // Strong benign
+      bp: 0, // Supporting benign
+    };
+
+    // Tally the evidence
+    Object.keys(evidenceObj).forEach((key) => {
+      if (key === "PVS1" && evidenceObj[key] === 1) counts.pvs += 1;
+      else if (key === "BA1" && evidenceObj[key] === 1) counts.ba += 1;
+      else if (key.startsWith("PS") && evidenceObj[key] === 1) counts.ps += 1;
+      else if (key.startsWith("PM") && evidenceObj[key] === 1) counts.pm += 1;
+      else if (key.startsWith("PP") && evidenceObj[key] === 1) counts.pp += 1;
+      else if (key.startsWith("BS") && evidenceObj[key] === 1) counts.bs += 1;
+      else if (key.startsWith("BP") && evidenceObj[key] === 1) counts.bp += 1;
+    });
+
+    return counts;
   };
 
   return (
@@ -908,6 +1178,9 @@ function OverviewTable(props) {
                   p: 1,
                   borderTopLeftRadius: 6,
                   borderTopRightRadius: 6,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
                 <Typography
@@ -915,9 +1188,69 @@ function OverviewTable(props) {
                   variant="subtitle2"
                   fontWeight="bold"
                   align="center"
+                  sx={{ flex: 1 }}
                 >
                   InterVar ACMG Evidence
                 </Typography>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {isEditingIntervar ? (
+                    <>
+                      <Box
+                        component="button"
+                        onClick={handleSaveIntervar}
+                        sx={{
+                          backgroundColor: "#4caf50",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          px: 1.5,
+                          py: 0.5,
+                          mr: 1,
+                          fontSize: "0.75rem",
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#388e3c" },
+                        }}
+                      >
+                        Save
+                      </Box>
+                      <Box
+                        component="button"
+                        onClick={handleCancelIntervar}
+                        sx={{
+                          backgroundColor: "#f44336",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          px: 1.5,
+                          py: 0.5,
+                          fontSize: "0.75rem",
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#d32f2f" },
+                        }}
+                      >
+                        Cancel
+                      </Box>
+                    </>
+                  ) : (
+                    <Box
+                      component="button"
+                      onClick={handleEditIntervar}
+                      sx={{
+                        backgroundColor: "#2196f3",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        px: 1.5,
+                        py: 0.5,
+                        fontSize: "0.75rem",
+                        cursor: "pointer",
+                        "&:hover": { backgroundColor: "#1976d2" },
+                      }}
+                    >
+                      Edit Criteria
+                    </Box>
+                  )}
+                </Box>
               </Box>
 
               <Box sx={{ p: 1.5 }}>
@@ -961,38 +1294,60 @@ function OverviewTable(props) {
                                 placement="top"
                               >
                                 <Box
+                                  onClick={() =>
+                                    isEditingIntervar && toggleCriterion("PVS1")
+                                  }
                                   sx={{
                                     ...getEvidenceBoxStyle(
                                       "PVS",
-                                      parseInterVarEvidence(
-                                        variant.evidence_intervar
-                                      )?.PVS1 === 1
+                                      (isEditingIntervar
+                                        ? editedEvidence?.PVS1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.PVS1) === 1
                                     ),
                                     backgroundColor:
-                                      parseInterVarEvidence(
-                                        variant.evidence_intervar
-                                      )?.PVS1 === 1
+                                      (isEditingIntervar
+                                        ? editedEvidence?.PVS1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.PVS1) === 1
                                         ? "#d32f2f"
                                         : "#ffcdd2",
                                     color:
-                                      parseInterVarEvidence(
-                                        variant.evidence_intervar
-                                      )?.PVS1 === 1
+                                      (isEditingIntervar
+                                        ? editedEvidence?.PVS1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.PVS1) === 1
                                         ? "#ffffff"
                                         : "#626262",
                                     transform:
-                                      parseInterVarEvidence(
-                                        variant.evidence_intervar
-                                      )?.PVS1 === 1
+                                      (isEditingIntervar
+                                        ? editedEvidence?.PVS1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.PVS1) === 1
                                         ? "scale(1.1)"
                                         : "none",
                                     transition: "transform 0.2s",
                                     boxShadow:
-                                      parseInterVarEvidence(
-                                        variant.evidence_intervar
-                                      )?.PVS1 === 1
+                                      (isEditingIntervar
+                                        ? editedEvidence?.PVS1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.PVS1) === 1
                                         ? "0 4px 8px rgba(211, 47, 47, 0.4)"
                                         : "none",
+                                    cursor: isEditingIntervar
+                                      ? "pointer"
+                                      : "default",
+                                    "&:hover": isEditingIntervar
+                                      ? {
+                                          opacity: 0.85,
+                                          transform: "scale(1.15)",
+                                        }
+                                      : {},
                                   }}
                                 >
                                   PVS1
@@ -1028,26 +1383,45 @@ function OverviewTable(props) {
                                   placement="top"
                                 >
                                   <Box
+                                    onClick={() =>
+                                      isEditingIntervar &&
+                                      toggleCriterion(`PS${i}`)
+                                    }
                                     sx={{
                                       ...getEvidenceBoxStyle(
                                         `PS${i}`,
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PS${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PS${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PS${i}`]) === 1
                                       ),
                                       transform:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PS${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PS${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PS${i}`]) === 1
                                           ? "scale(1.05)"
                                           : "none",
                                       transition: "transform 0.2s",
                                       boxShadow:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PS${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PS${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PS${i}`]) === 1
                                           ? "0 3px 6px rgba(229, 57, 53, 0.3)"
                                           : "none",
+                                      cursor: isEditingIntervar
+                                        ? "pointer"
+                                        : "default",
+                                      "&:hover": isEditingIntervar
+                                        ? {
+                                            opacity: 0.85,
+                                            transform: "scale(1.15)",
+                                          }
+                                        : {},
                                     }}
                                   >
                                     PS{i}
@@ -1084,26 +1458,45 @@ function OverviewTable(props) {
                                   placement="top"
                                 >
                                   <Box
+                                    onClick={() =>
+                                      isEditingIntervar &&
+                                      toggleCriterion(`PM${i}`)
+                                    }
                                     sx={{
                                       ...getEvidenceBoxStyle(
                                         `PM${i}`,
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PM${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PM${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PM${i}`]) === 1
                                       ),
                                       transform:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PM${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PM${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PM${i}`]) === 1
                                           ? "scale(1.05)"
                                           : "none",
                                       transition: "transform 0.2s",
                                       boxShadow:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PM${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PM${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PM${i}`]) === 1
                                           ? "0 3px 6px rgba(255, 143, 0, 0.3)"
                                           : "none",
+                                      cursor: isEditingIntervar
+                                        ? "pointer"
+                                        : "default",
+                                      "&:hover": isEditingIntervar
+                                        ? {
+                                            opacity: 0.85,
+                                            transform: "scale(1.15)",
+                                          }
+                                        : {},
                                     }}
                                   >
                                     PM{i}
@@ -1140,26 +1533,45 @@ function OverviewTable(props) {
                                   placement="top"
                                 >
                                   <Box
+                                    onClick={() =>
+                                      isEditingIntervar &&
+                                      toggleCriterion(`PP${i}`)
+                                    }
                                     sx={{
                                       ...getEvidenceBoxStyle(
                                         `PP${i}`,
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PP${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PP${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PP${i}`]) === 1
                                       ),
                                       transform:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PP${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PP${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PP${i}`]) === 1
                                           ? "scale(1.05)"
                                           : "none",
                                       transition: "transform 0.2s",
                                       boxShadow:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`PP${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`PP${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`PP${i}`]) === 1
                                           ? "0 3px 6px rgba(255, 179, 0, 0.3)"
                                           : "none",
+                                      cursor: isEditingIntervar
+                                        ? "pointer"
+                                        : "default",
+                                      "&:hover": isEditingIntervar
+                                        ? {
+                                            opacity: 0.85,
+                                            transform: "scale(1.15)",
+                                          }
+                                        : {},
                                     }}
                                   >
                                     PP{i}
@@ -1205,26 +1617,60 @@ function OverviewTable(props) {
                                 placement="top"
                               >
                                 <Box
+                                  onClick={() =>
+                                    isEditingIntervar && toggleCriterion("BA1")
+                                  }
                                   sx={{
                                     ...getEvidenceBoxStyle(
                                       "BA",
-                                      parseInterVarEvidence(
-                                        variant.evidence_intervar
-                                      )?.BA1 === 1
+                                      (isEditingIntervar
+                                        ? editedEvidence?.BA1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.BA1) === 1
                                     ),
+                                    backgroundColor:
+                                      (isEditingIntervar
+                                        ? editedEvidence?.BA1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.BA1) === 1
+                                        ? "#2e7d32"
+                                        : "#c8e6c9",
+                                    color:
+                                      (isEditingIntervar
+                                        ? editedEvidence?.BA1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.BA1) === 1
+                                        ? "#ffffff"
+                                        : "#626262",
                                     transform:
-                                      parseInterVarEvidence(
-                                        variant.evidence_intervar
-                                      )?.BA1 === 1
+                                      (isEditingIntervar
+                                        ? editedEvidence?.BA1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.BA1) === 1
                                         ? "scale(1.1)"
                                         : "none",
                                     transition: "transform 0.2s",
                                     boxShadow:
-                                      parseInterVarEvidence(
-                                        variant.evidence_intervar
-                                      )?.BA1 === 1
+                                      (isEditingIntervar
+                                        ? editedEvidence?.BA1
+                                        : parseInterVarEvidence(
+                                            variant.evidence_intervar
+                                          )?.BA1) === 1
                                         ? "0 4px 8px rgba(46, 125, 50, 0.4)"
                                         : "none",
+                                    cursor: isEditingIntervar
+                                      ? "pointer"
+                                      : "default",
+                                    "&:hover": isEditingIntervar
+                                      ? {
+                                          opacity: 0.85,
+                                          transform: "scale(1.15)",
+                                        }
+                                      : {},
                                   }}
                                 >
                                   BA1
@@ -1260,26 +1706,45 @@ function OverviewTable(props) {
                                   placement="top"
                                 >
                                   <Box
+                                    onClick={() =>
+                                      isEditingIntervar &&
+                                      toggleCriterion(`BS${i}`)
+                                    }
                                     sx={{
                                       ...getEvidenceBoxStyle(
                                         `BS${i}`,
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`BS${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`BS${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`BS${i}`]) === 1
                                       ),
                                       transform:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`BS${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`BS${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`BS${i}`]) === 1
                                           ? "scale(1.05)"
                                           : "none",
                                       transition: "transform 0.2s",
                                       boxShadow:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`BS${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`BS${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`BS${i}`]) === 1
                                           ? "0 3px 6px rgba(56, 142, 60, 0.3)"
                                           : "none",
+                                      cursor: isEditingIntervar
+                                        ? "pointer"
+                                        : "default",
+                                      "&:hover": isEditingIntervar
+                                        ? {
+                                            opacity: 0.85,
+                                            transform: "scale(1.15)",
+                                          }
+                                        : {},
                                     }}
                                   >
                                     BS{i}
@@ -1316,26 +1781,45 @@ function OverviewTable(props) {
                                   placement="top"
                                 >
                                   <Box
+                                    onClick={() =>
+                                      isEditingIntervar &&
+                                      toggleCriterion(`BP${i}`)
+                                    }
                                     sx={{
                                       ...getEvidenceBoxStyle(
                                         `BP${i}`,
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`BP${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`BP${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`BP${i}`]) === 1
                                       ),
                                       transform:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`BP${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`BP${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`BP${i}`]) === 1
                                           ? "scale(1.05)"
                                           : "none",
                                       transition: "transform 0.2s",
                                       boxShadow:
-                                        parseInterVarEvidence(
-                                          variant.evidence_intervar
-                                        )?.[`BP${i}`] === 1
+                                        (isEditingIntervar
+                                          ? editedEvidence?.[`BP${i}`]
+                                          : parseInterVarEvidence(
+                                              variant.evidence_intervar
+                                            )?.[`BP${i}`]) === 1
                                           ? "0 3px 6px rgba(67, 160, 71, 0.3)"
                                           : "none",
+                                      cursor: isEditingIntervar
+                                        ? "pointer"
+                                        : "default",
+                                      "&:hover": isEditingIntervar
+                                        ? {
+                                            opacity: 0.85,
+                                            transform: "scale(1.15)",
+                                          }
+                                        : {},
                                     }}
                                   >
                                     BP{i}
@@ -1381,6 +1865,7 @@ function OverviewTable(props) {
                           border: "1px solid rgba(209, 213, 219, 0.5)",
                         }}
                       >
+                        {/* Classification Result Section */}
                         <Typography
                           variant="subtitle1"
                           fontWeight="bold"
@@ -1390,55 +1875,31 @@ function OverviewTable(props) {
                           Classification Result
                         </Typography>
 
-                        {variant.intervar_classification && (
-                          <Box
-                            sx={{
-                              p: 2,
-                              borderRadius: "8px",
-                              backgroundColor: (() => {
-                                switch (variant.intervar_classification) {
-                                  case "Pathogenic":
-                                    return "rgba(211, 47, 47, 0.1)";
-                                  case "Likely pathogenic":
-                                    return "rgba(229, 57, 53, 0.1)";
-                                  case "Uncertain significance":
-                                    return "rgba(117, 117, 117, 0.1)";
-                                  case "Likely benign":
-                                    return "rgba(67, 160, 71, 0.1)";
-                                  case "Benign":
-                                    return "rgba(46, 125, 50, 0.1)";
-                                  default:
-                                    return "rgba(117, 117, 117, 0.1)";
-                                }
-                              })(),
-                              border: (() => {
-                                switch (variant.intervar_classification) {
-                                  case "Pathogenic":
-                                    return "2px solid rgba(211, 47, 47, 0.7)";
-                                  case "Likely pathogenic":
-                                    return "2px solid rgba(229, 57, 53, 0.7)";
-                                  case "Uncertain significance":
-                                    return "2px solid rgba(117, 117, 117, 0.7)";
-                                  case "Likely benign":
-                                    return "2px solid rgba(67, 160, 71, 0.7)";
-                                  case "Benign":
-                                    return "2px solid rgba(46, 125, 50, 0.7)";
-                                  default:
-                                    return "2px solid rgba(117, 117, 117, 0.7)";
-                                }
-                              })(),
-                              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                              width: "100%",
-                              maxWidth: 300,
-                              textAlign: "center",
-                            }}
-                          >
+                        {isEditingIntervar ? (
+                          // Dropdown for manual classification when in edit mode
+                          <Box sx={{ width: "100%", maxWidth: 300, mb: 2 }}>
                             <Typography
-                              variant="h6"
-                              fontWeight="bold"
+                              variant="caption"
+                              color="#555555"
+                              sx={{ mb: 0.5, display: "block" }}
+                            >
+                              Select classification or let ACMG rules decide:
+                            </Typography>
+                            <Box
+                              component="select"
+                              value={manualClassification || ""}
+                              onChange={(e) =>
+                                setManualClassification(e.target.value || null)
+                              }
                               sx={{
+                                width: "100%",
+                                p: 1.5,
+                                borderRadius: "8px",
+                                border: "2px solid rgba(59, 103, 147, 0.5)",
+                                fontSize: "1rem",
+                                fontWeight: "bold",
                                 color: (() => {
-                                  switch (variant.intervar_classification) {
+                                  switch (manualClassification) {
                                     case "Pathogenic":
                                       return "#d32f2f";
                                     case "Likely pathogenic":
@@ -1453,109 +1914,271 @@ function OverviewTable(props) {
                                       return "#424242";
                                   }
                                 })(),
+                                backgroundColor: "white",
+                                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                                "&:focus": {
+                                  outline: "none",
+                                  borderColor: "#3b6793",
+                                  boxShadow:
+                                    "0 0 0 3px rgba(59, 103, 147, 0.2)",
+                                },
                               }}
                             >
-                              {variant.intervar_classification}
+                              <option value="">
+                                Use ACMG rules (automatic)
+                              </option>
+                              <option value="Pathogenic">Pathogenic</option>
+                              <option value="Likely pathogenic">
+                                Likely pathogenic
+                              </option>
+                              <option value="Uncertain significance">
+                                Uncertain significance
+                              </option>
+                              <option value="Likely benign">
+                                Likely benign
+                              </option>
+                              <option value="Benign">Benign</option>
+                            </Box>
+                            {manualClassification && (
+                              <Typography
+                                variant="caption"
+                                color="#d32f2f"
+                                sx={{ display: "block", mt: 1 }}
+                              >
+                                * Manual override will be used instead of ACMG
+                                rules
+                              </Typography>
+                            )}
+                            <Typography
+                              variant="caption"
+                              color="#666666"
+                              sx={{ display: "block", mt: 0.5 }}
+                            >
+                              ACMG auto-classification:{" "}
+                              {classifyACMG(editedEvidence)}
                             </Typography>
                           </Box>
+                        ) : (
+                          // Standard display when not in edit mode
+                          variant.intervar_classification && (
+                            <Box
+                              sx={{
+                                p: 2,
+                                borderRadius: "8px",
+                                backgroundColor: (() => {
+                                  switch (variant.intervar_classification) {
+                                    case "Pathogenic":
+                                      return "rgba(211, 47, 47, 0.1)";
+                                    case "Likely pathogenic":
+                                      return "rgba(229, 57, 53, 0.1)";
+                                    case "Uncertain significance":
+                                      return "rgba(117, 117, 117, 0.1)";
+                                    case "Likely benign":
+                                      return "rgba(67, 160, 71, 0.1)";
+                                    case "Benign":
+                                      return "rgba(46, 125, 50, 0.1)";
+                                    default:
+                                      return "rgba(117, 117, 117, 0.1)";
+                                  }
+                                })(),
+                                border: (() => {
+                                  switch (variant.intervar_classification) {
+                                    case "Pathogenic":
+                                      return "2px solid rgba(211, 47, 47, 0.7)";
+                                    case "Likely pathogenic":
+                                      return "2px solid rgba(229, 57, 53, 0.7)";
+                                    case "Uncertain significance":
+                                      return "2px solid rgba(117, 117, 117, 0.7)";
+                                    case "Likely benign":
+                                      return "2px solid rgba(67, 160, 71, 0.7)";
+                                    case "Benign":
+                                      return "2px solid rgba(46, 125, 50, 0.7)";
+                                    default:
+                                      return "2px solid rgba(117, 117, 117, 0.7)";
+                                  }
+                                })(),
+                                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                                width: "100%",
+                                maxWidth: 300,
+                                textAlign: "center",
+                              }}
+                            >
+                              <Typography
+                                variant="h6"
+                                fontWeight="bold"
+                                sx={{
+                                  color: (() => {
+                                    switch (variant.intervar_classification) {
+                                      case "Pathogenic":
+                                        return "#d32f2f";
+                                      case "Likely pathogenic":
+                                        return "#e53935";
+                                      case "Uncertain significance":
+                                        return "#424242";
+                                      case "Likely benign":
+                                        return "#43a047";
+                                      case "Benign":
+                                        return "#2e7d32";
+                                      default:
+                                        return "#424242";
+                                    }
+                                  })(),
+                                }}
+                              >
+                                {variant.intervar_classification}
+                              </Typography>
+                              {variant.classification_method === "manual" && (
+                                <Typography
+                                  variant="caption"
+                                  color="#666666"
+                                  sx={{ display: "block", mt: 0.5 }}
+                                >
+                                  (Manually classified)
+                                </Typography>
+                              )}
+                            </Box>
+                          )
                         )}
+                      </Box>
 
-                        {/* Add ACMG classification criteria explanation */}
-                        <Box sx={{ mt: 4, width: "100%", textAlign: "left" }}>
+                      {isEditingIntervar ? (
+                        <Box
+                          sx={{
+                            width: "100%",
+                            maxWidth: 300,
+                            mt: 2,
+                            backgroundColor: "#f5f5f5",
+                            p: 1.5,
+                            borderRadius: 1,
+                          }}
+                        >
                           <Typography
-                            variant="body2"
-                            color="#444"
+                            variant="caption"
                             fontWeight="medium"
-                            sx={{ mb: 1 }}
+                            color="#333333"
                           >
-                            ACMG Classification Criteria:
+                            ACMG Classification Algorithm:
                           </Typography>
-
                           <Box
-                            sx={{ pl: 1, fontSize: "0.8rem", color: "#555" }}
+                            component="ul"
+                            sx={{
+                              pl: 2.5,
+                              mt: 0.5,
+                              fontSize: "0.75rem",
+                              color: "#444444",
+                            }}
                           >
-                            <Typography
-                              variant="body2"
-                              color="#d32f2f"
-                              fontWeight="medium"
-                            >
-                              Pathogenic:
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              display="block"
-                              sx={{ mb: 1 }}
-                            >
-                              - 1 Very Strong + 1 Strong, or
-                              <br />
-                              - 1 Very Strong + 2 Moderate, or
-                              <br />- 2 Strong + 1 Moderate, or other
-                              combinations
-                            </Typography>
-
-                            <Typography
-                              variant="body2"
-                              color="#e53935"
-                              fontWeight="medium"
-                            >
-                              Likely Pathogenic:
-                            </Typography>
+                            <Box component="li" sx={{ mb: 0.5 }}>
+                              <strong>Pathogenic</strong>: 1 PVS + (1 PS or 2 PM
+                              or 1 PM+1 PP or 2 PP) <i>or</i> 2 PS <i>or</i> 1
+                              PS + (3 PM or 2 PM+2 PP or 1 PM+4 PP)
+                            </Box>
+                            <Box component="li" sx={{ mb: 0.5 }}>
+                              <strong>Likely pathogenic</strong>: 1 PVS + 1
+                              PM/PP <i>or</i> 1 PS + 1-2 PM/PP <i>or</i> 3+ PM{" "}
+                              <i>or</i> 2 PM + 2+ PP <i>or</i> 1 PM + 4+ PP
+                            </Box>
+                            <Box component="li" sx={{ mb: 0.5 }}>
+                              <strong>Benign</strong>: 1 BA1 <i>or</i> 2+ BS
+                            </Box>
+                            <Box component="li" sx={{ mb: 0.5 }}>
+                              <strong>Likely benign</strong>: 1 BS + 1 BP{" "}
+                              <i>or</i> 2+ BP
+                            </Box>
+                            <Box component="li">
+                              <strong>Uncertain significance</strong>: All other
+                              criteria combinations
+                            </Box>
+                          </Box>
+                          <Box sx={{ mt: 1 }}>
                             <Typography
                               variant="caption"
-                              display="block"
-                              sx={{ mb: 1 }}
+                              sx={{ color: "#777777" }}
                             >
-                              - 1 Very Strong + 1 Moderate, or
-                              <br />- 1 Strong + 1-2 Moderate, or other
-                              combinations
-                            </Typography>
-
-                            <Typography
-                              variant="body2"
-                              color="#424242"
-                              fontWeight="medium"
-                            >
-                              Uncertain Significance:
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              display="block"
-                              sx={{ mb: 1 }}
-                            >
-                              - Evidence does not meet criteria for pathogenic
-                              or benign
-                            </Typography>
-
-                            <Typography
-                              variant="body2"
-                              color="#43a047"
-                              fontWeight="medium"
-                            >
-                              Likely Benign:
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              display="block"
-                              sx={{ mb: 1 }}
-                            >
-                              - 1 Strong + 1 Supporting, or
-                              <br />- ≥2 Supporting benign evidence
-                            </Typography>
-
-                            <Typography
-                              variant="body2"
-                              color="#2e7d32"
-                              fontWeight="medium"
-                            >
-                              Benign:
-                            </Typography>
-                            <Typography variant="caption" display="block">
-                              - 1 Stand-Alone benign, or
-                              <br />- ≥2 Strong benign evidence
+                              Current evidence count:{" "}
+                              {Object.entries(
+                                evidenceCounts(editedEvidence)
+                              ).map(([key, count]) =>
+                                count > 0
+                                  ? `${key.toUpperCase()}=${count} `
+                                  : ""
+                              )}
                             </Typography>
                           </Box>
                         </Box>
-                      </Box>
+                      ) : (
+                        variant.intervar_classification && (
+                          <Box
+                            sx={{
+                              width: "100%",
+                              maxWidth: 300,
+                              mt: 2,
+                              backgroundColor: "#f5f5f5",
+                              p: 1.5,
+                              borderRadius: 1,
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              fontWeight="medium"
+                              color="#333333"
+                            >
+                              ACMG Classification Algorithm:
+                            </Typography>
+                            <Box
+                              component="ul"
+                              sx={{
+                                pl: 2.5,
+                                mt: 0.5,
+                                fontSize: "0.75rem",
+                                color: "#444444",
+                              }}
+                            >
+                              <Box component="li" sx={{ mb: 0.5 }}>
+                                <strong>Pathogenic</strong>: 1 PVS + (1 PS or 2
+                                PM or 1 PM+1 PP or 2 PP) <i>or</i> 2 PS{" "}
+                                <i>or</i> 1 PS + (3 PM or 2 PM+2 PP or 1 PM+4
+                                PP)
+                              </Box>
+                              <Box component="li" sx={{ mb: 0.5 }}>
+                                <strong>Likely pathogenic</strong>: 1 PVS + 1
+                                PM/PP <i>or</i> 1 PS + 1-2 PM/PP <i>or</i> 3+ PM{" "}
+                                <i>or</i> 2 PM + 2+ PP <i>or</i> 1 PM + 4+ PP
+                              </Box>
+                              <Box component="li" sx={{ mb: 0.5 }}>
+                                <strong>Benign</strong>: 1 BA1 <i>or</i> 2+ BS
+                              </Box>
+                              <Box component="li" sx={{ mb: 0.5 }}>
+                                <strong>Likely benign</strong>: 1 BS + 1 BP{" "}
+                                <i>or</i> 2+ BP
+                              </Box>
+                              <Box component="li">
+                                <strong>Uncertain significance</strong>: All
+                                other criteria combinations
+                              </Box>
+                            </Box>
+                            <Box sx={{ mt: 1 }}>
+                              <Typography
+                                variant="caption"
+                                sx={{ color: "#777777" }}
+                              >
+                                Current evidence count:{" "}
+                                {Object.entries(
+                                  evidenceCounts(
+                                    parseInterVarEvidence(
+                                      variant.evidence_intervar
+                                    )
+                                  )
+                                ).map(([key, count]) =>
+                                  count > 0
+                                    ? `${key.toUpperCase()}=${count} `
+                                    : ""
+                                )}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        )
+                      )}
                     </Grid>
                   </Grid>
                 ) : (
@@ -1581,6 +2204,18 @@ function OverviewTable(props) {
           </Typography>
         </Box>
       )}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </Grid>
   );
 }

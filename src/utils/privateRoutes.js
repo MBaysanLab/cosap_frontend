@@ -12,9 +12,9 @@ import postResendVerification from "../apis/postResendVerification";
 import Alert from "@mui/material/Alert";
 
 function PrivateRoutes() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [user, setUser] = React.useState(null);
-  const [emailVerified, setEmailVerified] = React.useState(false);
+  const [emailVerified, setEmailVerified] = React.useState(true);
   const [emailSent, setEmailSent] = React.useState(false);
   const [emailError, setEmailError] = React.useState(null);
 
@@ -34,6 +34,9 @@ function PrivateRoutes() {
         setUser(null);
         setEmailVerified(false);
       }
+    } else {
+      setUser(null);
+      setEmailVerified(false);
     }
   }, []);
 
