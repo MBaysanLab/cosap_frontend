@@ -6,11 +6,11 @@ import { cardColors, cardStyle, dataRowStyle } from "../../styles/cardStyles";
  * Component for displaying variant frequency information
  * @param {Object} props - Component props
  * @param {Object} props.variant - Variant data object
- * @returns {JSX.Element} - Rendered component
+ * @return {JSX.Element} - Rendered component
  */
 function FrequencyCard({ variant }) {
   if (!variant) return null;
-  
+
   return (
     <Box sx={cardStyle(cardColors.gnomad)}>
       <Box

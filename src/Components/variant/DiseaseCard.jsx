@@ -6,11 +6,11 @@ import { cardColors, cardStyle, dataRowStyle } from "../../styles/cardStyles";
  * Component for displaying disease association information
  * @param {Object} props - Component props
  * @param {Object} props.variant - Variant data object
- * @returns {JSX.Element} - Rendered component
+ * @return {JSX.Element} - Rendered component
  */
 function DiseaseCard({ variant }) {
   if (!variant) return null;
-  
+
   return (
     <Box sx={cardStyle(cardColors.disease, true)}>
       <Box

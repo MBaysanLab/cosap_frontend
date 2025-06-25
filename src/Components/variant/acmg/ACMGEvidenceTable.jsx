@@ -10,16 +10,15 @@ import { getEvidenceBoxStyle } from "../../../styles/cardStyles";
  * @param {Object|string} props.evidence - Evidence data as object or string
  * @param {boolean} props.isEditing - Whether in editing mode
  * @param {Function} props.onToggleCriterion - Callback when criterion is toggled
- * @returns {JSX.Element} - Rendered component
+ * @return {JSX.Element} - Rendered component
  */
 function ACMGEvidenceTable({ evidence, isEditing, onToggleCriterion }) {
   // Parse evidence if it's a string
-  const evidenceObj = typeof evidence === 'string' 
-    ? parseInterVarEvidence(evidence) 
-    : evidence;
-  
+  const evidenceObj =
+    typeof evidence === "string" ? parseInterVarEvidence(evidence) : evidence;
+
   if (!evidenceObj) return null;
-  
+
   // Helper to create evidence criteria buttons
   const renderCriteriaGroup = (prefix, count, title, titleColor) => {
     return (
@@ -39,7 +38,11 @@ function ACMGEvidenceTable({ evidence, isEditing, onToggleCriterion }) {
               >
                 <Box
                   onClick={() => isEditing && onToggleCriterion(criterion)}
-                  sx={getEvidenceBoxStyle(criterion, evidenceObj[criterion] === 1, isEditing)}
+                  sx={getEvidenceBoxStyle(
+                    criterion,
+                    evidenceObj[criterion] === 1,
+                    isEditing
+                  )}
                 >
                   {criterion}
                 </Box>
@@ -50,7 +53,7 @@ function ACMGEvidenceTable({ evidence, isEditing, onToggleCriterion }) {
       </Box>
     );
   };
-  
+
   // Special case for standalone criteria PVS1 and BA1
   const renderStandaloneCriterion = (criterion, title, titleColor) => {
     return (
@@ -66,7 +69,11 @@ function ACMGEvidenceTable({ evidence, isEditing, onToggleCriterion }) {
           >
             <Box
               onClick={() => isEditing && onToggleCriterion(criterion)}
-              sx={getEvidenceBoxStyle(criterion, evidenceObj[criterion] === 1, isEditing)}
+              sx={getEvidenceBoxStyle(
+                criterion,
+                evidenceObj[criterion] === 1,
+                isEditing
+              )}
             >
               {criterion}
             </Box>
@@ -75,12 +82,17 @@ function ACMGEvidenceTable({ evidence, isEditing, onToggleCriterion }) {
       </Box>
     );
   };
-  
+
   return (
     <Grid container spacing={1}>
       {/* Pathogenic Evidence Section */}
       <Grid item xs={12}>
-        <Typography variant="body2" color="#444444" fontWeight="medium" sx={{ mb: 1 }}>
+        <Typography
+          variant="body2"
+          color="#444444"
+          fontWeight="medium"
+          sx={{ mb: 1 }}
+        >
           Pathogenic Evidence:
         </Typography>
 
@@ -99,7 +111,12 @@ function ACMGEvidenceTable({ evidence, isEditing, onToggleCriterion }) {
 
       {/* Benign Evidence Section */}
       <Grid item xs={12} sx={{ mt: 1 }}>
-        <Typography variant="body2" color="#444444" fontWeight="medium" sx={{ mb: 1 }}>
+        <Typography
+          variant="body2"
+          color="#444444"
+          fontWeight="medium"
+          sx={{ mb: 1 }}
+        >
           Benign Evidence:
         </Typography>
 
@@ -112,10 +129,15 @@ function ACMGEvidenceTable({ evidence, isEditing, onToggleCriterion }) {
         {/* Supporting Evidence (BP) */}
         {renderCriteriaGroup("BP", 8, "Supporting", "#388e3c")}
       </Grid>
-      
+
       <Grid item xs={12}>
         <Box sx={{ mt: 1.5, pt: 1, borderTop: "1px solid #eaeaea" }}>
-          <Typography variant="body2" color="#666666" align="center" fontSize="0.75rem">
+          <Typography
+            variant="body2"
+            color="#666666"
+            align="center"
+            fontSize="0.75rem"
+          >
             Hover over each criterion for description
           </Typography>
         </Box>

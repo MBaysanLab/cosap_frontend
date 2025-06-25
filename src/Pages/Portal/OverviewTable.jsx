@@ -10,7 +10,7 @@ import {
   FrequencyCard,
   InSilicoCard,
   VariantInfoCard,
-} from "../../components/variant";
+} from "../../Components/variant";
 
 /**
  * Component for displaying variant overview with all information

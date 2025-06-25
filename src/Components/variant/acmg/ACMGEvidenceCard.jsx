@@ -16,21 +16,21 @@ import ACMGClassification from "./ACMGClassification";
  * @param {Function} props.onCancel - Callback when cancel button is clicked
  * @param {Function} props.onToggleCriterion - Callback when criterion is toggled
  * @param {Function} props.onChangeManualClassification - Callback when manual classification changes
- * @returns {JSX.Element} - Rendered component
+ * @return {JSX.Element} - Rendered component
  */
-function ACMGEvidenceCard({ 
-  variant, 
-  isEditingIntervar, 
-  editedEvidence, 
+function ACMGEvidenceCard({
+  variant,
+  isEditingIntervar,
+  editedEvidence,
   manualClassification,
-  onEdit, 
-  onSave, 
-  onCancel, 
+  onEdit,
+  onSave,
+  onCancel,
   onToggleCriterion,
-  onChangeManualClassification 
+  onChangeManualClassification,
 }) {
   if (!variant) return null;
-  
+
   return (
     <Box sx={cardStyle(cardColors.intervar)}>
       <Box
@@ -119,8 +119,10 @@ function ACMGEvidenceCard({
           <Grid container spacing={2}>
             {/* Left Column - Evidence Codes */}
             <Grid item xs={12} md={7}>
-              <ACMGEvidenceTable 
-                evidence={isEditingIntervar ? editedEvidence : variant.evidence_intervar}
+              <ACMGEvidenceTable
+                evidence={
+                  isEditingIntervar ? editedEvidence : variant.evidence_intervar
+                }
                 isEditing={isEditingIntervar}
                 onToggleCriterion={onToggleCriterion}
               />
@@ -128,7 +130,7 @@ function ACMGEvidenceCard({
 
             {/* Right Column - Classification Results */}
             <Grid item xs={12} md={5}>
-              <ACMGClassification 
+              <ACMGClassification
                 variant={variant}
                 isEditing={isEditingIntervar}
                 manualClassification={manualClassification}
