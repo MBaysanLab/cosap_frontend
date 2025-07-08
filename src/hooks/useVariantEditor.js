@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { 
-  parseInterVarEvidence, 
-  buildInterVarEvidenceString, 
-  classifyACMG 
+import { useEffect, useState } from "react";
+import {
+  buildInterVarEvidenceString,
+  classifyACMG,
+  parseInterVarEvidence,
 } from "../utils/acmg/utils";
 import { toast } from "react-toastify";
 
@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
  * Custom hook for managing variant editing functionality
  * @param {Object} initialVariant - The initial variant data
  * @param {Function} onVariantUpdate - Callback function for when variant is updated
- * @returns {Object} - State and functions for variant editing
+ * @return {Object} - State and functions for variant editing
  */
 export const useVariantEditor = (initialVariant, onVariantUpdate) => {
   const [variant, setVariant] = useState(null);
@@ -135,6 +135,6 @@ export const useVariantEditor = (initialVariant, onVariantUpdate) => {
     handleCancelIntervar,
     toggleCriterion,
     setManualClassification,
-    showNotification
+    showNotification,
   };
 };

@@ -120,12 +120,10 @@ export const buildInterVarEvidenceString = (evidenceObj) => {
  * @return {Object} - Counts of evidence by category
  */
 export const evidenceCounts = (evidence) => {
-  const evidenceObj = typeof evidence === 'string' 
-    ? parseInterVarEvidence(evidence) 
-    : evidence;
-    
-  if (!evidenceObj)
-    return { pvs: 0, ps: 0, pm: 0, pp: 0, ba: 0, bs: 0, bp: 0 };
+  const evidenceObj =
+    typeof evidence === "string" ? parseInterVarEvidence(evidence) : evidence;
+
+  if (!evidenceObj) return { pvs: 0, ps: 0, pm: 0, pp: 0, ba: 0, bs: 0, bp: 0 };
 
   // Count criteria by category
   const counts = {
@@ -158,10 +156,9 @@ export const evidenceCounts = (evidence) => {
  * @return {string} - Classification result (Pathogenic, Likely pathogenic, etc.)
  */
 export const classifyACMG = (evidence) => {
-  const evidenceObj = typeof evidence === 'string' 
-    ? parseInterVarEvidence(evidence) 
-    : evidence;
-    
+  const evidenceObj =
+    typeof evidence === "string" ? parseInterVarEvidence(evidence) : evidence;
+
   if (!evidenceObj) return "Uncertain significance";
 
   const counts = evidenceCounts(evidenceObj);
