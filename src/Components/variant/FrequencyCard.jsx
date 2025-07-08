@@ -1,174 +1,182 @@
 import React from "react";
-import { Box, Divider, Link, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { cardColors, cardStyle, dataRowStyle } from "../../styles/cardStyles";
 
 /**
- * Component for displaying basic variant information
+ * Component for displaying variant frequency information
  * @param {Object} props - Component props
  * @param {Object} props.variant - Variant data object
  * @return {JSX.Element} - Rendered component
  */
-function VariantInfoCard({ variant }) {
+function FrequencyCard({ variant }) {
   if (!variant) return null;
 
   return (
-    <Box sx={cardStyle(cardColors.variantInfo)}>
+    <Box sx={cardStyle(cardColors.gnomad)}>
       <Box
         sx={{
-          bgcolor: cardColors.variantInfo.header,
+          bgcolor: cardColors.gnomad.header,
           p: 1,
           borderTopLeftRadius: 6,
           borderTopRightRadius: 6,
         }}
       >
         <Typography
-          color={cardColors.variantInfo.headerText}
+          color={cardColors.gnomad.headerText}
           variant="subtitle2"
           fontWeight="bold"
           align="center"
         >
-          Variant Information
+          Allele Frequencies
         </Typography>
       </Box>
-
+      <Box sx={dataRowStyle}>
+        <Typography variant="body2" color="#555555" fontWeight="medium">
+          Sample Variant AF:
+        </Typography>
+        <Typography variant="body2" color="#111111" fontWeight="bold">
+          {variant.sample_specific.allele_frequency || "0"}
+        </Typography>
+      </Box>
       <Box sx={{ mt: 0.5 }}>
+        {/* Turkish Genome Database section */}
+        <Box sx={{ px: 2, py: 0.5, backgroundColor: "#edf7ed" }}>
+          <Typography
+            variant="body2"
+            color="#1b5e20"
+            fontWeight="medium"
+            align="center"
+          >
+            Turkish Genome Database
+          </Typography>
+        </Box>
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            Chr:
+            TGD AF:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.variant.chrom || "0"}
+            {variant.tgd_af || "0"}
+          </Typography>
+        </Box>
+
+        {/* GNOMAD section */}
+        <Box
+          sx={{
+            px: 2,
+            py: 0.5,
+            backgroundColor: "#e3f2fd",
+            mt: 1,
+            textAlign: "center",
+          }}
+        >
+          <Link
+            href={`https://gnomad.broadinstitute.org/variant/${variant.variant.chrom}-${variant.variant.pos}-${variant.variant.ref}-${variant.variant.alt}?dataset=gnomad_r4`}
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            sx={{
+              mr: 1,
+              color: "#1565c0",
+              fontSize: "0.8rem",
+            }}
+          >
+            GNOMAD Genomes
+          </Link>
+        </Box>
+        <Box sx={dataRowStyle}>
+          <Typography variant="body2" color="#555555" fontWeight="medium">
+            Global:
+          </Typography>
+          <Typography variant="body2" color="#111111" fontWeight="bold">
+            {variant.gnomadg_af || "0"}
           </Typography>
         </Box>
 
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            Pos:
+            AFR:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.variant.pos || "0"}
+            {variant.gnomadg_afr_af || "0"}
           </Typography>
         </Box>
 
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            Ref:
+            AMR:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.variant.ref || "0"}
+            {variant.gnomadg_amr_af || "0"}
           </Typography>
         </Box>
 
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            Alt:
+            AMI:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.variant.alt || "0"}
-          </Typography>
-        </Box>
-
-        <Divider sx={{ my: 0.5 }} />
-
-        <Box sx={dataRowStyle}>
-          <Typography variant="body2" color="#555555" fontWeight="medium">
-            HGVSG:
-          </Typography>
-          <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.hgvsg || "0"}
+            {variant.gnomadg_ami_af || "0"}
           </Typography>
         </Box>
 
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            HGVSC:
+            ASJ:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.hgvsc || "0"}
+            {variant.gnomadg_asj_af || "0"}
           </Typography>
         </Box>
 
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            HGVSP:
+            EAS:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.hgvsp || "0"}
+            {variant.gnomadg_eas_af || "0"}
           </Typography>
         </Box>
 
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            Gene:
+            FIN:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.gene_symbol || "0"}
+            {variant.gnomadg_fin_af || "0"}
           </Typography>
         </Box>
 
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            Consequence:
+            NFE:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.consequence || "0"}
+            {variant.gnomadg_nfe_af || "0"}
           </Typography>
         </Box>
 
         <Box sx={dataRowStyle}>
           <Typography variant="body2" color="#555555" fontWeight="medium">
-            Function:
+            SAS:
           </Typography>
           <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.function || "N/A"}
+            {variant.gnomadg_sas_af || "0"}
           </Typography>
         </Box>
 
-        <Box sx={dataRowStyle}>
-          <Typography variant="body2" color="#555555" fontWeight="medium">
-            Impact:
-          </Typography>
-          <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.impact || "0"}
-          </Typography>
-        </Box>
-
-        <Box sx={dataRowStyle}>
-          <Typography variant="body2" color="#555555" fontWeight="medium">
-            Transcript:
-          </Typography>
-          <Typography variant="body2" color="#111111" fontWeight="bold">
-            {variant.feature || "0"}
-          </Typography>
-        </Box>
-
-        <Box sx={dataRowStyle}>
-          <Typography variant="body2" color="#555555" fontWeight="medium">
-            rsID:
-          </Typography>
-          {variant.rs_id ? (
-            <Link
-              href={`https://www.ncbi.nlm.nih.gov/snp/${variant.rs_id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              underline="hover"
-              sx={{
-                mr: 1,
-                color: "#1565c0",
-                fontSize: "0.8rem",
-              }}
-            >
-              {variant.rs_id}
-            </Link>
-          ) : (
-            <Typography variant="body2" color="#111111" fontWeight="bold">
-              0
+        {variant.gnomad_other_frequencies && (
+          <Box sx={dataRowStyle}>
+            <Typography variant="body2" color="#555555" fontWeight="medium">
+              Other:
             </Typography>
-          )}
-        </Box>
+            <Typography variant="body2" color="#111111" fontWeight="bold">
+              {variant.gnomad_other_frequencies}
+            </Typography>
+          </Box>
+        )}
       </Box>
     </Box>
   );
 }
 
-export default VariantInfoCard;
+export default FrequencyCard;

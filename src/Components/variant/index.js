@@ -1,23 +1,5 @@
-import VariantInfoCard from './VariantInfoCard';
-import AlleleFrequenciesCard from './AlleleFrequenciesCard';
-import InSilicoPredictionsCard from './InSilicoPredictionsCard';
-import DiseaseAssociationsCard from './DiseaseAssociationsCard';
-import ACMGEvidenceCard from './ACMGEvidenceCard';
-import ClassificationResult from './ClassificationResult';
-import ClassificationRules from './ClassificationRules';
-import CriterionBox from './CriterionBox';
-import EvidenceCriteria from './EvidenceCriteria';
-import EmptyState from './EmptyState';
-
-export {
-  VariantInfoCard,
-  AlleleFrequenciesCard,
-  InSilicoPredictionsCard,
-  DiseaseAssociationsCard,
-  ACMGEvidenceCard,
-  ClassificationResult,
-  ClassificationRules,
-  CriterionBox,
-  EvidenceCriteria,
-  EmptyState
-};
+export { default as VariantInfoCard } from "./VariantInfoCard";
+export { default as FrequencyCard } from "./FrequencyCard";
+export { default as InSilicoCard } from "./InSilicoCard";
+export { default as DiseaseCard } from "./DiseaseCard";
+export { default as ACMGEvidenceCard } from "./acmg/ACMGEvidenceCard";
