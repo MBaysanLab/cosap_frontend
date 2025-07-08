@@ -54,6 +54,20 @@ export function InProgress(props) {
   );
 }
 
+export function Annotating(props) {
+  return (
+    <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <CircularProgress color="progress" size={20} />
+      <Typography
+        variant="body"
+        sx={{ pl: 1, display: "inline", fontSize: 15 }}
+      >
+        Annotating
+      </Typography>
+    </Box>
+  );
+}
+
 export function Parsing(props) {
   return (
     <Box sx={{ position: "relative", display: "inline-flex" }}>

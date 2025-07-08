@@ -14,7 +14,7 @@ import postProject from "../../apis/postProject.js";
 const FileUploader = React.lazy(() => import("./FileUploader.jsx"));
 const TrioUploader = React.lazy(() => import("./TrioUploader.jsx"));
 
-// Predifened values for algorithms
+// Predifined values for algorithms
 const mappers = ["BWA2", "BWA", "Bowtie2"];
 const variantCallers = [
   "Mutect",
@@ -55,7 +55,7 @@ function CreateProject(props) {
 
   const projectType = searchParams.get("type");
 
-  // Set predifened values for algorithms
+  // Set predifined values for algorithms
   const [inputs, setInputs] = React.useState({
     project_type: projectType,
     aligner: [],
@@ -114,6 +114,7 @@ function CreateProject(props) {
         }
       }
 
+      // Process the main/first child sample
       if (childFileUploader) {
         try {
           const childFiles = await childFileUploader.processFiles();
@@ -129,6 +130,38 @@ function CreateProject(props) {
       } else {
         setFileUploadAlert(true);
         return;
+      }
+
+      // Process additional probands if they exist
+      const additionalProbandUploaders = probandRefs?.current || [];
+      if (additionalProbandUploaders.length > 0) {
+        const additionalProbands = [];
+
+        for (let i = 0; i < additionalProbandUploaders.length; i++) {
+          const uploader = additionalProbandUploaders[i];
+          if (uploader && uploader.getFiles().length > 0) {
+            try {
+              const probandFiles = await uploader.processFiles();
+              const probandSample = await postSample({
+                file_ids: probandFiles.map((file) => file.serverId),
+                sample_type: "NORMAL",
+              });
+              additionalProbands.push(probandSample.data);
+            } catch (error) {
+              console.error(
+                `Error processing additional proband ${i + 1}:`,
+                error
+              );
+            }
+          }
+        }
+
+        if (additionalProbands.length > 0) {
+          formData.append(
+            "proband2_sample_id",
+            additionalProbands[0] // Assuming only one additional proband for now
+          );
+        }
       }
     } else {
       // Regular project file logic
@@ -212,6 +245,9 @@ function CreateProject(props) {
     setNumberOfAddedFiles(numberOfAddedFiles - 1);
   };
 
+  // Add this near the top of your component where other state variables are declared
+  const probandRefs = React.useRef([]);
+
   return (
     <Box
       sx={{
@@ -273,6 +309,7 @@ function CreateProject(props) {
             fatherFileUploader={setFatherFileUploader}
             motherFileUploader={setMotherFileUploader}
             childFileUploader={setChildFileUploader}
+            probandRefs={probandRefs} // Add this line
           />
         </React.Suspense>
       ) : (

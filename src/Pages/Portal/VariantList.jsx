@@ -123,6 +123,7 @@ function VariantList(props) {
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(25);
   const [filterModel, setFilterModel] = React.useState(filterModelBase);
+  const [hasInitialData, setHasInitialData] = React.useState(false);
   const apiRef = useGridApiRef();
 
   // Update to use object notation instead of array notation
@@ -135,6 +136,13 @@ function VariantList(props) {
 
   const [rowCountState, setRowCountState] = React.useState(data?.total || 0);
 
+  // Track when we first get data
+  React.useEffect(() => {
+    if (data && !hasInitialData) {
+      setHasInitialData(true);
+    }
+  }, [data, hasInitialData]);
+
   // Update row count when data changes
   React.useEffect(() => {
     setRowCountState((prevRowCountState) =>
@@ -143,18 +151,33 @@ function VariantList(props) {
   }, [data?.total, setRowCountState]);
 
   // Apply predefined filter
-  const handleFilterApply = (filterModel) => {
-    setFilterModel(filterModel);
-    setPage(0); // Reset to first page when applying filters
+  const handleFilterApply = (newFilterModel) => {
+    // Only reset page if filters actually changed
+    const filtersChanged =
+      JSON.stringify(filterModel) !== JSON.stringify(newFilterModel);
+
+    setFilterModel(newFilterModel);
+
+    if (filtersChanged) {
+      setPage(0); // Only reset to first page when filters actually change
+    }
   };
 
   // Clear all filters
   const handleClearFilters = () => {
+    // Only reset if filters are not already at base state
+    const filtersChanged =
+      JSON.stringify(filterModel) !== JSON.stringify(filterModelBase);
+
     setFilterModel(filterModelBase);
-    setPage(0); // Reset to first page when clearing filters
+
+    if (filtersChanged) {
+      setPage(0); // Only reset to first page when filters actually change
+    }
   };
 
-  if (isLoading) {
+  // Only show loading screen for initial load or when there's no data yet
+  if (isLoading && !hasInitialData) {
     return (
       <Box
         sx={{
@@ -187,7 +210,7 @@ function VariantList(props) {
   return (
     <Box
       sx={{
-        height: data.snvs && data.total === 0 ? "300px" : "1000px",
+        height: data?.snvs && data.total === 0 ? "300px" : "1000px",
         width: "100%",
       }}
     >
@@ -204,11 +227,12 @@ function VariantList(props) {
             columns={columns}
             pagination
             paginationMode="server"
-            rows={data.snvs}
+            rows={data?.snvs || []}
             pageSize={pageSize}
             onPageChange={(newPage) => setPage(newPage)}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             filterMode="server"
+            loading={isLoading}
             components={{
               Row: VariantRow,
               Header: () => null,

@@ -1,9 +1,7 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useVariantEditor } from "../../hooks/useVariantEditor";
-// Import smaller components
 import {
   ACMGEvidenceCard,
   DiseaseCard,
@@ -93,18 +91,6 @@ function OverviewTable(props) {
           </Typography>
         </Box>
       )}
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </Grid>
   );
 }

@@ -12,7 +12,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Complete, Failed, InProgress, Parsing, Pending } from "./StatusIcons";
+import {
+  Annotating,
+  Complete,
+  Failed,
+  InProgress,
+  Parsing,
+  Pending,
+} from "./StatusIcons";
 import getProjects from "../../apis/getProjects";
 import postReRun from "../../apis/postReRun";
 import postDeleteProject from "../../apis/postDeleteProject";
@@ -38,6 +45,8 @@ function ProjectList(props) {
             return <Complete />;
           case "running":
             return <InProgress />;
+          case "annotating":
+            return <Annotating />;
           case "parsing":
             return <Parsing />;
           case "pending":
@@ -144,8 +153,16 @@ function ProjectList(props) {
         setLoading(false);
       }
     };
+
+    // Initial fetch
     fetchProjects();
-  }, [counter]); // Add counter as dependency to re-fetch when it changes
+
+    // Set up interval for auto-refresh every 10 seconds
+    const interval = setInterval(fetchProjects, 30000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, [counter]); // Keep counter as dependency
 
   // Custom "no rows" overlay
   const NoRowsOverlay = () => (
