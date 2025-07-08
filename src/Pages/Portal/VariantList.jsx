@@ -44,59 +44,6 @@ const columns = [
   },
 ];
 
-const filterModelBase = [
-  {
-    label: "ACMG",
-    type: "button",
-    filters: [
-      { label: "Pathogenic", value: "pathogenic", active: false },
-      { label: "Likely Pathogenic", value: "likely_pathogenic", active: false },
-      { label: "VUS", value: "uncertain_significance", active: false },
-    ],
-  },
-  {
-    label: "AMP",
-    type: "button",
-    filters: [
-      { label: "Tier I", value: "pathogenic", active: false },
-      { label: "Tier II", value: "likely_pathogenic", active: false },
-      { label: "VUS", value: "vus", active: false },
-    ],
-  },
-  {
-    label: "ClinVar",
-    type: "button",
-    filters: [
-      { label: "Pathogenic", value: "pathogenic", active: false },
-      {
-        label: "Likely Pathogenic",
-        value: "likely_pathogenic",
-        active: false,
-      },
-      { label: "VUS", value: "vus", active: false },
-    ],
-  },
-  {
-    label: "Consequence",
-    type: "button",
-    filters: [
-      { label: "Exonic", value: "exon", active: false },
-      { label: "Intronic", value: "intron", active: false },
-      { label: "Splicing", value: "splice", active: false },
-    ],
-  },
-  {
-    label: "Gene_Symbol",
-    type: "input",
-    filters: [{ label: "Symbol", value: "", active: false }],
-  },
-  {
-    label: "rsID",
-    type: "input",
-    filters: [{ label: "rsID", value: "", active: false }],
-  },
-];
-
 function NoRowsOverlay() {
   return (
     <Box
@@ -122,7 +69,91 @@ function NoRowsOverlay() {
 function VariantList(props) {
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(25);
-  const [filterModel, setFilterModel] = React.useState(filterModelBase);
+
+  // Create filterModel based on project_type
+  const getFilterModelBase = () => {
+    const baseFilters = [
+      {
+        label: "Consequence",
+        type: "button",
+        filters: [
+          { label: "Exonic", value: "exon", active: false },
+          { label: "Intronic", value: "intron", active: false },
+          { label: "Splicing", value: "splice", active: false },
+        ],
+      },
+      {
+        label: "Gene_Symbol",
+        type: "input",
+        filters: [{ label: "Symbol", value: "", active: false }],
+      },
+      {
+        label: "rsID",
+        type: "input",
+        filters: [{ label: "rsID", value: "", active: false }],
+      },
+    ];
+
+    if (props.project_type === "SOMATIC") {
+      return [
+        {
+          label: "AMP",
+          type: "button",
+          filters: [
+            { label: "Tier I", value: "pathogenic", active: false },
+            { label: "Tier II", value: "likely_pathogenic", active: false },
+            { label: "VUS", value: "vus", active: false },
+          ],
+        },
+        {
+          label: "ClinVar",
+          type: "button",
+          filters: [
+            { label: "Pathogenic", value: "pathogenic", active: false },
+            {
+              label: "Likely Pathogenic",
+              value: "likely_pathogenic",
+              active: false,
+            },
+            { label: "VUS", value: "vus", active: false },
+          ],
+        },
+        ...baseFilters,
+      ];
+    } else {
+      return [
+        {
+          label: "ACMG",
+          type: "button",
+          filters: [
+            { label: "Pathogenic", value: "pathogenic", active: false },
+            {
+              label: "Likely Pathogenic",
+              value: "likely_pathogenic",
+              active: false,
+            },
+            { label: "VUS", value: "uncertain_significance", active: false },
+          ],
+        },
+        {
+          label: "ClinVar",
+          type: "button",
+          filters: [
+            { label: "Pathogenic", value: "pathogenic", active: false },
+            {
+              label: "Likely Pathogenic",
+              value: "likely_pathogenic",
+              active: false,
+            },
+            { label: "VUS", value: "vus", active: false },
+          ],
+        },
+        ...baseFilters,
+      ];
+    }
+  };
+
+  const [filterModel, setFilterModel] = React.useState(getFilterModelBase());
   const [hasInitialData, setHasInitialData] = React.useState(false);
   const apiRef = useGridApiRef();
 
@@ -165,11 +196,12 @@ function VariantList(props) {
 
   // Clear all filters
   const handleClearFilters = () => {
+    const newFilterModelBase = getFilterModelBase();
     // Only reset if filters are not already at base state
     const filtersChanged =
-      JSON.stringify(filterModel) !== JSON.stringify(filterModelBase);
+      JSON.stringify(filterModel) !== JSON.stringify(newFilterModelBase);
 
-    setFilterModel(filterModelBase);
+    setFilterModel(newFilterModelBase);
 
     if (filtersChanged) {
       setPage(0); // Only reset to first page when filters actually change
