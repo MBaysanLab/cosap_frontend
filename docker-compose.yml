@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  cosap-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cosap-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Add your environment variables here
+      # - REACT_APP_API_URL=http://localhost:8000
+      # - REACT_APP_COSAP_GITHUB_URL=https://github.com/your-repo
+    networks:
+      - cosap-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  cosap-network:
+    driver: bridge
