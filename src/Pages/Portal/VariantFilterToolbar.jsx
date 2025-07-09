@@ -67,7 +67,7 @@ function FilterToolbar({ onFilterApply, onClearFilters, filterModel }) {
                       color: "text.secondary",
                     }}
                   >
-                    {category.label}
+                    {category.label.replace("_", " ")}
                   </Typography>
                   {/* Filter buttons */}
                   <ButtonGroup variant="outlined" size="small">

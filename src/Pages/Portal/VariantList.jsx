@@ -92,6 +92,16 @@ function VariantList(props) {
         type: "input",
         filters: [{ label: "rsID", value: "", active: false }],
       },
+      {
+        label: "gnomAD_AF",
+        type: "button",
+        filters: [
+          { label: "< 0.001", value: "0.001", active: false },
+          { label: "< 0.01", value: "0.01", active: false },
+          { label: "< 0.05", value: "0.05", active: false },
+          { label: "< 0.1", value: "0.1", active: false },
+        ],
+      },
     ];
 
     if (props.project_type === "SOMATIC") {
